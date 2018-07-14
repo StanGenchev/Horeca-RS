@@ -1,0 +1,47 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Horeca Recommender System</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="{% static 'css/default.css' %}">
+    </head>
+    <body>
+        <!-- Sidebar -->
+        <div class="hrs-sidebar hrs-bar-block dynamic-size" style="display:none" id="mySidebar">
+            <button onclick="w3_close()" class="hrs-bar-item" style="height: auto;background-color:#df505d;color:white;">Close</button>
+            <a href="#" class="hrs-bar-item hrs-button hrs-large" style="height: auto">Main page</a>
+        </div>
+        <!-- Page Header -->
+        <div class="hrs-teal hrs-teal-shadow dynamic-size stick">
+            <button class="hrs-btn hrs-teal" style="position: absolute; top: 0px; left: 0px; background: url({% static 'images/menu.svg' %}); background-repeat: no-repeat; background-size: 75% 75%; background-position: center;" onclick="hrs_open()"></button>
+            <div class="hrs-container">
+                <h1>HoReCa Demo</h1>
+            </div>
+            <button class="hrs-btn hrs-teal" style="position: absolute; top: 0px; right: 0px; background: url({% static 'images/user.svg' %}); background-repeat: no-repeat; background-size: 75% 75%; background-position: center;" onclick=""></button>
+        </div>
+        <!-- Page Content -->
+        <div class="item-details">
+            <img src="{% static 'images/hrs-logo.svg' %}" alt="Wine" style="max-height:128px;">
+            <p class="item-name">{{ question.question_text }}</p>
+            {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+            <form action="{% url 'hrsapp:vote' question.id %}" method="post">
+                {% csrf_token %}
+                {% for choice in question.choice_set.all %}
+                    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
+                    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
+                {% endfor %}
+                <input type="submit" value="Vote" />
+            </form>
+        </div>
+        
+        <script>
+            function hrs_open() {
+                document.getElementById("mySidebar").style.display = "block";
+            }
+            function w3_close() {
+                document.getElementById("mySidebar").style.display = "none";
+            }
+        </script>
+    </body>
+</html>
