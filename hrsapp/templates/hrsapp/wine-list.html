@@ -2,115 +2,121 @@
 {% load range %}
 <!DOCTYPE html>
 <html>
-   <head>
-      <title>HoReCa Recommender System | Products</title>
-      <meta name="viewport" content="width=device-width, initial-scale=1">
-      <meta name="theme-color" content="#f95463">
-      <link rel="stylesheet" href="{% static 'css/default.css' %}">
-      <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicon/apple-touch-icon.png' %}">
-      <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon/favicon-32x32.png' %}">
-      <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon/favicon-16x16.png' %}">
-      <link rel="manifest" href="{% static 'images/favicon/site.webmanifest' %}">
-      <link rel="mask-icon" href="{% static 'images/favicon/safari-pinned-tab.svg' %}" color="#5bbad5">
-      <meta name="msapplication-TileColor" content="#da532c">
-   </head>
-   <body>
-      {% if product_list %}
-      <!-- Sidebar -->
-      <div class="hrs-sidebar hrs-bar-block dynamic-size" id="mySidebar">
-        <button onclick="w3_close()" class="hrs-bar-close">Close</button>
-        <a href="/" class="hrs-bar-item hrs-bar-button hrs-large">Home</a>
-        <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">My profile</a>
-        <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">Log out</a>
-      </div>
-      <!-- Page Header -->
-      <div class="hrs-teal hrs-teal-shadow dynamic-size stick">
-         <button class="hrs-btn hrs-teal" style="left: 0px; background-image: url({% static 'images/menu.svg' %});" onclick="hrs_open()"></button>
-         <div class="hrs-container">
-            <h1>HoReCa</h1>
-         </div>
-         <button class="hrs-btn hrs-teal" style="right: 0px; background-image: url({% static 'images/user.svg' %});" onclick=""></button>
-      </div>
-      <!-- Page Content -->
-      <div class="grid-container">
-         <div class="row">
-            {% for item in product_list.1 %}
-            <div class="column">
-               <table class="item">
-                  <tr>
-                     <td class="item-name hrs-large" colspan="2">
-                        {{ item.product_id.name }}
-                     </td>
-                  </tr>
-                  <tr>
-                     <td valign="bottom">
-                        <img src="{% static 'images/' %}{{ item.product_id.photo_path }}" alt="Wine Photo">
-                     </td>
-                     <td class="item-desc hrs-medium" valign="top">
-                        <p>Producer: <b>{{ item.product_id.vendor_id }}</b></p>
-                        <p>Country: <b>{{ item.product_id.vendor_id.region_id.country_id }}</b></p>
-                        <p>Region: <b>{{ item.product_id.vendor_id.region_id }}</b></p>
-                        <p>Category: <b>{{ item.product_id.category_id }} Wine</b></p>
-                        <p>Appellation: <b>{{ item.product_id.appellation_id }}</b></p>
-                        <p>Description:<br>{{ item.product_id.description }}</p>
-                     </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2" align="center" class="rate-bar">
-                        <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, 1)" style="background-image: url({% static 'images/star.svg' %});"></button>
-                        <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, 2)" style="background-image: url({% static 'images/star.svg' %});"></button>
-                        <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, 3)" style="background-image: url({% static 'images/star.svg' %});"></button>
-                        <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, 4)" style="background-image: url({% static 'images/star.svg' %});"></button>
-                        <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, 5)" style="background-image: url({% static 'images/star.svg' %});"></button>
-                    </td>
-                  </tr>
-               </table>
+    <head>
+        <title>HoReCa Recommender System | Products</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#f95463">
+        <link rel="stylesheet" href="{% static 'css/default.css' %}">
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicon/apple-touch-icon.png' %}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon/favicon-32x32.png' %}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon/favicon-16x16.png' %}">
+        <link rel="manifest" href="{% static 'images/favicon/site.webmanifest' %}">
+        <link rel="mask-icon" href="{% static 'images/favicon/safari-pinned-tab.svg' %}" color="#5bbad5">
+        <meta name="msapplication-TileColor" content="#da532c">
+    </head>
+    <body>
+        {% if product_list %}
+        <!-- Sidebar -->
+        <div class="hrs-sidebar hrs-bar-block dynamic-size" id="mySidebar">
+            <button onclick="w3_close()" class="hrs-bar-close">Close</button>
+            <a href="/" class="hrs-bar-item hrs-bar-button hrs-large">Home</a>
+            <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">My profile</a>
+            <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">Log out</a>
+        </div>
+        <!-- Page Header -->
+        <div class="hrs-teal hrs-teal-shadow dynamic-size stick">
+            <button class="hrs-btn hrs-teal" style="left: 0px; background-image: url({% static 'images/menu.svg' %});" onclick="hrs_open()"></button>
+            <div class="hrs-container">
+                <h1>HoReCa</h1>
             </div>
-            {% endfor %}
-         </div>
-      </div>
-      <div class="pagination">
-        {% if product_list.1.has_previous %}
+            <button class="hrs-btn hrs-teal" style="right: 0px; background-image: url({% static 'images/user.svg' %});" onclick=""></button>
+        </div>
+        <!-- Page Content -->
+        {% if product_list.1|length == 0  %}
+        <div class="no-products">
+            <img src="{% static 'images/hrs-logo.svg' %}" alt="HoReCa">
+            <p class="item-name hrs-large">There are no available products!<p>
+        </div>
+        {% else %}
+        <div class="grid-container">
+            <div class="row">
+                {% for item in product_list.1 %}
+                <div class="column">
+                    <table class="item">
+                        <tr>
+                            <td class="item-name hrs-large" colspan="2">
+                                {{ item.product_id.name }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="bottom">
+                                <img src="{% static 'images/' %}{{ item.product_id.photo_path }}" alt="Wine Photo">
+                            </td>
+                            <td class="item-desc hrs-medium" valign="top">
+                                <p>Producer: <b>{{ item.product_id.vendor_id }}</b></p>
+                                <p>Country: <b>{{ item.product_id.vendor_id.region_id.country_id }}</b></p>
+                                <p>Region: <b>{{ item.product_id.vendor_id.region_id }}</b></p>
+                                <p>Category: <b>{{ item.product_id.category_id }} Wine</b></p>
+                                <p>Appellation: <b>{{ item.product_id.appellation_id }}</b></p>
+                                <p>Description:<br>{{ item.product_id.description }}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2" align="center" class="rate-bar">
+                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, 1)" style="background-image: url({% static 'images/star.svg' %});"></button>
+                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, 2)" style="background-image: url({% static 'images/star.svg' %});"></button>
+                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, 3)" style="background-image: url({% static 'images/star.svg' %});"></button>
+                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, 4)" style="background-image: url({% static 'images/star.svg' %});"></button>
+                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, 5)" style="background-image: url({% static 'images/star.svg' %});"></button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="pagination">
+            {% if product_list.1.has_previous %}
             <a href="?page={{ product_list.1.previous_page_number }}">&laquo;</a>
-        {% endif %}
-
-        {% for value in product_list.1.paginator.num_pages|range %}
-            {% if product_list.1.number is forloop.counter %}
-                <a class="active" href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
-            {% else %}
-                <a href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
             {% endif %}
-        {% endfor %}
-
-        {% if product_list.1.has_next %}
-          <a href="?page={{ product_list.1.paginator.num_pages }}">&raquo;</a>
+            {% for value in product_list.1.paginator.num_pages|range %}
+            {% if product_list.1.number is forloop.counter %}
+            <a class="active" href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
+            {% else %}
+            <a href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
+            {% endif %}
+            {% endfor %}
+            {% if product_list.1.has_next %}
+            <a href="?page={{ product_list.1.paginator.num_pages }}">&raquo;</a>
+            {% endif %}
+        </div>
         {% endif %}
-      </div>
-      {% else %}
-      <center>
-         <div class="empty" onclick="window.location.reload()">
-            <img src="{% static 'images/hrs-logo.svg' %}" alt="H.R.S">
-            <p>Page not available!</p>
-            <p>Try again later.</p>
-         </div>
-      </center>
-      {% endif %}
-      <script>
-         function hrs_open() {
-             document.getElementById("mySidebar").style.display = "block";
-         }
-         function w3_close() {
-             document.getElementById("mySidebar").style.display = "none";
-         }
-         function set_rating(product, rate) {
-            var elem = document.getElementsByClassName(product);
-             for (i = 0; i < rate; i++) {
-                elem[i].style.backgroundImage = "url({% static 'images/star-checked.svg' %})";
-             }
-             for (i = rate; i < 5; i++) {
-                elem[i].style.backgroundImage = "url({% static 'images/star.svg' %})";
-             }
-         }
-      </script>
-   </body>
+        {% else %}
+        <center>
+            <div class="empty" onclick="window.location.reload()">
+                <img src="{% static 'images/hrs-logo.svg' %}" alt="H.R.S">
+                <p>Page not available!</p>
+                <p>Try again later.</p>
+            </div>
+        </center>
+        {% endif %}
+        <script>
+            function hrs_open() {
+                document.getElementById("mySidebar").style.display = "block";
+            }
+            function w3_close() {
+                document.getElementById("mySidebar").style.display = "none";
+            }
+            function set_rating(product, rate) {
+               var elem = document.getElementsByClassName(product);
+                for (i = 0; i < rate; i++) {
+                   elem[i].style.backgroundImage = "url({% static 'images/star-checked.svg' %})";
+                   location.href="?test=1";
+                }
+                for (i = rate; i < 5; i++) {
+                   elem[i].style.backgroundImage = "url({% static 'images/star.svg' %})";
+                }
+            }
+        </script>
+    </body>
 </html>

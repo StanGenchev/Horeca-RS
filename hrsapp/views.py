@@ -96,8 +96,13 @@ class ItemView(generic.ListView):
                 if item.in_stock == True:
                     if int(item.product_id.category_id.id) == int(category):
 #                        if int(item.product_id.vendor_id.region_id.country_id.id) == int(country):
-                            if int(item.product_id.vendor_id.id) == int(vendor):
-                                inv_filtered.append(item)
+                        if int(item.product_id.vendor_id.id) == int(vendor):
+                            inv_filtered.append(item)
+#                else:
+#                    if int(item.product_id.category_id.id) == int(category):
+#                        if int(item.product_id.vendor_id.region_id.country_id.id) == int(country):
+#                        if int(item.product_id.vendor_id.id) == int(vendor):
+#                            print(item.id)
             paginator = Paginator(inv_filtered, 24)
             cap = (Categories.objects.all(), paginator.page(int(page)))
             return render(request, self.template_name, {'product_list': cap})
