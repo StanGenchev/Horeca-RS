@@ -35,8 +35,8 @@
         <div class="menu-container" id="categories-main-menu">
             <div class="row">
                 {% if menu_objects.0 == 1 %}
-                {% if menu_objects.3|length > 3 %}
-                {% for category in menu_objects.3 %}
+                {% if menu_objects.4|length > 3 %}
+                {% for category in menu_objects.4 %}
                 <div class="menu-column menu-column-three-and-up">
                     <table class="item" onclick="location.href='/recommend-menu?category={{ category.id }}'">
                         <tr>
@@ -52,7 +52,7 @@
                 </div>
                 {% endfor %}
                 {% else %}
-                {% for category in menu_objects.3 %}
+                {% for category in menu_objects.4 %}
                 <div class="menu-column">
                     <table class="item" onclick="location.href='/recommend-menu?category={{ category.id }}'">
                         <tr>
@@ -69,8 +69,8 @@
                 {% endfor %}
                 {% endif %}
                 {% elif menu_objects.1 == 1 %}
-                {% if menu_objects.3|length > 3 %}
-                {% for country in menu_objects.3 %}
+                {% if menu_objects.4|length > 3 %}
+                {% for country in menu_objects.4 %}
                 <div class="menu-column menu-column-three-and-up">
                     <table class="item" onclick="location.href='/recommend-menu?country={{ country.id }}'">
                         <tr>
@@ -86,7 +86,7 @@
                 </div>
                 {% endfor %}
                 {% else %}
-                {% for country in menu_objects.3 %}
+                {% for country in menu_objects.4 %}
                 <div class="menu-column">
                     <table class="item" onclick="location.href='/recommend-menu?country={{ country.id }}'">
                         <tr>
@@ -103,8 +103,8 @@
                 {% endfor %}
                 {% endif %}
                 {% else %}
-                {% if menu_objects.3|length > 3 %}
-                {% for vendor in menu_objects.3 %}
+                {% if menu_objects.4|length > 3 %}
+                {% for vendor in menu_objects.4 %}
                 <div class="menu-column menu-column-three-and-up">
                     <table class="item" onclick="location.href='/recommend-menu?vendor={{ vendor.id }}'">
                         <tr>
@@ -120,7 +120,7 @@
                 </div>
                 {% endfor %}
                 {% else %}
-                {% for vendor in menu_objects.3 %}
+                {% for vendor in menu_objects.4 %}
                 <div class="menu-column">
                     <table class="item" onclick="location.href='/recommend-menu?vendor={{ vendor.id }}'">
                         <tr>

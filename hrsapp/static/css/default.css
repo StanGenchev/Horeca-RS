@@ -114,6 +114,24 @@ html{
      margin-right: auto;
      width: 50%;
 }
+ .scrollmenu {
+    display: table;
+    margin: 0 auto;
+    width: 80%;
+    background-color: inherit;
+    overflow: auto;
+    white-space: nowrap;
+    border-bottom: 1px solid #dcdcdb;
+}
+
+ .scrollmenu a {
+    display: inline-block;
+    color: inherit;
+    text-align: center;
+    padding: 14px;
+    text-decoration: none;
+}
+
  .menu-container {
      display: table;
      margin: 0 auto;

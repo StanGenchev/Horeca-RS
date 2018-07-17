@@ -22,6 +22,7 @@
             <a href="/" class="hrs-bar-item hrs-bar-button hrs-large">Home</a>
             <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">My profile</a>
             <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">Log out</a>
+            <a href="?delete=1" class="hrs-bar-item hrs-bar-button hrs-large">Clear session</a>
         </div>
         <!-- Page Header -->
         <div class="hrs-teal hrs-teal-shadow dynamic-size stick">
@@ -38,6 +39,22 @@
             <p class="item-name hrs-large">There are no available products!<p>
         </div>
         {% else %}
+        {% if product_list.2 != 0  %}
+        <div class="scrollmenu">
+            <table style="margin-top: 1em;">
+                <tbody>
+                    <tr>
+                    {% for item in product_list.2 %}
+                        <td><img style="max-height: 52px; padding-right: 1em;" src="{% static 'images/' %}{{ item.photo_path }}" alt="Wine Photo">
+                        </td>
+                        <td style="padding-right: 1em;">{{ item.name }}<br>Your rate is:
+                        </td>
+                    {% endfor %}
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        {% endif %}
         <div class="grid-container">
             <div class="row">
                 {% for item in product_list.1 %}
@@ -111,11 +128,11 @@
                var elem = document.getElementsByClassName(product);
                 for (i = 0; i < rate; i++) {
                    elem[i].style.backgroundImage = "url({% static 'images/star-checked.svg' %})";
-                   location.href="?test=1";
                 }
                 for (i = rate; i < 5; i++) {
                    elem[i].style.backgroundImage = "url({% static 'images/star.svg' %})";
                 }
+                location.href="?rated=" + product;
             }
         </script>
     </body>
