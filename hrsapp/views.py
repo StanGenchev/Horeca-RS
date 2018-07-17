@@ -74,13 +74,13 @@ class RecommendView(generic.ListView):
                 return render(request, self.template_name, {'menu_objects': menu_objects})
 
 class ItemView(generic.ListView):
-    template_name = 'hrsapp/wine-list.html'
+    template_name = 'hrsapp/recommend-list.html'
     context_object_name = 'product_list'
     paginate_by = 10
 
     def get(self, request, *args, **kwargs):
-        inv = Inventory.objects.all()
-        inv_filtered = []
+        prods = Products.objects.all()
+        prods_filtered = []
         if request.method == 'GET':
             page = request.GET.get('page')
             category = request.session['category']
@@ -89,21 +89,20 @@ class ItemView(generic.ListView):
             if page is None:
                 page = 1
             if category is None or country is None or vendor is None:
-                paginator = Paginator(inv, 24)
+                paginator = Paginator(prods, 24)
                 cap = (Categories.objects.all(), paginator.page(int(page)))
                 return render(request, self.template_name, {'product_list': cap})
-            for item in inv:
-                if item.in_stock == True:
-                    if int(item.product_id.category_id.id) == int(category):
+            for item in prods:
+                if int(item.category_id.id) == int(category):
 #                        if int(item.product_id.vendor_id.region_id.country_id.id) == int(country):
-                        if int(item.product_id.vendor_id.id) == int(vendor):
-                            inv_filtered.append(item)
+                    if int(item.vendor_id.id) == int(vendor):
+                        prods_filtered.append(item)
 #                else:
 #                    if int(item.product_id.category_id.id) == int(category):
 #                        if int(item.product_id.vendor_id.region_id.country_id.id) == int(country):
 #                        if int(item.product_id.vendor_id.id) == int(vendor):
 #                            print(item.id)
-            paginator = Paginator(inv_filtered, 24)
+            paginator = Paginator(prods_filtered, 24)
             cap = (Categories.objects.all(), paginator.page(int(page)))
             return render(request, self.template_name, {'product_list': cap})
 
