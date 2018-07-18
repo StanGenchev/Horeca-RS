@@ -100,8 +100,13 @@ class RecommendView(generic.ListView):
                 try:
                     current_rates = request.session['rated']
                     for prod in prods:
-                        if str(prod.id) in current_rates:
-                            all_rated.append(prod)
+                        in_rates = 0
+                        for rate in current_rates:
+                            if str(prod.id) == str(rate[0]):
+                                in_rates = rate[1]
+                                break  
+                        if in_rates > 0:
+                            all_rated.append([prod, in_rates])
                         if int(prod.category_id.id) == int(category):
                             if int(prod.vendor_id.id) == int(vendor):
                                 prods_filtered.append(prod)
@@ -109,8 +114,13 @@ class RecommendView(generic.ListView):
                     contents = (Categories.objects.all(), paginator.page(int(page)), all_rated)
                 except:
                     for prod in prods:
-                        if str(prod.id) in current_rates:
-                            all_rated.append(prod)
+                        in_rates = 0
+                        for rate in current_rates:
+                            if str(prod.id) == str(rate[0]):
+                                in_rates = rate[1]
+                                break  
+                        if in_rates == 0:
+                            all_rated.append([prod, in_rates])
                         if int(prod.category_id.id) == int(category):
                             if int(prod.vendor_id.id) == int(vendor):
                                 prods_filtered.append(prod)
@@ -125,20 +135,30 @@ class RecommendView(generic.ListView):
                     vendor = request.session['vendor']
                     category = request.session['category']
                     country = request.session['country']
-                    if request.session.get('rated') is None:
-                        try:
-                            current_rates.append(request.GET.get('rated'))
-                            request.session['rated'] = current_rates
-                        except:
-                            print('No rates')
-                    else:
+                    current_rated_item = request.GET.get('rated')
+                    try:
                         current_rates = request.session['rated']
-                        if request.GET.get('rated') not in current_rates:
-                            current_rates.append(request.GET.get('rated'))
+                    except:
+                        print('No rates')
+                    if current_rated_item is not None:
+                        current_rated_item = str(current_rated_item).split('r')
+                        in_rates = 0
+                        for rate in current_rates:
+                            if str(current_rated_item[0]) == str(rate[0]):
+                                in_rates = 1
+                                break  
+                        if in_rates == 0:
+                            current_rates.append(current_rated_item)
                             request.session['rated'] = current_rates
+                            print(current_rated_item)
                     for prod in prods:
-                        if str(prod.id) in current_rates:
-                            all_rated.append(prod)
+                        in_rates = 0
+                        for rate in current_rates:
+                            if str(prod.id) == str(rate[0]):
+                                in_rates = rate[1]
+                                break  
+                        if in_rates == 0:
+                            all_rated.append([prod, in_rates])
                         if int(prod.category_id.id) == int(category):
                             if int(prod.vendor_id.id) == int(vendor):
                                 prods_filtered.append(prod)

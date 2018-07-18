@@ -279,6 +279,15 @@ html{
      height: 2em;
      width: 2em;
 }
+ .rate-button-small {
+     border: none;
+     background-color: transparent;
+     background-repeat: no-repeat;
+     background-size: 100%;
+     background-position: center;
+     height: 1.5em;
+     width: 1.5em;
+}
  .hrs-btn,.hrs-button {
      border: none;
      display: table-cell;

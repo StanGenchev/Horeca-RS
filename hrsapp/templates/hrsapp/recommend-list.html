@@ -46,9 +46,16 @@
                 <tbody>
                     <tr>
                     {% for item in product_list.2 %}
-                        <td><img style="max-height: 52px; padding-right: 1em;" src="{% static 'images/' %}{{ item.photo_path }}" alt="Wine Photo">
+                        <td><img style="height: 54px; padding-right: 1em;" src="{% static 'images/' %}{{ item.photo_path }}" alt="Wine Photo">
                         </td>
-                        <td style="padding-right: 2em;">{{ item.name }}<br>Your rate is:
+                        <td style="padding-right: 2em;">{{ item[0].name }}<br>{{ item[0].vendor_id }}<br>
+                            <div class="rate-bar">
+                                <button class="{{ item.id }} rate-button-small" type="button" onclick="" style="background-image: url({% static 'images/star.svg' %});"></button>
+                                <button class="{{ item.id }} rate-button-small" type="button" onclick="" style="background-image: url({% static 'images/star.svg' %});"></button>
+                                <button class="{{ item.id }} rate-button-small" type="button" onclick="" style="background-image: url({% static 'images/star.svg' %});"></button>
+                                <button class="{{ item.id }} rate-button-small" type="button" onclick="" style="background-image: url({% static 'images/star.svg' %});"></button>
+                                <button class="{{ item.id }} rate-button-small" type="button" onclick="" style="background-image: url({% static 'images/star.svg' %});"></button>
+                            </div>
                         </td>
                     {% endfor %}
                     </tr>
