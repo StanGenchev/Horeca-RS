@@ -20,6 +20,7 @@
             <a href="/" class="hrs-bar-item hrs-bar-button hrs-large">Home</a>
             <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">My profile</a>
             <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">Log out</a>
+            <a href="?clear-recommend=1" class="hrs-bar-item hrs-bar-button hrs-large">Recommend me</a>
             <a href="?delete=1" class="hrs-bar-item hrs-bar-button hrs-large">Clear session</a>
         </div>
         <!-- Page Header -->
@@ -47,7 +48,7 @@
                     </table>
                 </div>
                 <div class="menu-column">
-                    <table class="item" onclick="location.href='/recommend-menu'">
+                    <table class="item" onclick="location.href='/recommend-menu?clear-recommend=1'">
                         <tr>
                             <td align="center">
                                 <img src="{% static 'images/recommended.svg' %}" alt="RECOMMEND ME WINE">

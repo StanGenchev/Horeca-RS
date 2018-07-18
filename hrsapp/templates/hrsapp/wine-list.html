@@ -22,6 +22,7 @@
             <a href="/" class="hrs-bar-item hrs-bar-button hrs-large">Home</a>
             <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">My profile</a>
             <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">Log out</a>
+            <a href="?clear-recommend=1" class="hrs-bar-item hrs-bar-button hrs-large">Recommend me</a>
             <a href="?delete=1" class="hrs-bar-item hrs-bar-button hrs-large">Clear session</a>
         </div>
         <!-- Page Header -->
@@ -39,22 +40,6 @@
             <p class="item-name hrs-large">There are no available products!<p>
         </div>
         {% else %}
-        {% if product_list.2 != 0  %}
-        <div class="scrollmenu">
-            <table style="margin-top: 1em;">
-                <tbody>
-                    <tr>
-                    {% for item in product_list.2 %}
-                        <td><img style="max-height: 52px; padding-right: 1em;" src="{% static 'images/' %}{{ item.product_id.photo_path }}" alt="Wine Photo">
-                        </td>
-                        <td style="padding-right: 1em;">{{ item.product_id.name }}<br>Your rate is:
-                        </td>
-                    {% endfor %}
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-        {% endif %}
         <div class="grid-container">
             <div class="row">
                 {% for item in product_list.1 %}
@@ -76,15 +61,6 @@
                                 <p>Category: <b>{{ item.product_id.category_id }} Wine</b></p>
                                 <p>Appellation: <b>{{ item.product_id.appellation_id }}</b></p>
                                 <p>Description:<br>{{ item.product_id.description }}</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" align="center" class="rate-bar">
-                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, 1)" style="background-image: url({% static 'images/star.svg' %});"></button>
-                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, 2)" style="background-image: url({% static 'images/star.svg' %});"></button>
-                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, 3)" style="background-image: url({% static 'images/star.svg' %});"></button>
-                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, 4)" style="background-image: url({% static 'images/star.svg' %});"></button>
-                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, 5)" style="background-image: url({% static 'images/star.svg' %});"></button>
                             </td>
                         </tr>
                     </table>
@@ -123,16 +99,6 @@
             }
             function w3_close() {
                 document.getElementById("mySidebar").style.display = "none";
-            }
-            function set_rating(product, rate) {
-               var elem = document.getElementsByClassName(product);
-                for (i = 0; i < rate; i++) {
-                   elem[i].style.backgroundImage = "url({% static 'images/star-checked.svg' %})";
-                }
-                for (i = rate; i < 5; i++) {
-                   elem[i].style.backgroundImage = "url({% static 'images/star.svg' %})";
-                }
-                location.href="?rated=" + product;
             }
         </script>
     </body>

@@ -22,6 +22,7 @@
             <a href="/" class="hrs-bar-item hrs-bar-button hrs-large">Home</a>
             <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">My profile</a>
             <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">Log out</a>
+            <a href="?clear-recommend=1" class="hrs-bar-item hrs-bar-button hrs-large">Recommend me</a>
             <a href="?delete=1" class="hrs-bar-item hrs-bar-button hrs-large">Clear session</a>
         </div>
         <!-- Page Header -->
@@ -41,13 +42,13 @@
         {% else %}
         {% if product_list.2 != 0  %}
         <div class="scrollmenu">
-            <table style="margin-top: 1em;">
+            <table style="margin-top: 1em; margin-bottom: 1em;">
                 <tbody>
                     <tr>
                     {% for item in product_list.2 %}
                         <td><img style="max-height: 52px; padding-right: 1em;" src="{% static 'images/' %}{{ item.photo_path }}" alt="Wine Photo">
                         </td>
-                        <td style="padding-right: 1em;">{{ item.name }}<br>Your rate is:
+                        <td style="padding-right: 2em;">{{ item.name }}<br>Your rate is:
                         </td>
                     {% endfor %}
                     </tr>
