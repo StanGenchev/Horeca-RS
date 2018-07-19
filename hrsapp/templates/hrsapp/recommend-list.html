@@ -1,5 +1,6 @@
 {% load staticfiles %}
 {% load range %}
+{% load toint %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -41,26 +42,20 @@
         </div>
         {% else %}
         {% if product_list.2 != 0  %}
-        <div class="scrollmenu">
-            <table style="margin-top: 1em; margin-bottom: 1em;">
-                <tbody>
-                    <tr>
-                    {% for item in product_list.2 %}
-                        <td><img style="height: 54px; padding-right: 1em;" src="{% static 'images/' %}{{ item.photo_path }}" alt="Wine Photo">
-                        </td>
-                        <td style="padding-right: 2em;">{{ item[0].name }}<br>{{ item[0].vendor_id }}<br>
-                            <div class="rate-bar">
-                                <button class="{{ item.id }} rate-button-small" type="button" onclick="" style="background-image: url({% static 'images/star.svg' %});"></button>
-                                <button class="{{ item.id }} rate-button-small" type="button" onclick="" style="background-image: url({% static 'images/star.svg' %});"></button>
-                                <button class="{{ item.id }} rate-button-small" type="button" onclick="" style="background-image: url({% static 'images/star.svg' %});"></button>
-                                <button class="{{ item.id }} rate-button-small" type="button" onclick="" style="background-image: url({% static 'images/star.svg' %});"></button>
-                                <button class="{{ item.id }} rate-button-small" type="button" onclick="" style="background-image: url({% static 'images/star.svg' %});"></button>
-                            </div>
-                        </td>
-                    {% endfor %}
-                    </tr>
-                </tbody>
-            </table>
+        <div class="scrollratebar">
+            {% for item in product_list.2 %}
+            <div class="main-rate-item">
+                <img src="{% static 'images/' %}{{ item.3 }}" alt="Wine Photo">
+                <div class="rate-item-body">
+                    <p >{{ item.1 }}<br>{{ item.2 }}</p>
+                    <div class="rate-bar">
+                        {% for star in item.4|toint|range %}
+                        <button class="rate-button-small" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
         </div>
         {% endif %}
         <div class="grid-container">
@@ -88,11 +83,11 @@
                         </tr>
                         <tr>
                             <td colspan="2" align="center" class="rate-bar">
-                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, 1)" style="background-image: url({% static 'images/star.svg' %});"></button>
-                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, 2)" style="background-image: url({% static 'images/star.svg' %});"></button>
-                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, 3)" style="background-image: url({% static 'images/star.svg' %});"></button>
-                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, 4)" style="background-image: url({% static 'images/star.svg' %});"></button>
-                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, 5)" style="background-image: url({% static 'images/star.svg' %});"></button>
+                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', 1)" style="background-image: url({% static 'images/star.svg' %});"></button>
+                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', 2)" style="background-image: url({% static 'images/star.svg' %});"></button>
+                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', 3)" style="background-image: url({% static 'images/star.svg' %});"></button>
+                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', 4)" style="background-image: url({% static 'images/star.svg' %});"></button>
+                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', 5)" style="background-image: url({% static 'images/star.svg' %});"></button>
                             </td>
                         </tr>
                     </table>
@@ -132,15 +127,15 @@
             function w3_close() {
                 document.getElementById("mySidebar").style.display = "none";
             }
-            function set_rating(product, rate) {
-               var elem = document.getElementsByClassName(product);
+            function set_rating(id, name, vendor, photo, rate) {
+                var elem = document.getElementsByClassName(id);
                 for (i = 0; i < rate; i++) {
                    elem[i].style.backgroundImage = "url({% static 'images/star-checked.svg' %})";
                 }
                 for (i = rate; i < 5; i++) {
                    elem[i].style.backgroundImage = "url({% static 'images/star.svg' %})";
                 }
-                location.href="?rated=" + product;
+                location.href="?rated=" + id + "<hrs>" + name + "<hrs>" + vendor + "<hrs>" + photo + "<hrs>" + rate;
             }
         </script>
     </body>

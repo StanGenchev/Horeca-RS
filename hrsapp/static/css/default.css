@@ -114,23 +114,62 @@ html{
      margin-right: auto;
      width: 50%;
 }
- .scrollmenu {
-    display: table;
-    margin: 0 auto;
-    width: 80%;
-    background-color: inherit;
-    overflow: auto;
-    white-space: nowrap;
-    border-bottom: 1px solid #dcdcdb;
+ .scrollratebar {
+     background-color: inherit;
+     overflow: auto;
+     white-space: nowrap;
+     border-bottom: 1px solid #dcdcdb;
+     margin-left: 10%;
+     margin-right: 10%;
+     padding-top: 1em;
+     padding-bottom: 1em;
+     padding-left: 2px;
 }
 
- .scrollmenu a {
-    display: inline-block;
-    color: inherit;
-    text-align: center;
-    padding: 14px;
-    text-decoration: none;
+ .scrollratebar::-webkit-scrollbar {
+    height: 5px;
 }
+
+/* Track */
+ .scrollratebar::-webkit-scrollbar-track {
+    background: transparent;
+}
+ 
+/* Handle */
+ .scrollratebar::-webkit-scrollbar-thumb {
+    background: #cccccc; 
+}
+
+/* Handle on hover */
+ .scrollratebar::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
+ .main-rate-item {
+    display: inline-block;
+    white-space: nowrap;
+    margin-right: 2em;
+}
+
+ .main-rate-item img {
+    float: left;
+    height: 56px;
+}
+
+ .rate-item-body {
+    float: right;
+    margin-left: 1em;
+}
+
+ .rate-item-body p {
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+ .rate-bar {
+    margin-bottom: 0px;
+    margin-top: 0px;
+ }
 
  .menu-container {
      display: table;
@@ -350,11 +389,11 @@ html{
      text-align: left;
      width: 100%;
      cursor: pointer;
-     background-color: #f95463;
+     background-color: #f0505d;
      color: white;
 }
  .hrs-bar-close:hover {
-     background-color: #df505d;
+     background-color: #f95463;
 }
  .hrs-btn:hover {
      box-shadow: 0 0 4px 2px rgba(0,0,0,0.2);
@@ -439,7 +478,7 @@ html{
 }
  .hrs-teal,.hrs-hover-teal:hover {
      color:#fff!important;
-     background-color:#f95463!important;
+     background-color:#f0505d!important;
 }
  .hrs-teal-shadow {
      box-shadow:0 0 6px 3px rgba(0,0,0,0.3);
@@ -455,6 +494,10 @@ html{
     }
      .grid-container {
          width: 90%;
+    }
+    .scrollratebar {
+        margin-left: 5%;
+        margin-right: 5%;
     }
 }
  @media screen and (max-width: 920px) {
@@ -473,6 +516,11 @@ html{
     }
      .menu-container {
          width: 100%;
+    }
+    .scrollratebar {
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 1em;
     }
      .dynamic-size {
          font-size:36px!important 
@@ -499,11 +547,13 @@ html{
      .menu-container {
          width: 100%;
     }
+    .scrollratebar {
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 1em;
+    }
      .dynamic-size {
          font-size:36px!important 
-    }
-     h1,h2,h3,h4,h5,h6 {
-         margin: 8px;
     }
 }
 

@@ -96,31 +96,17 @@ class RecommendView(generic.ListView):
                 country = request.session['country']
                 prods_filtered = []
                 current_rates = []
-                all_rated = []
                 try:
                     current_rates = request.session['rated']
+                    print(current_rates)
                     for prod in prods:
-                        in_rates = 0
-                        for rate in current_rates:
-                            if str(prod.id) == str(rate[0]):
-                                in_rates = rate[1]
-                                break  
-                        if in_rates > 0:
-                            all_rated.append([prod, in_rates])
                         if int(prod.category_id.id) == int(category):
                             if int(prod.vendor_id.id) == int(vendor):
                                 prods_filtered.append(prod)
                     paginator = Paginator(prods_filtered, 42)
-                    contents = (Categories.objects.all(), paginator.page(int(page)), all_rated)
+                    contents = (Categories.objects.all(), paginator.page(int(page)), current_rates)
                 except:
                     for prod in prods:
-                        in_rates = 0
-                        for rate in current_rates:
-                            if str(prod.id) == str(rate[0]):
-                                in_rates = rate[1]
-                                break  
-                        if in_rates == 0:
-                            all_rated.append([prod, in_rates])
                         if int(prod.category_id.id) == int(category):
                             if int(prod.vendor_id.id) == int(vendor):
                                 prods_filtered.append(prod)
@@ -130,40 +116,31 @@ class RecommendView(generic.ListView):
             else:
                 try:
                     current_rates = []
-                    all_rated = []
                     prods_filtered = []
                     vendor = request.session['vendor']
                     category = request.session['category']
                     country = request.session['country']
-                    current_rated_item = request.GET.get('rated')
                     try:
                         current_rates = request.session['rated']
+                        print(current_rates)
                     except:
-                        print('No rates')
-                    if current_rated_item is not None:
-                        current_rated_item = str(current_rated_item).split('r')
+                        pass
+                    if rated is not None:
+                        rated = str(rated).split('<hrs>')
                         in_rates = 0
                         for rate in current_rates:
-                            if str(current_rated_item[0]) == str(rate[0]):
+                            if str(rated[0]) == str(rate[0]):
                                 in_rates = 1
-                                break  
+                                break
                         if in_rates == 0:
-                            current_rates.append(current_rated_item)
+                            current_rates.append(rated)
                             request.session['rated'] = current_rates
-                            print(current_rated_item)
                     for prod in prods:
-                        in_rates = 0
-                        for rate in current_rates:
-                            if str(prod.id) == str(rate[0]):
-                                in_rates = rate[1]
-                                break  
-                        if in_rates == 0:
-                            all_rated.append([prod, in_rates])
                         if int(prod.category_id.id) == int(category):
                             if int(prod.vendor_id.id) == int(vendor):
                                 prods_filtered.append(prod)
                     paginator = Paginator(prods_filtered, 42)
-                    contents = (Categories.objects.all(), paginator.page(int(page)), all_rated)
+                    contents = (Categories.objects.all(), paginator.page(int(page)), current_rates)
                     return render(request, 'hrsapp/recommend-list.html', {'product_list': contents})
                 except:
                     menu_objects = (1, 0, 0, 0, Categories.objects.all())
