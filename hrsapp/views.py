@@ -98,7 +98,6 @@ class RecommendView(generic.ListView):
                 current_rates = []
                 try:
                     current_rates = request.session['rated']
-                    print(current_rates)
                     for prod in prods:
                         if int(prod.category_id.id) == int(category):
                             if int(prod.vendor_id.id) == int(vendor):
@@ -122,19 +121,26 @@ class RecommendView(generic.ListView):
                     country = request.session['country']
                     try:
                         current_rates = request.session['rated']
-                        print(current_rates)
                     except:
                         pass
                     if rated is not None:
                         rated = str(rated).split('<hrs>')
                         in_rates = 0
-                        for rate in current_rates:
-                            if str(rated[0]) == str(rate[0]):
-                                in_rates = 1
-                                break
+                        change_rate = 0
+                        for i, rate in enumerate(current_rates):
+                            if int(rated[0]) == int(rate[0]):
+                                if int(rated[4]) == int(rate[4]):
+                                    in_rates = 1
+                                    break
+                                else:
+                                    current_rates[i][4] = rated[4]
+                                    request.session['rated'] = current_rates
+                                    change_rate = 1
+                                    break
                         if in_rates == 0:
-                            current_rates.append(rated)
-                            request.session['rated'] = current_rates
+                            if change_rate == 0:
+                                current_rates.insert(0, rated)
+                                request.session['rated'] = current_rates
                     for prod in prods:
                         if int(prod.category_id.id) == int(category):
                             if int(prod.vendor_id.id) == int(vendor):

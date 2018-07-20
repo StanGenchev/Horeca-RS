@@ -27,37 +27,44 @@
             <a href="?delete=1" class="hrs-bar-item hrs-bar-button hrs-large">Clear session</a>
         </div>
         <!-- Page Header -->
-        <div class="hrs-teal hrs-teal-shadow dynamic-size stick">
-            <button class="hrs-btn hrs-teal" style="left: 0px; background-image: url({% static 'images/menu.svg' %});" onclick="hrs_open()"></button>
-            <div class="hrs-container">
-                <h1>HoReCa</h1>
-            </div>
-            <button class="hrs-btn hrs-teal" style="right: 0px; background-image: url({% static 'images/user.svg' %});" onclick=""></button>
+        <div class="hrs-teal hrs-teal-shadow stick">
+            HORECA
+            <button class="hrs-btn" style="float: left; background-image: url({% static 'images/menu.svg' %});" onclick="hrs_open()"></button>
+            <button class="hrs-btn" style="float: right; background-image: url({% static 'images/user.svg' %});" onclick=""></button>
         </div>
         <!-- Page Content -->
         {% if product_list.1|length == 0  %}
         <div class="no-products">
             <img src="{% static 'images/hrs-logo.svg' %}" alt="HoReCa">
-            <p class="item-name hrs-large">There are no available products!<p>
+            <p class="item-name hrs-large">There are no available products!
+            <p>
         </div>
         {% else %}
-        {% if product_list.2 != 0  %}
-        <div class="scrollratebar">
-            {% for item in product_list.2 %}
-            <div class="main-rate-item">
-                <img src="{% static 'images/' %}{{ item.3 }}" alt="Wine Photo">
-                <div class="rate-item-body">
-                    <p >{{ item.1 }}<br>{{ item.2 }}</p>
-                    <div class="rate-bar">
-                        {% for star in item.4|toint|range %}
-                        <button class="rate-button-small" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
-                        {% endfor %}
+        <div class="navbar">
+            <div class="nav-btn" style="border-right: 1px solid #dcdcdb; padding-right: 4px;">
+                <img class="nav-btn-img" src="{% static 'images/nav-back.svg' %}" alt="Back" onclick="location.href='/recommend-menu?country={{ product_list.1.1.vendor_id.region_id.country_id.id }}'">
+            </div>
+            <div class="nav scrollratebar">
+                {% if product_list.2 != 0  %}
+                {% for item in product_list.2 %}
+                <div class="main-rate-item">
+                    <img src="{% static 'images/' %}{{ item.3 }}" alt="Wine Photo">
+                    <div class="rate-item-body">
+                        <p>{{ item.1 }}<br>{{ item.2 }}</p>
+                        <div class="rate-bar">
+                            {% for star in item.4|toint|range %}
+                            <img class="rate-button-small" src="{% static 'images/star-checked.svg' %}">
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
+                {% endfor %}
+                {% endif %}
             </div>
-            {% endfor %}
+            <div class="nav-btn" style="border-left: 1px solid #dcdcdb; padding-left: 4px;">
+                <img class="nav-btn-img" src="{% static 'images/recommended.svg' %}" alt="Recommend me" onclick="window.alert('Not implemented yet!')">
+            </div>
         </div>
-        {% endif %}
         <div class="grid-container">
             <div class="row">
                 {% for item in product_list.1 %}
