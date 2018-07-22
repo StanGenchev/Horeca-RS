@@ -1,0 +1,176 @@
+{% load staticfiles %}
+{% load range %}
+{% load toint %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>HoReCa Recommender System</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#f95463">
+        <link rel="stylesheet" href="{% static 'css/default.css' %}">
+        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicon/apple-touch-icon.png' %}">
+        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon/favicon-32x32.png' %}">
+        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon/favicon-16x16.png' %}">
+        <link rel="manifest" href="{% static 'images/favicon/site.webmanifest' %}">
+        <link rel="mask-icon" href="{% static 'images/favicon/safari-pinned-tab.svg' %}" color="#5bbad5">
+        <meta name="msapplication-TileColor" content="#da532c">
+    </head>
+    <body>
+        <!-- Sidebar -->
+        <div class="hrs-sidebar hrs-bar-block dynamic-size" id="mySidebar">
+            <button onclick="w3_close()" class="hrs-bar-close">Close</button>
+            <a href="/" class="hrs-bar-item hrs-bar-button hrs-large">Home</a>
+            <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">My profile</a>
+            <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">Log out</a>
+            <a href="?delete=1" class="hrs-bar-item hrs-bar-button hrs-large">Clear session</a>
+        </div>
+        <!-- Page Header -->
+        <div class="hrs-teal hrs-teal-shadow stick">
+            <a href="/">HORECA</a>
+            <button class="hrs-btn" style="float: left; background-image: url({% static 'images/menu.svg' %});" onclick="hrs_open()"></button>
+            <button class="hrs-btn" style="float: right; background-image: url({% static 'images/user.svg' %});" onclick=""></button>
+        </div>
+        <div class="navbar">
+            <div class="nav-btn" style="border-right: 1px solid #dcdcdb; padding-right: 4px;">
+                <img class="nav-btn-img" src="{% static 'images/nav-back.svg' %}" alt="Back" onclick="window.history.back()">
+            </div>
+            <div class="nav scrollratebar">
+                {% if contents.2|length != 0  %}
+                {% for item in contents.2 %}
+                <div class="main-rate-item">
+                    <img src="{% static 'images/' %}{{ item.3 }}" alt="Wine Photo" onclick="location.href='/detail?wine={{ item.0 }}'">
+                    <div class="rate-item-body" onclick="location.href='/detail?wine={{ item.0 }}'">
+                        <p>{{ item.1 }}<br>{{ item.2 }}</p>
+                        <div class="rate-bar">
+                            {% for star in '*****' %}
+                            {% if item.4|toint >= forloop.counter %}
+                            <img class="rate-button-small" src="{% static 'images/star-checked.svg' %}" alt="*">
+                            {% else %}
+                            <img class="rate-button-small" src="{% static 'images/star.svg' %}" alt="'">
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="rm-btn" style="background-image: url({% static 'images/remove.svg' %});" onclick="remove_rated({{ item.0 }})"></div>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="nav-btn" style="border-left: 1px solid #dcdcdb; padding-left: 4px;">
+                <img class="nav-btn-img" src="{% static 'images/recommended.svg' %}" alt="Recommend me" onclick="window.alert('Not implemented yet!')">
+            </div>
+        </div>
+        {% if contents.0 == 0  %}
+        <div class="no-products">
+            <img src="{% static 'images/hrs-logo.svg' %}" alt="HoReCa">
+            <p class="item-name hrs-large">There is no such product!</p>
+        </div>
+        {% else %}
+        <div class="grid-container detail" align="center">
+            <table class="item detail">
+                <tr>
+                    <td class="item-name hrs-xlarge" colspan="2">
+                        {{ contents.0.name }}
+                    </td>
+                </tr>
+                <tr>
+                    <td valign="bottom">
+                        <img class="item-img" src="{% static 'images/' %}{{ contents.0.photo_path }}" alt="Wine Photo">
+                    </td>
+                    <td class="item-desc hrs-large" valign="top">
+                        <p>Producer: <b>{{ contents.0.vendor_id }}</b></p>
+                        <p>Country: <b>{{ contents.0.vendor_id.region_id.country_id }}</b></p>
+                        <p>Region: <b>{{ contents.0.vendor_id.region_id }}</b></p>
+                        <p>Category: <b>{{ contents.0.category_id }} Wine</b></p>
+                        <p>Appellation: <b>{{ contents.0.appellation_id }}</b></p>
+                        <p>Description:<br>{{ contents.0.description }}</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2" align="center" class="rate-bar">
+                    {% for star in '*****' %}
+                        {% if contents.1|toint > forloop.counter %}
+                        <button class="{{ contents.0.id }} rate-button" type="button" onclick="set_rating('products', {{ contents.0.id }}, '{{ contents.0.name }}', '{{ contents.0.vendor_id }}', '{{ contents.0.photo_path }}', {{ forloop.counter }})" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
+                        {% elif contents.1|toint == forloop.counter %}
+                        <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
+                        {% else %}
+                        <button class="{{ contents.0.id }} rate-button" type="button" onclick="set_rating('products', {{ contents.0.id }}, '{{ contents.0.name }}', '{{ contents.0.vendor_id }}', '{{ contents.0.photo_path }}', {{ forloop.counter }})" style="background-image: url({% static 'images/star.svg' %});"></button>
+                        {% endif %}
+                    {% endfor %}
+                    </td>
+                </tr>
+            </table>
+            <div class="item-rates">
+                <div class="user-rates">
+                    <h1 class="hrs-xlarge">User rates</h1>
+                    <table>
+                        <tr>
+                            <th rowspan="3" style="vertical-align: top; border-right: none;">
+                                <img class="user-img" src="{% static 'images/user.svg' %}" alt="User Photo">
+                            </th>
+                            <th>Георги Христов</th>
+                        </tr>
+                        <tr>
+                            <td>Виното демонстрира брилянтен, златист цвят със сламено-жълти нюанси. Наситен плодов аромат. Хармонично, структурирано тяло с балансиран, жив вкус.</td>
+                        </tr>
+                        <tr>
+                            <td class="rate-bar">
+                                <img class="rate-button" src="{% static 'images/star-checked.svg' %}">
+                                <img class="rate-button" src="{% static 'images/star-checked.svg' %}">
+                                <img class="rate-button" src="{% static 'images/star-checked.svg' %}">
+                                <img class="rate-button" src="{% static 'images/star.svg' %}">
+                                <img class="rate-button" src="{% static 'images/star.svg' %}">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="expert-rates">
+                    <h1 class="hrs-xlarge">Expert rates</h1>
+                    <table>
+                        <tr>
+                            <th rowspan="3" style="vertical-align: top; border-right: none;">
+                                <img class="user-img" src="{% static 'images/user.svg' %}" alt="User Photo">
+                            </th>
+                            <th>Красимир Дачев</th>
+                        </tr>
+                        <tr>
+                            <td>Красив златист цвят с интензивна игра и фини мехурчета. Атрактивен нос с акценти на свежи плодове и автолизатни тонове, хармоничен, и комплексен вкус с приятни киселини. Стегнато тяло, дълъг, освежаващ и богат на аромати финал.</td>
+                        </tr>
+                        <tr>
+                            <td class="rate-bar">
+                                <img class="rate-button" src="{% static 'images/star-checked.svg' %}">
+                                <img class="rate-button" src="{% static 'images/star-checked.svg' %}">
+                                <img class="rate-button" src="{% static 'images/star-checked.svg' %}">
+                                <img class="rate-button" src="{% static 'images/star-checked.svg' %}">
+                                <img class="rate-button" src="{% static 'images/star.svg' %}">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        <script>
+            function hrs_open() {
+                document.getElementById("mySidebar").style.display = "block";
+            }
+            function w3_close() {
+                document.getElementById("mySidebar").style.display = "none";
+            }
+            function remove_rated(rid) {
+                current_url = window.location.href.replace(window.location.origin, "")
+                location.href='/requests?rmrate=' + rid + '&url=' + current_url;
+            }
+            function set_rating(current_model, id, name, vendor, photo, rate) {
+                var elem = document.getElementsByClassName(id);
+                for (i = 0; i < rate; i++) {
+                   elem[i].style.backgroundImage = "url({% static 'images/star-checked.svg' %})";
+                }
+                for (i = rate; i < 5; i++) {
+                   elem[i].style.backgroundImage = "url({% static 'images/star.svg' %})";
+                }
+                location.href="?rated=" + id + "<hrs>" + name + "<hrs>" + vendor + "<hrs>" + photo + "<hrs>" + rate;
+            }
+        </script>
+    </body>
+</html>

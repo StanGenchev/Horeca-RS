@@ -1,5 +1,6 @@
 {% load staticfiles %}
 {% load range %}
+{% load toint %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,28 +16,64 @@
         <meta name="msapplication-TileColor" content="#da532c">
     </head>
     <body>
-        {% if menu_objects %}
+        {% if contents %}
         <!-- Sidebar -->
         <div class="hrs-sidebar hrs-bar-block dynamic-size" id="mySidebar">
             <button onclick="w3_close()" class="hrs-bar-close">Close</button>
             <a href="/" class="hrs-bar-item hrs-bar-button hrs-large">Home</a>
             <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">My profile</a>
             <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">Log out</a>
-            <a href="?clear-recommend=1" class="hrs-bar-item hrs-bar-button hrs-large">Recommend me</a>
             <a href="?delete=1" class="hrs-bar-item hrs-bar-button hrs-large">Clear session</a>
         </div>
         <!-- Page Header -->
         <div class="hrs-teal hrs-teal-shadow stick">
-            HORECA
+            <a href="/">HORECA</a>
             <button class="hrs-btn" style="float: left; background-image: url({% static 'images/menu.svg' %});" onclick="hrs_open()"></button>
             <button class="hrs-btn" style="float: right; background-image: url({% static 'images/user.svg' %});" onclick=""></button>
+        </div>
+        <!-- Page Navigation -->
+        <div class="navbar">
+            <div class="nav-btn" style="border-right: 1px solid #dcdcdb; padding-right: 4px;">
+                {% if contents.0 == 1 and contents.1 == 0 %}
+                <img class="nav-btn-img" src="{% static 'images/nav-back.svg' %}" alt="Back" onclick="location.href='/{{ contents.4 }}'">
+                {% elif contents.0 == 0 and contents.1 == 1 %}
+                <img class="nav-btn-img" src="{% static 'images/nav-back.svg' %}" alt="Back" onclick="location.href='/{{ contents.4 }}'">
+                {% else %}
+                <img class="nav-btn-img" src="{% static 'images/nav-back.svg' %}" alt="Back" onclick="location.href='/recommend-menu?category={{ contents.4 }}'">
+                {% endif %}
+            </div>
+            <div class="nav scrollratebar">
+                {% if contents.3|length != 0  %}
+                {% for item in contents.3 %}
+                <div class="main-rate-item">
+                    <img src="{% static 'images/' %}{{ item.3 }}" alt="Wine Photo" onclick="location.href='/detail?wine={{ item.0 }}'">
+                    <div class="rate-item-body" onclick="location.href='/detail?wine={{ item.0 }}'">
+                        <p>{{ item.1 }}<br>{{ item.2 }}</p>
+                        <div class="rate-bar">
+                            {% for star in '*****' %}
+                            {% if item.4|toint >= forloop.counter %}
+                            <img class="rate-button-small" src="{% static 'images/star-checked.svg' %}" alt="*">
+                            {% else %}
+                            <img class="rate-button-small" src="{% static 'images/star.svg' %}" alt="'">
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="rm-btn" style="background-image: url({% static 'images/remove.svg' %});" onclick="remove_rated({{ item.0 }})"></div>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="nav-btn" style="border-left: 1px solid #dcdcdb; padding-left: 4px;">
+                <img class="nav-btn-img" src="{% static 'images/recommended.svg' %}" alt="Recommend me" onclick="window.alert('Not implemented yet!')">
+            </div>
         </div>
         <!-- Page Content -->
         <div class="menu-container" id="categories-main-menu">
             <div class="row">
-                {% if menu_objects.0 == 1 %}
-                {% if menu_objects.4|length > 3 %}
-                {% for category in menu_objects.4 %}
+                {% if contents.0 == 1 %}
+                {% if contents.2|length > 3 %}
+                {% for category in contents.2 %}
                 <div class="menu-column menu-column-three-and-up">
                     <table class="item" onclick="location.href='/recommend-menu?category={{ category.id }}'">
                         <tr>
@@ -52,7 +89,7 @@
                 </div>
                 {% endfor %}
                 {% else %}
-                {% for category in menu_objects.4 %}
+                {% for category in contents.2 %}
                 <div class="menu-column">
                     <table class="item" onclick="location.href='/recommend-menu?category={{ category.id }}'">
                         <tr>
@@ -68,9 +105,9 @@
                 </div>
                 {% endfor %}
                 {% endif %}
-                {% elif menu_objects.1 == 1 %}
-                {% if menu_objects.4|length > 3 %}
-                {% for country in menu_objects.4 %}
+                {% elif contents.1 == 1 %}
+                {% if contents.2|length > 3 %}
+                {% for country in contents.2 %}
                 <div class="menu-column menu-column-three-and-up">
                     <table class="item" onclick="location.href='/recommend-menu?country={{ country.id }}'">
                         <tr>
@@ -86,7 +123,7 @@
                 </div>
                 {% endfor %}
                 {% else %}
-                {% for country in menu_objects.4 %}
+                {% for country in contents.2 %}
                 <div class="menu-column">
                     <table class="item" onclick="location.href='/recommend-menu?country={{ country.id }}'">
                         <tr>
@@ -103,8 +140,8 @@
                 {% endfor %}
                 {% endif %}
                 {% else %}
-                {% if menu_objects.4|length > 3 %}
-                {% for vendor in menu_objects.4 %}
+                {% if contents.2|length > 3 %}
+                {% for vendor in contents.2 %}
                 <div class="menu-column menu-column-three-and-up">
                     <table class="item" onclick="location.href='/recommend-menu?vendor={{ vendor.id }}'">
                         <tr>
@@ -120,7 +157,7 @@
                 </div>
                 {% endfor %}
                 {% else %}
-                {% for vendor in menu_objects.4 %}
+                {% for vendor in contents.2 %}
                 <div class="menu-column">
                     <table class="item" onclick="location.href='/recommend-menu?vendor={{ vendor.id }}'">
                         <tr>
@@ -154,6 +191,10 @@
             }
             function w3_close() {
                 document.getElementById("mySidebar").style.display = "none";
+            }
+            function remove_rated(rid) {
+                current_url = window.location.href.replace(window.location.origin, "")
+                location.href='/requests?rmrate=' + rid + '&url=' + current_url;
             }
         </script>
     </body>

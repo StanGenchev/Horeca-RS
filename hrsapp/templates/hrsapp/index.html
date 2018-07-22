@@ -20,12 +20,11 @@
             <a href="/" class="hrs-bar-item hrs-bar-button hrs-large">Home</a>
             <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">My profile</a>
             <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">Log out</a>
-            <a href="?clear-recommend=1" class="hrs-bar-item hrs-bar-button hrs-large">Recommend me</a>
             <a href="?delete=1" class="hrs-bar-item hrs-bar-button hrs-large">Clear session</a>
         </div>
         <!-- Page Header -->
         <div class="hrs-teal hrs-teal-shadow stick">
-            HORECA
+            <a href="/">HORECA</a>
             <button class="hrs-btn" style="float: left; background-image: url({% static 'images/menu.svg' %});" onclick="hrs_open()"></button>
             <button class="hrs-btn" style="float: right; background-image: url({% static 'images/user.svg' %});" onclick=""></button>
         </div>
@@ -33,20 +32,20 @@
         <div class="menu-container" id="index-menu">
             <div class="row">
                 <div class="menu-column">
-                    <table class="item" onclick="location.href='/wine-list'">
+                    <table class="item" onclick="location.href='/grid'">
                         <tr>
                             <td align="center">
                                 <img src="{% static 'images/grid.svg' %}" alt="WINE LIST">
                             </td>
                         </tr>
                         <tr>
-                            <td class="item-name hrs-xlarge">Wine List
+                            <td class="item-name hrs-xlarge">Wines in stock
                             </td>
                         </tr>
                     </table>
                 </div>
                 <div class="menu-column">
-                    <table class="item" onclick="location.href='/recommend-menu?clear-recommend=1'">
+                    <table class="item" onclick="location.href='/recommend-menu'">
                         <tr>
                             <td align="center">
                                 <img src="{% static 'images/recommended.svg' %}" alt="RECOMMEND ME WINE">
@@ -61,7 +60,6 @@
             </div>
         </div>
         <script>
-            var end_request = '/wine-list';
             function hrs_open() {
                 document.getElementById("mySidebar").style.display = "block";
             }

@@ -11,7 +11,7 @@
    version="1.1"
    width="24"
    id="svg6"
-   sodipodi:docname="star2.svg"
+   sodipodi:docname="star.svg"
    inkscape:version="0.92.3 (2405546, 2018-03-11)">
   <metadata
      id="metadata12">
@@ -41,23 +41,21 @@
      id="namedview8"
      showgrid="false"
      inkscape:zoom="9.8333333"
-     inkscape:cx="12.20339"
-     inkscape:cy="12"
+     inkscape:cx="-8.6440677"
+     inkscape:cy="11.59322"
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
      inkscape:current-layer="svg6" />
   <g
-     transform="translate(0 -1028.4)"
+     transform="matrix(1.0958304,0,0,1.0958304,-1.1519956,-1127.4283)"
      id="g4"
      style="fill:#ffffff">
     <path
-       d="m9.5999 1.4564 1.5501 4.7699 5.015 0.0002-4.057 2.9482 1.55 4.7703-4.0581-2.948-4.0577 2.948 1.5497-4.7703-4.0575-2.9482 5.0154-0.0002z"
-       fill="#f1c40f"
-       stroke="#f39c12"
-       stroke-width=".69755"
-       transform="matrix(1.4336 0 0 1.4336 -1.7602 1028.9)"
+       d="m 9.5999,1.4564 1.5501,4.7699 5.015,2e-4 -4.057,2.9482 1.55,4.7703 L 9.5999,10.997 5.5422,13.945 7.0919,9.1747 3.0344,6.2265 8.0498,6.2263 Z"
+       transform="matrix(1.4336,0,0,1.4336,-1.7602,1028.9)"
        id="path2"
-       style="fill:#ffffff" />
+       style="fill:#ffffff;stroke:#f39c12;stroke-width:0.69755"
+       inkscape:connector-curvature="0" />
   </g>
 </svg>

@@ -1,6 +1,7 @@
 {% load staticfiles %}
 {% load range %}
 {% load toint %}
+{% load getrate %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,47 +17,50 @@
         <meta name="msapplication-TileColor" content="#da532c">
     </head>
     <body>
-        {% if product_list %}
+        {% if contents %}
         <!-- Sidebar -->
         <div class="hrs-sidebar hrs-bar-block dynamic-size" id="mySidebar">
             <button onclick="w3_close()" class="hrs-bar-close">Close</button>
             <a href="/" class="hrs-bar-item hrs-bar-button hrs-large">Home</a>
             <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">My profile</a>
             <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">Log out</a>
-            <a href="?clear-recommend=1" class="hrs-bar-item hrs-bar-button hrs-large">Recommend me</a>
             <a href="?delete=1" class="hrs-bar-item hrs-bar-button hrs-large">Clear session</a>
         </div>
         <!-- Page Header -->
         <div class="hrs-teal hrs-teal-shadow stick">
-            HORECA
+            <a href="/">HORECA</a>
             <button class="hrs-btn" style="float: left; background-image: url({% static 'images/menu.svg' %});" onclick="hrs_open()"></button>
             <button class="hrs-btn" style="float: right; background-image: url({% static 'images/user.svg' %});" onclick=""></button>
         </div>
         <!-- Page Content -->
-        {% if product_list.1|length == 0  %}
+        {% if contents.0|length == 0  %}
         <div class="no-products">
             <img src="{% static 'images/hrs-logo.svg' %}" alt="HoReCa">
-            <p class="item-name hrs-large">There are no available products!
-            <p>
+            <p class="item-name hrs-large">There are no available products!</p>
         </div>
         {% else %}
         <div class="navbar">
             <div class="nav-btn" style="border-right: 1px solid #dcdcdb; padding-right: 4px;">
-                <img class="nav-btn-img" src="{% static 'images/nav-back.svg' %}" alt="Back" onclick="location.href='/recommend-menu?country={{ product_list.1.1.vendor_id.region_id.country_id.id }}'">
+                <img class="nav-btn-img" src="{% static 'images/nav-back.svg' %}" alt="Back" onclick="location.href='/recommend-menu?country={{ contents.2 }}'">
             </div>
             <div class="nav scrollratebar">
-                {% if product_list.2 != 0  %}
-                {% for item in product_list.2 %}
+                {% if contents.1|length != 0  %}
+                {% for item in contents.1 %}
                 <div class="main-rate-item">
-                    <img src="{% static 'images/' %}{{ item.3 }}" alt="Wine Photo">
-                    <div class="rate-item-body">
+                    <img src="{% static 'images/' %}{{ item.3 }}" alt="Wine Photo" onclick="location.href='/detail?wine={{ item.0 }}'">
+                    <div class="rate-item-body" onclick="location.href='/detail?wine={{ item.0 }}'">
                         <p>{{ item.1 }}<br>{{ item.2 }}</p>
                         <div class="rate-bar">
-                            {% for star in item.4|toint|range %}
-                            <img class="rate-button-small" src="{% static 'images/star-checked.svg' %}">
+                            {% for star in '*****' %}
+                            {% if item.4|toint >= forloop.counter %}
+                            <img class="rate-button-small" src="{% static 'images/star-checked.svg' %}" alt="*">
+                            {% else %}
+                            <img class="rate-button-small" src="{% static 'images/star.svg' %}" alt="'">
+                            {% endif %}
                             {% endfor %}
                         </div>
                     </div>
+                    <div class="rm-btn" style="background-image: url({% static 'images/remove.svg' %});" onclick="remove_rated({{ item.0 }})"></div>
                 </div>
                 {% endfor %}
                 {% endif %}
@@ -67,17 +71,17 @@
         </div>
         <div class="grid-container">
             <div class="row">
-                {% for item in product_list.1 %}
+                {% for item in contents.0 %}
                 <div class="column">
                     <table class="item">
-                        <tr>
+                        <tr onclick="location.href='/detail?wine={{ item.id }}'">
                             <td class="item-name hrs-large" colspan="2">
                                 {{ item.name }}
                             </td>
                         </tr>
-                        <tr>
+                        <tr onclick="location.href='/detail?wine={{ item.id }}'">
                             <td valign="bottom">
-                                <img src="{% static 'images/' %}{{ item.photo_path }}" alt="Wine Photo">
+                                <img class="item-img" src="{% static 'images/' %}{{ item.photo_path }}" alt="Wine Photo">
                             </td>
                             <td class="item-desc hrs-medium" valign="top">
                                 <p>Producer: <b>{{ item.vendor_id }}</b></p>
@@ -90,11 +94,25 @@
                         </tr>
                         <tr>
                             <td colspan="2" align="center" class="rate-bar">
-                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', 1)" style="background-image: url({% static 'images/star.svg' %});"></button>
+                                {% with r=item.id|getrate:contents.1 %}
+                                    {% if r == 0 %}
+                                        <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', 1)" style="background-image: url({% static 'images/star.svg' %});"></button>
                                 <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', 2)" style="background-image: url({% static 'images/star.svg' %});"></button>
                                 <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', 3)" style="background-image: url({% static 'images/star.svg' %});"></button>
                                 <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', 4)" style="background-image: url({% static 'images/star.svg' %});"></button>
                                 <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', 5)" style="background-image: url({% static 'images/star.svg' %});"></button>
+                                    {% else %}
+                                        {% for star in '*****' %}
+                                            {% if forloop.counter < r %}
+                                            <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', {{ forloop.counter }})" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
+                                            {% elif forloop.counter == r %}
+                                            <button class="{{ item.id }} rate-button" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
+                                            {% else %}
+                                            <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', {{ forloop.counter }})" style="background-image: url({% static 'images/star.svg' %});"></button>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endwith %}
                             </td>
                         </tr>
                     </table>
@@ -103,18 +121,18 @@
             </div>
         </div>
         <div class="pagination">
-            {% if product_list.1.has_previous %}
-            <a href="?page={{ product_list.1.previous_page_number }}">&laquo;</a>
+            {% if contents.0.has_previous %}
+            <a href="?page={{ contents.0.previous_page_number }}">&laquo;</a>
             {% endif %}
-            {% for value in product_list.1.paginator.num_pages|range %}
-            {% if product_list.1.number is forloop.counter %}
+            {% for value in contents.0.paginator.num_pages|range %}
+            {% if contents.0.number is forloop.counter %}
             <a class="active" href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
             {% else %}
             <a href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
             {% endif %}
             {% endfor %}
-            {% if product_list.1.has_next %}
-            <a href="?page={{ product_list.1.paginator.num_pages }}">&raquo;</a>
+            {% if contents.0.has_next %}
+            <a href="?page={{ contents.0.paginator.num_pages }}">&raquo;</a>
             {% endif %}
         </div>
         {% endif %}
@@ -133,6 +151,10 @@
             }
             function w3_close() {
                 document.getElementById("mySidebar").style.display = "none";
+            }
+            function remove_rated(rid) {
+                current_url = window.location.href.replace(window.location.origin, "")
+                location.href='/requests?rmrate=' + rid + '&url=' + current_url;
             }
             function set_rating(id, name, vendor, photo, rate) {
                 var elem = document.getElementsByClassName(id);

@@ -1,5 +1,6 @@
 {% load staticfiles %}
 {% load range %}
+{% load toint %}
 <!DOCTYPE html>
 <html>
     <head>
@@ -15,33 +16,62 @@
         <meta name="msapplication-TileColor" content="#da532c">
     </head>
     <body>
-        {% if product_list %}
+        {% if contents %}
         <!-- Sidebar -->
         <div class="hrs-sidebar hrs-bar-block dynamic-size" id="mySidebar">
             <button onclick="w3_close()" class="hrs-bar-close">Close</button>
             <a href="/" class="hrs-bar-item hrs-bar-button hrs-large">Home</a>
             <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">My profile</a>
             <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">Log out</a>
-            <a href="?clear-recommend=1" class="hrs-bar-item hrs-bar-button hrs-large">Recommend me</a>
             <a href="?delete=1" class="hrs-bar-item hrs-bar-button hrs-large">Clear session</a>
         </div>
         <!-- Page Header -->
         <div class="hrs-teal hrs-teal-shadow stick">
-            HORECA
+            <a href="/">HORECA</a>
             <button class="hrs-btn" style="float: left; background-image: url({% static 'images/menu.svg' %});" onclick="hrs_open()"></button>
             <button class="hrs-btn" style="float: right; background-image: url({% static 'images/user.svg' %});" onclick=""></button>
         </div>
         <!-- Page Content -->
-        {% if product_list.1|length == 0  %}
+        <div class="navbar">
+            <div class="nav-btn" style="border-right: 1px solid #dcdcdb; padding-right: 4px;">
+                <img class="nav-btn-img" src="{% static 'images/nav-back.svg' %}" alt="Back" onclick="location.href='/start'">
+            </div>
+            <div class="nav scrollratebar">
+                {% if contents.1|length != 0  %}
+                {% for item in contents.1 %}
+                <div class="main-rate-item">
+                    <img src="{% static 'images/' %}{{ item.3 }}" alt="Wine Photo" onclick="location.href='/detail?wine={{ item.0 }}'">
+                    <div class="rate-item-body" onclick="location.href='/detail?wine={{ item.0 }}'">
+                        <p>{{ item.1 }}<br>{{ item.2 }}</p>
+                        <div class="rate-bar">
+                            {% for star in '*****' %}
+                            {% if item.4|toint >= forloop.counter %}
+                            <img class="rate-button-small" src="{% static 'images/star-checked.svg' %}" alt="*">
+                            {% else %}
+                            <img class="rate-button-small" src="{% static 'images/star.svg' %}" alt="'">
+                            {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="rm-btn" style="background-image: url({% static 'images/remove.svg' %});" onclick="remove_rated({{ item.0 }})"></div>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+            <div class="nav-btn" style="border-left: 1px solid #dcdcdb; padding-left: 4px;">
+                <img class="nav-btn-img" src="{% static 'images/recommended.svg' %}" alt="Recommend me" onclick="window.alert('Not implemented yet!')">
+            </div>
+        </div>
+        {% if contents.0|length == 0  %}
         <div class="no-products">
             <img src="{% static 'images/hrs-logo.svg' %}" alt="HoReCa">
-            <p class="item-name hrs-large">There are no available products!<p>
+            <p class="item-name hrs-large">There are no available products!</p>
         </div>
         {% else %}
         <div class="grid-container">
             <div class="row">
-                {% for item in product_list.1 %}
-                <div class="column">
+                {% for item in contents.0 %}
+                <div class="column" onclick="location.href='/detail?wine={{ item.product_id.id }}'">
                     <table class="item">
                         <tr>
                             <td class="item-name hrs-large" colspan="2">
@@ -50,7 +80,7 @@
                         </tr>
                         <tr>
                             <td valign="bottom">
-                                <img src="{% static 'images/' %}{{ item.product_id.photo_path }}" alt="Wine Photo">
+                                <img class="item-img" src="{% static 'images/' %}{{ item.product_id.photo_path }}" alt="Wine Photo">
                             </td>
                             <td class="item-desc hrs-medium" valign="top">
                                 <p>Producer: <b>{{ item.product_id.vendor_id }}</b></p>
@@ -67,18 +97,18 @@
             </div>
         </div>
         <div class="pagination">
-            {% if product_list.1.has_previous %}
-            <a href="?page={{ product_list.1.previous_page_number }}">&laquo;</a>
+            {% if contents.0.has_previous %}
+            <a href="?page={{ contents.0.previous_page_number }}">&laquo;</a>
             {% endif %}
-            {% for value in product_list.1.paginator.num_pages|range %}
-            {% if product_list.1.number is forloop.counter %}
+            {% for value in contents.0.paginator.num_pages|range %}
+            {% if contents.0.number is forloop.counter %}
             <a class="active" href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
             {% else %}
             <a href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
             {% endif %}
             {% endfor %}
-            {% if product_list.1.has_next %}
-            <a href="?page={{ product_list.1.paginator.num_pages }}">&raquo;</a>
+            {% if contents.0.has_next %}
+            <a href="?page={{ contents.0.paginator.num_pages }}">&raquo;</a>
             {% endif %}
         </div>
         {% endif %}
@@ -97,6 +127,10 @@
             }
             function w3_close() {
                 document.getElementById("mySidebar").style.display = "none";
+            }
+            function remove_rated(rid) {
+                current_url = window.location.href.replace(window.location.origin, "")
+                location.href='/requests?rmrate=' + rid + '&url=' + current_url;
             }
         </script>
     </body>

@@ -171,6 +171,18 @@ a {
     width: 50%;
 }
 
+.rm-btn {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    margin-left: 6px;
+    margin-top: 2px;
+    vertical-align: top;
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
 .nav-btn {
     display: block;
 }
@@ -202,7 +214,6 @@ a {
     margin-left: 10%;
     margin-right: 10%;
     border-bottom: 1px solid #dcdcdb;
-    padding-top: 10px;
     padding-bottom: 5px;
 }
 
@@ -243,27 +254,32 @@ a {
 .main-rate-item {
     display: inline-block;
     white-space: nowrap;
-    margin-right: 32px;
+    margin-right: 12px;
 }
 
 .main-rate-item img {
     display: inline-block;
     height: 56px;
+    vertical-align: top;
+    cursor: pointer;
 }
 
 .rate-item-body {
     display: inline-block;
-    margin-left: 16px;
+    margin-left: 12px;
 }
 
 .rate-item-body p {
     margin-bottom: 0px;
     margin-top: 0px;
+    cursor: pointer;
 }
 
 .rate-bar {
     margin-bottom: 0px;
     margin-top: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
 }
 
 .menu-container {
@@ -289,6 +305,9 @@ a {
     max-width: 25%;
 }
 
+.menu-column-three-and-up:nth-child(4n) {
+    border-right: 1px solid transparent;
+}
 .menu-column:last-of-type {
     border-right: 1px solid transparent;
 }
@@ -354,12 +373,64 @@ a {
     border-right: 1px solid transparent;
 }
 
-.column img {
+.item-img {
     vertical-align: bottom;
     display: table;
     float: left;
     height: 224px;
     border-radius: 6px;
+}
+
+table.detail {
+    width: 60%;
+}
+div.detail {
+    width: 60%;
+    margin-top: 12px;
+}
+
+.item-rates {
+    display: -webkit-flex;
+    display: -moz-flex;
+    display: -ms-flex;
+    display: -o-flex;
+    display: flex;
+    background-color: transparent;
+    text-align: center;
+    vertical-align: top;
+    margin-top: 16px;
+}
+
+.user-img {
+    border-radius: 5px;
+    background: #f0505d;
+    padding: 3px;
+    width: 48px;
+    height: 48px;
+}
+
+.user-rates {
+    display: inline-block;
+    width: 50%;
+}
+
+.expert-rates {
+    display: inline-block;
+    width: 50%;
+}
+
+.item-rates table {
+    margin-bottom: 16px;
+}
+
+.item-rates td, tr, th {
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    text-align: left;
+}
+
+.user-rates {
+    border-right: 1px solid #dcdcdb;
 }
 
 .column a:link {
@@ -559,21 +630,6 @@ a {
     box-shadow: 0 0 6px 3px rgba(0, 0, 0, 0.3);
 }
 
-@media (min-width:993px) {
-    .hrs-hide-large {
-        display: none!important
-    }
-    .hrs-sidebar.hrs-collapse {
-        display: block!important
-    }
-}
-
-@media (max-width:992px) {
-    .hrs-sidebar.hrs-collapse {
-        display: none;
-    }
-}
-
 .hrs-tiny {
     font-size: 10px!important
 }
@@ -587,7 +643,7 @@ a {
 }
 
 .hrs-large {
-    font-size: 18px!important
+    font-size: 17px!important
 }
 
 .hrs-xlarge {
@@ -614,6 +670,11 @@ a {
     vertical-align: middle;
     line-height: 52px;
     font-size: 32px;
+    margin-bottom: 16px;
+}
+
+.hrs-teal a {
+    text-decoration: none;
 }
 
 .hrs-teal,
@@ -638,9 +699,27 @@ a {
     .grid-container {
         width: 90%;
     }
+    .column:nth-child(3n) {
+        border-right: 1px solid transparent;
+    }
     .navbar {
         margin-left: 5%;
         margin-right: 5%;
+    }
+    table.detail {
+        width: 60%;
+    }
+    div.detail {
+        width: 80%;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    table.detail {
+        width: 60%;
+    }
+    div.detail {
+        width: 90%;
     }
 }
 
@@ -661,13 +740,31 @@ a {
     .menu-container {
         width: 100%;
     }
+    .column:nth-child(2n) {
+        border-right: 1px solid transparent;
+    }
     .navbar {
         margin-left: 0%;
         margin-right: 0%;
     }
+    table.detail {
+        width: 60%;
+    }
+    div.detail {
+        width: 98%;
+    }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 800px) {
+    .item-rates {
+        display: block;
+    }
+    .user-rates, .expert-rates {
+        width: 100%
+    }
+}
+
+@media screen and (max-width: 640px) {
     .column {
         -ms-flex: 100%;
         flex: 100%;
@@ -691,5 +788,11 @@ a {
     .navbar {
         margin-left: 0%;
         margin-right: 0%;
+    }
+    table.detail {
+        width: 95%;
+    }
+    div.detail {
+        width: 100%;
     }
 }
