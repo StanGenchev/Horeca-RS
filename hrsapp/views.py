@@ -39,7 +39,7 @@ class RequestsHandler(generic.ListView):
                 change_rate = 0
                 for i, rate in enumerate(current_rates):
                     if int(rmrate) == rate[0]:
-                        current_rates.pop(i)
+                        del current_rates[i]
                         request.session['rated'] = current_rates
                         break
                 return redirect(url)
