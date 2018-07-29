@@ -22,7 +22,7 @@
             <a href="/" class="hrs-bar-item hrs-bar-button hrs-large">Home</a>
             <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">My profile</a>
             <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">Log out</a>
-            <a href="?delete=1" class="hrs-bar-item hrs-bar-button hrs-large">Clear session</a>
+            <a class="hrs-bar-item hrs-bar-button hrs-large" onclick="clear_session()">Clear session</a>
         </div>
         <!-- Page Header -->
         <div class="hrs-teal hrs-teal-shadow stick">
@@ -90,11 +90,11 @@
                     <td colspan="2" align="center" class="rate-bar">
                     {% for star in '*****' %}
                         {% if contents.1|toint > forloop.counter %}
-                        <button class="{{ contents.0.id }} rate-button" type="button" onclick="set_rating('products', {{ contents.0.id }}, '{{ contents.0.name }}', '{{ contents.0.vendor_id }}', '{{ contents.0.photo_path }}', {{ forloop.counter }})" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
+                        <button class="{{ contents.0.id }} rate-button" type="button" onclick="set_rating({{ contents.0.id }}, '{{ contents.0.name }}', '{{ contents.0.vendor_id }}', '{{ contents.0.photo_path }}', {{ forloop.counter }})" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
                         {% elif contents.1|toint == forloop.counter %}
                         <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
                         {% else %}
-                        <button class="{{ contents.0.id }} rate-button" type="button" onclick="set_rating('products', {{ contents.0.id }}, '{{ contents.0.name }}', '{{ contents.0.vendor_id }}', '{{ contents.0.photo_path }}', {{ forloop.counter }})" style="background-image: url({% static 'images/star.svg' %});"></button>
+                        <button class="{{ contents.0.id }} rate-button" type="button" onclick="set_rating({{ contents.0.id }}, '{{ contents.0.name }}', '{{ contents.0.vendor_id }}', '{{ contents.0.photo_path }}', {{ forloop.counter }})" style="background-image: url({% static 'images/star.svg' %});"></button>
                         {% endif %}
                     {% endfor %}
                     </td>
@@ -150,27 +150,6 @@
             </div>
         </div>
         {% endif %}
-        <script>
-            function hrs_open() {
-                document.getElementById("mySidebar").style.display = "block";
-            }
-            function w3_close() {
-                document.getElementById("mySidebar").style.display = "none";
-            }
-            function remove_rated(rid) {
-                current_url = window.location.href.replace(window.location.origin, "")
-                location.href='/requests?rmrate=' + rid + '&url=' + current_url;
-            }
-            function set_rating(current_model, id, name, vendor, photo, rate) {
-                var elem = document.getElementsByClassName(id);
-                for (i = 0; i < rate; i++) {
-                   elem[i].style.backgroundImage = "url({% static 'images/star-checked.svg' %})";
-                }
-                for (i = rate; i < 5; i++) {
-                   elem[i].style.backgroundImage = "url({% static 'images/star.svg' %})";
-                }
-                location.href="?rated=" + id + "<hrs>" + name + "<hrs>" + vendor + "<hrs>" + photo + "<hrs>" + rate;
-            }
-        </script>
+        <script src="{% static 'js/shared_functions.js' %}"></script>
     </body>
 </html>

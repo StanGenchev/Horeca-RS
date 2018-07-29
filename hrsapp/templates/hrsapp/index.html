@@ -20,7 +20,7 @@
             <a href="/" class="hrs-bar-item hrs-bar-button hrs-large">Home</a>
             <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">My profile</a>
             <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">Log out</a>
-            <a href="?delete=1" class="hrs-bar-item hrs-bar-button hrs-large">Clear session</a>
+            <a class="hrs-bar-item hrs-bar-button hrs-large" onclick="clear_session()">Clear session</a>
         </div>
         <!-- Page Header -->
         <div class="hrs-teal hrs-teal-shadow stick">
@@ -59,13 +59,6 @@
                 </div>
             </div>
         </div>
-        <script>
-            function hrs_open() {
-                document.getElementById("mySidebar").style.display = "block";
-            }
-            function w3_close() {
-                document.getElementById("mySidebar").style.display = "none";
-            }
-        </script>
+        <script src="{% static 'js/shared_functions.js' %}"></script>
     </body>
 </html>

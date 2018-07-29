@@ -23,7 +23,7 @@
             <a href="/" class="hrs-bar-item hrs-bar-button hrs-large">Home</a>
             <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">My profile</a>
             <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">Log out</a>
-            <a href="?delete=1" class="hrs-bar-item hrs-bar-button hrs-large">Clear session</a>
+            <a class="hrs-bar-item hrs-bar-button hrs-large" onclick="clear_session()">Clear session</a>
         </div>
         <!-- Page Header -->
         <div class="hrs-teal hrs-teal-shadow stick">
@@ -109,14 +109,14 @@
                 {% if contents.2|length > 3 %}
                 {% for country in contents.2 %}
                 <div class="menu-column menu-column-three-and-up">
-                    <table class="item" onclick="location.href='/recommend-menu?country={{ country.id }}'">
+                    <table class="item" onclick="location.href='/recommend-menu?country={{ country.0 }}'">
                         <tr>
                             <td align="center">
-                                <img src="{% static 'images/' %}{{ country.name|lower }}.svg" alt="{{ country.name }}">
+                                <img src="{% static 'images/' %}{{ country.1|lower }}.svg" alt="{{ country.1 }}">
                             </td>
                         </tr>
                         <tr>
-                            <td class="item-name hrs-xlarge">{{ country.name }}
+                            <td class="item-name hrs-xlarge">{{ country.1 }}
                             </td>
                         </tr>
                     </table>
@@ -185,17 +185,6 @@
             </div>
         </center>
         {% endif %}
-        <script>
-            function hrs_open() {
-                document.getElementById("mySidebar").style.display = "block";
-            }
-            function w3_close() {
-                document.getElementById("mySidebar").style.display = "none";
-            }
-            function remove_rated(rid) {
-                current_url = window.location.href.replace(window.location.origin, "")
-                location.href='/requests?rmrate=' + rid + '&url=' + current_url;
-            }
-        </script>
+        <script src="{% static 'js/shared_functions.js' %}"></script>
     </body>
 </html>

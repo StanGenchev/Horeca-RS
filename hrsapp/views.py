@@ -29,6 +29,7 @@ class RequestsHandler(generic.ListView):
     def get(self, request, *args, **kwargs):
         if request.method == 'GET':
             rmrate = request.GET.get("rmrate")
+            reset = request.GET.get("reset")
             url = request.GET.get("url")
             try:
                 current_rates = request.session['rated']
@@ -43,15 +44,15 @@ class RequestsHandler(generic.ListView):
                         request.session['rated'] = current_rates
                         break
                 return redirect(url)
+            elif reset is not None:
+                Session.objects.all().delete()
+                current_rates.clear()
+                return redirect(url)
 
 class IndexView(generic.ListView):
     template_name = 'hrsapp/index.html'
 
     def get(self, request, *args, **kwargs):
-        if request.method == 'GET':
-            delete = request.GET.get("delete")
-            if delete is not None:
-                Session.objects.all().delete()
         return render(request, self.template_name)
 
 class RecommendView(generic.ListView):
@@ -64,7 +65,6 @@ class RecommendView(generic.ListView):
             category = request.GET.get('category')
             country = request.GET.get('country')
             vendor = request.GET.get('vendor')
-            delete = request.GET.get("delete")
             rated = request.GET.get("rated")
             prods = Products.objects.all()
             try:
@@ -73,26 +73,17 @@ class RecommendView(generic.ListView):
                 current_rates = []
             if page is None:
                 page = 1
-            if delete is not None:
-                Session.objects.all().delete()
-                current_rates.clear()
-                contents = (1, 0, Categories.objects.all(), current_rates, 'start')
-                return render(request, self.template_menu, {'contents': contents})
-            elif category is not None:
+            if category is not None:
                 request.session['category'] = category
                 category_vendor_countries = []
                 category_countries = []
                 all_countries = Countries.objects.all()
-                for prod in prods:
-                    if int(prod.category_id.id) == int(category):
-                        if int(prod.vendor_id.region_id.country_id.id) not in category_vendor_countries:
-                            category_vendor_countries.append(int(prod.vendor_id.region_id.country_id.id))
-                for vendor_country_id in category_vendor_countries:
-                    for category_country in all_countries:
-                        if int(vendor_country_id) == int(category_country.id):
-                            if category_country not in category_countries:
-                                category_countries.append(category_country)
-                contents = (0, 1, category_countries, current_rates, 'recommend-menu')
+                item = Products.objects.filter(category_id_id = int(category))
+                for i in item:
+                    idname = [int(i.vendor_id.region_id.country_id.id), i.vendor_id.region_id.country_id.name]
+                    if idname not in category_vendor_countries:
+                        category_vendor_countries.append(idname)
+                contents = (0, 1, category_vendor_countries, current_rates, 'recommend-menu')
                 return render(request, self.template_menu, {'contents': contents})
             elif country is not None:
                 request.session['country'] = country
@@ -165,16 +156,12 @@ class WineView(generic.ListView):
     def get(self, request, *args, **kwargs):
         if request.method == 'GET':
             page = request.GET.get('page')
-            delete = request.GET.get("delete")
             try:
                 current_rates = request.session['rated']
             except:
                 current_rates = []
             if page is None:
                 page = 1
-            if delete is not None:
-                Session.objects.all().delete()
-                current_rates.clear()
             paginator = Paginator(Inventory.objects.all(), 42)
             contents = (paginator.page(int(page)), current_rates)
             return render(request, self.template_name, {'contents': contents})
@@ -191,15 +178,15 @@ class DetailView(generic.ListView):
             except:
                 current_rates = []
             if wine is not None:
-                for item in Products.objects.all():
-                    if int(item.id) == int(wine):
-                        in_rates = 0
-                        for i, rate in enumerate(current_rates):
-                            if int(item.id) == int(rate[0]):
-                                in_rates = rate[4]
-                                break
-                        contents = (item, in_rates, current_rates)
-                        return render(request, self.template_name, {'contents': contents})
+                item = Products.objects.filter(id=int(wine))
+                item = item[0]
+                in_rates = 0
+                for rate in current_rates:
+                    if int(item.id) == int(rate[0]):
+                        in_rates = rate[4]
+                        break
+                contents = (item, in_rates, current_rates)
+                return render(request, self.template_name, {'contents': contents})
             elif rated is not None:
                 rated = str(rated).split('<hrs>')
                 rated[0] = int(rated[0])
@@ -220,14 +207,17 @@ class DetailView(generic.ListView):
                     if change_rate == 0:
                         current_rates.insert(0, rated)
                         request.session['rated'] = current_rates
-                for item in Products.objects.all():
-                    if int(item.id) == rated[0]:
-                        in_rates = 0
-                        for i, rate in enumerate(current_rates):
-                            if int(item.id) == rate[0]:
-                                in_rates = rate[4]
-                                break
-                        contents = (item, in_rates, current_rates)
-                        return render(request, self.template_name, {'contents': contents})
+                try:
+                    item = Products.objects.filter(id=rated[0])
+                    item = item[0]
+                    in_rates = 0
+                    for rate in current_rates:
+                        if int(item.id) == int(rate[0]):
+                            in_rates = rate[4]
+                            break
+                    contents = (item, in_rates, current_rates)
+                except:
+                    contents = (0, 0, current_rates)
+                return render(request, self.template_name, {'contents': contents})
             else:
                 return render(request, self.template_name, {'contents': 0})
