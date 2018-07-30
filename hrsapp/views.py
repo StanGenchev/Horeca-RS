@@ -76,11 +76,9 @@ class RecommendView(generic.ListView):
             if category is not None:
                 request.session['category'] = category
                 category_vendor_countries = []
-                category_countries = []
-                all_countries = Countries.objects.all()
-                item = Products.objects.filter(category_id_id = int(category))
-                for i in item:
-                    idname = [int(i.vendor_id.region_id.country_id.id), i.vendor_id.region_id.country_id.name]
+                items = Products.objects.filter(category_id_id = int(category))
+                for item in items:
+                    idname = [int(item.vendor_id.region_id.country_id.id), item.vendor_id.region_id.country_id.name]
                     if idname not in category_vendor_countries:
                         category_vendor_countries.append(idname)
                 contents = (0, 1, category_vendor_countries, current_rates, 'recommend-menu')
@@ -89,15 +87,11 @@ class RecommendView(generic.ListView):
                 request.session['country'] = country
                 category_id = int(request.session['category'])
                 vendors_filterd = []
-                category_vendor_ids = []
-                vends = Vendors.objects.all()
-                for prod in prods:
-                    if int(prod.category_id.id) == category_id:
-                        if int(prod.vendor_id.id) not in category_vendor_ids:
-                            category_vendor_ids.append(int(prod.vendor_id.id))
-                for vend in vends:
-                    if int(vend.region_id.country_id.id) == int(country) and int(vend.id) in category_vendor_ids:
-                        vendors_filterd.append(vend)
+                items = Products.objects.filter(category_id_id = category_id, vendor_id__region_id__country_id_id = country)
+                for item in items:
+                    idname = [int(item.vendor_id.id), item.vendor_id.name]
+                    if idname not in vendors_filterd:
+                        vendors_filterd.append(idname)
                 contents = (0, 0, vendors_filterd, current_rates, category_id)
                 return render(request, self.template_menu, {'contents': contents})
             elif vendor is not None:

@@ -125,14 +125,14 @@
                 {% else %}
                 {% for country in contents.2 %}
                 <div class="menu-column">
-                    <table class="item" onclick="location.href='/recommend-menu?country={{ country.id }}'">
+                    <table class="item" onclick="location.href='/recommend-menu?country={{ country.0 }}'">
                         <tr>
                             <td align="center">
-                                <img src="{% static 'images/' %}{{ country.name|lower }}.svg" alt="{{ country.name }}">
+                                <img src="{% static 'images/' %}{{ country.name|lower }}.svg" alt="{{ country.1 }}">
                             </td>
                         </tr>
                         <tr>
-                            <td class="item-name hrs-xlarge">{{ country.name }}
+                            <td class="item-name hrs-xlarge">{{ country.1 }}
                             </td>
                         </tr>
                     </table>
@@ -143,14 +143,14 @@
                 {% if contents.2|length > 3 %}
                 {% for vendor in contents.2 %}
                 <div class="menu-column menu-column-three-and-up">
-                    <table class="item" onclick="location.href='/recommend-menu?vendor={{ vendor.id }}'">
+                    <table class="item" onclick="location.href='/recommend-menu?vendor={{ vendor.0 }}'">
                         <tr>
                             <td align="center">
-                                <img src="{% static 'images/' %}hrs-logo.svg" alt="{{ vendor.name }}">
+                                <img src="{% static 'images/' %}hrs-logo.svg" alt="{{ vendor.1 }}">
                             </td>
                         </tr>
                         <tr>
-                            <td class="item-name hrs-xlarge">{{ vendor.name }}
+                            <td class="item-name hrs-xlarge">{{ vendor.1 }}
                             </td>
                         </tr>
                     </table>
@@ -159,14 +159,14 @@
                 {% else %}
                 {% for vendor in contents.2 %}
                 <div class="menu-column">
-                    <table class="item" onclick="location.href='/recommend-menu?vendor={{ vendor.id }}'">
+                    <table class="item" onclick="location.href='/recommend-menu?vendor={{ vendor.0 }}'">
                         <tr>
                             <td align="center">
-                                <img src="{% static 'images/' %}hrs-logo.svg" alt="{{ vendor.name }}">
+                                <img src="{% static 'images/' %}hrs-logo.svg" alt="{{ vendor.1 }}">
                             </td>
                         </tr>
                         <tr>
-                            <td class="item-name hrs-xlarge">{{ vendor.name }}
+                            <td class="item-name hrs-xlarge">{{ vendor.1 }}
                             </td>
                         </tr>
                     </table>
