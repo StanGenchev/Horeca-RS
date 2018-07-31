@@ -32,37 +32,7 @@
             <button class="hrs-btn" style="float: right; background-image: url({% static 'images/user.svg' %});" onclick=""></button>
         </div>
         <!-- Page Content -->
-        <div class="navbar">
-            <div class="nav-btn" style="border-right: 1px solid #dcdcdb; padding-right: 4px;">
-                <img class="nav-btn-img" src="{% static 'images/nav-back.svg' %}" alt="Back" onclick="location.href='/start'">
-            </div>
-            <div class="nav scrollratebar">
-                {% if contents.1|length != 0  %}
-                {% for item in contents.1 %}
-                <div class="main-rate-item">
-                    <img src="{% static 'images/' %}{{ item.3 }}" alt="Wine Photo" onclick="location.href='/detail?wine={{ item.0 }}'">
-                    <div class="rate-item-body" onclick="location.href='/detail?wine={{ item.0 }}'">
-                        <p>{{ item.1 }}<br>{{ item.2 }}</p>
-                        <div class="rate-bar">
-                            {% for star in '*****' %}
-                            {% if item.4|toint >= forloop.counter %}
-                            <img class="rate-button-small" src="{% static 'images/star-checked.svg' %}" alt="*">
-                            {% else %}
-                            <img class="rate-button-small" src="{% static 'images/star.svg' %}" alt="'">
-                            {% endif %}
-                            {% endfor %}
-                        </div>
-                    </div>
-                    <div class="rm-btn" style="background-image: url({% static 'images/remove.svg' %});" onclick="remove_rated({{ item.0 }})"></div>
-                </div>
-                {% endfor %}
-                {% endif %}
-            </div>
-            <div class="nav-btn" style="border-left: 1px solid #dcdcdb; padding-left: 4px;">
-                <img class="nav-btn-img" src="{% static 'images/recommended.svg' %}" alt="Recommend me" onclick="window.alert('Not implemented yet!')">
-            </div>
-        </div>
-        {% if contents.0|length == 0  %}
+        {% if contents|length == 0  %}
         <div class="no-products">
             <img src="{% static 'images/hrs-logo.svg' %}" alt="HoReCa">
             <p class="item-name hrs-large">There are no available products!</p>
@@ -70,7 +40,7 @@
         {% else %}
         <div class="grid-container">
             <div class="row">
-                {% for item in contents.0 %}
+                {% for item in contents %}
                 <div class="column" onclick="location.href='/detail?wine={{ item.product_id.id }}'">
                     <table class="item">
                         <tr>
@@ -97,18 +67,18 @@
             </div>
         </div>
         <div class="pagination">
-            {% if contents.0.has_previous %}
-            <a href="?page={{ contents.0.previous_page_number }}">&laquo;</a>
+            {% if contents.has_previous %}
+            <a href="?page={{ contents.previous_page_number }}">&laquo;</a>
             {% endif %}
-            {% for value in contents.0.paginator.num_pages|range %}
-            {% if contents.0.number is forloop.counter %}
+            {% for value in contents.paginator.num_pages|range %}
+            {% if contents.number is forloop.counter %}
             <a class="active" href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
             {% else %}
             <a href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
             {% endif %}
             {% endfor %}
-            {% if contents.0.has_next %}
-            <a href="?page={{ contents.0.paginator.num_pages }}">&raquo;</a>
+            {% if contents.has_next %}
+            <a href="?page={{ contents.paginator.num_pages }}">&raquo;</a>
             {% endif %}
         </div>
         {% endif %}

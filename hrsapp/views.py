@@ -1,5 +1,4 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404
 from django.shortcuts import render
 from django.urls import reverse
 from django.shortcuts import redirect
@@ -66,7 +65,6 @@ class RecommendView(generic.ListView):
             country = request.GET.get('country')
             vendor = request.GET.get('vendor')
             rated = request.GET.get("rated")
-            prods = Products.objects.all()
             try:
                 current_rates = request.session['rated']
             except:
@@ -96,18 +94,13 @@ class RecommendView(generic.ListView):
                 return render(request, self.template_menu, {'contents': contents})
             elif vendor is not None:
                 request.session['vendor'] = vendor
-                category = request.session['category']
-                country = request.session['country']
-                prods_filtered = []
-                for prod in prods:
-                    if int(prod.category_id.id) == int(category):
-                        if int(prod.vendor_id.id) == int(vendor):
-                            prods_filtered.append(prod)
+                category_id = request.session['category']
+                country_id = request.session['country']
+                prods_filtered = Products.objects.filter(category_id_id = category_id, vendor_id_id = int(vendor), vendor_id__region_id__country_id_id = country_id)
                 paginator = Paginator(prods_filtered, 42)
-                contents = (paginator.page(int(page)), current_rates, country)
+                contents = (paginator.page(int(page)), current_rates, country_id)
                 return render(request, self.template_list, {'contents': contents})
             elif rated is not None:
-                prods_filtered = []
                 vendor = request.session['vendor']
                 category = request.session['category']
                 country = request.session['country']
@@ -130,10 +123,7 @@ class RecommendView(generic.ListView):
                     if change_rate == 0:
                         current_rates.insert(0, rated)
                         request.session['rated'] = current_rates
-                for prod in prods:
-                    if int(prod.category_id.id) == int(category):
-                        if int(prod.vendor_id.id) == int(vendor):
-                            prods_filtered.append(prod)
+                prods_filtered = Products.objects.filter(category_id_id = category, vendor_id_id = int(vendor))
                 paginator = Paginator(prods_filtered, 42)
                 contents = (paginator.page(int(page)), current_rates, country)
                 return render(request, self.template_list, {'contents': contents})
@@ -150,15 +140,10 @@ class WineView(generic.ListView):
     def get(self, request, *args, **kwargs):
         if request.method == 'GET':
             page = request.GET.get('page')
-            try:
-                current_rates = request.session['rated']
-            except:
-                current_rates = []
             if page is None:
                 page = 1
             paginator = Paginator(Inventory.objects.all(), 42)
-            contents = (paginator.page(int(page)), current_rates)
-            return render(request, self.template_name, {'contents': contents})
+            return render(request, self.template_name, {'contents': paginator.page(int(page))})
 
 class DetailView(generic.ListView):
     template_name = 'hrsapp/detail.html'
