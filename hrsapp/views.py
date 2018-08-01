@@ -134,6 +134,21 @@ class RecommendView(generic.ListView):
                     contents = (1, 0, Categories.objects.all(), 0, 'start')
                 return render(request, self.template_menu, {'contents': contents})
 
+class GetRecommendView(generic.ListView):
+    template_name = 'hrsapp/recommended.html'
+
+    def get(self, request, *args, **kwargs):
+        if request.method == 'GET':
+            page = request.GET.get('page')
+            try:
+                current_rates = request.session['rated']
+            except:
+                current_rates = []
+            if page is None:
+                page = 1
+            paginator = Paginator(current_rates, 42)
+            return render(request, self.template_name, {'contents': paginator.page(int(page))})
+
 class WineView(generic.ListView):
     template_name = 'hrsapp/grid.html'
 

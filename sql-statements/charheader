@@ -1,0 +1,5 @@
+INSERT INTO characteristics_headers VALUES (DEFAULT, 'Sweetness', 'The subjective sweetness of a wine is determined by the interaction of several factors, including the amount of sugar in the wine, but also the relative levels of alcohol, acids, and tannins.', 1, 5);
+INSERT INTO characteristics_headers VALUES (DEFAULT, 'Acidity', 'The acids in wine are an important component in both winemaking and the finished product of wine. Acidity gives wine its tart and sour taste.', 1, 5);
+INSERT INTO characteristics_headers VALUES (DEFAULT, 'Tannin', 'Tannin is a textural element that makes wine taste dry. It adds both bitterness and astringency, as well as complexity.', 1, 5);
+INSERT INTO characteristics_headers VALUES (DEFAULT, 'Alcohol', 'Alcohol by volume is a standard measure of how much alcohol (ethanol) is contained in a given volume of an alcoholic beverage.', 1, 5);
+INSERT INTO characteristics_headers VALUES (DEFAULT, 'Body', 'Body is a snapshot of the overall impression of a wine.', 1, 5);
