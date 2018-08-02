@@ -5,8 +5,19 @@ function w3_close() {
     document.getElementById("mySidebar").style.display = "none";
 }
 function clear_session() {
-    current_url = window.location.href.replace(window.location.origin, "")
-    location.href='/requests?reset=1' + '&url=/';
+    current_url = window.location.href.replace(window.location.origin, "");
+    if (current_url.includes("grid")) {
+        location.href='/requests?reset=1' + '&url=/grid';
+    }
+    else if (current_url.includes("recommend")) {
+        location.href='/requests?reset=1' + '&url=/recommend-menu';
+    }
+    else if (current_url.includes("detail")) {
+        alert("Cannot clear session from detail page!");
+    }
+    else {
+        location.href='/requests?reset=1' + '&url=/start';
+    }
 }
 function remove_rated(rid) {
     current_url = window.location.href.replace(window.location.origin, "")

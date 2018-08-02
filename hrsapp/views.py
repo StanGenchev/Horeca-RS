@@ -23,6 +23,9 @@ from .models import Characteristics_headers
 from .models import Characteristics_values
 from .models import Expert_product_characteristic
 
+import math
+import numpy
+
 class RequestsHandler(generic.ListView):
 
     def get(self, request, *args, **kwargs):
@@ -146,6 +149,46 @@ class GetRecommendView(generic.ListView):
                 current_rates = []
             if page is None:
                 page = 1
+            
+            prods = Products.objects.all()
+            all_rates = User_rates.objects.all()
+            part1 = []
+            part2 = []
+            part3 = []
+            part4 = []
+            for prod in prods:
+                aur_rate = 0
+                a_avg_rate = 0
+                ur_rate = 0
+                avg_rate = 0
+                for rate in current_rates:
+                    a_avg_rate += rate[4]
+                    if prod.id == rate[0]:
+                        aur_rate = rate[4]
+                for rate in all_rates:
+                    avg_rate += rate.rate
+                    if prod.id == rate.id:
+                        ur_rate = rate.rate
+                try:
+                    a_avg_rate = a_avg_rate / len(current_rates)
+                except:
+                    a_avg_rate = 0
+                part1.append(aur_rate - a_avg_rate)
+                part3.append(pow((aur_rate - a_avg_rate), 2))
+                try:
+                    avg_rate = avg_rate / len(all_rates)
+                except:
+                    avg_rate = 0
+                part2.append(ur_rate - avg_rate)
+                part4.append(pow((ur_rate - avg_rate), 2))
+            part1_final = sum(part1)
+            part2_final = sum(part2)
+            part3_final = math.sqrt(sum(part3))
+            part4_final = math.sqrt(sum(part4))
+            part1and2 = part1_final * part2_final
+            part3and4 = part3_final * part4_final
+            final = part1and2 / part3and4
+            print(final)
             paginator = Paginator(current_rates, 42)
             return render(request, self.template_name, {'contents': paginator.page(int(page))})
 
