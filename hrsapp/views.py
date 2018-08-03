@@ -7,6 +7,7 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 from django.contrib.sessions.models import Session
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.db import connection
 
 from .models import Appellation
 from .models import Categories
@@ -150,45 +151,35 @@ class GetRecommendView(generic.ListView):
             if page is None:
                 page = 1
             
-            prods = Products.objects.all()
-            all_rates = User_rates.objects.all()
-            part1 = []
-            part2 = []
-            part3 = []
-            part4 = []
-            for prod in prods:
-                aur_rate = 0
-                a_avg_rate = 0
-                ur_rate = 0
-                avg_rate = 0
-                for rate in current_rates:
-                    a_avg_rate += rate[4]
-                    if prod.id == rate[0]:
-                        aur_rate = rate[4]
-                for rate in all_rates:
-                    avg_rate += rate.rate
-                    if prod.id == rate.id:
-                        ur_rate = rate.rate
-                try:
-                    a_avg_rate = a_avg_rate / len(current_rates)
-                except:
-                    a_avg_rate = 0
-                part1.append(aur_rate - a_avg_rate)
-                part3.append(pow((aur_rate - a_avg_rate), 2))
-                try:
-                    avg_rate = avg_rate / len(all_rates)
-                except:
-                    avg_rate = 0
-                part2.append(ur_rate - avg_rate)
-                part4.append(pow((ur_rate - avg_rate), 2))
-            part1_final = sum(part1)
-            part2_final = sum(part2)
-            part3_final = math.sqrt(sum(part3))
-            part4_final = math.sqrt(sum(part4))
-            part1and2 = part1_final * part2_final
-            part3and4 = part3_final * part4_final
-            final = part1and2 / part3and4
-            print(final)
+            prods = Inventory.objects.filter(in_stock = True)
+            u_rates = User_rates.objects.all().prefetch_related('product_id')
+            
+            id_rates = {}
+            for rate in current_rates:
+                id_rates[rate[0]] = rate[4]
+                            
+            user_id_rates = {}
+            for rate in u_rates:
+                if rate.product_id.id in id_rates:
+                    if rate.product_id.id in user_id_rates.keys():
+                        user_id_rates[rate.product_id.id] += rate.rate
+                    else:
+                        user_id_rates[rate.product_id.id] = rate.rate            
+            chislitel = 0        
+            for key in id_rates.keys():
+                chislitel += id_rates[key] * user_id_rates[key]
+
+            znamenatel1 = 0
+            for key in id_rates.keys():
+                znamenatel1 += id_rates[key]
+            
+            znamenatel2 = 0
+            for key in user_id_rates.keys():
+                znamenatel2 += user_id_rates[key]
+            
+            formula1 = chislitel / (math.sqrt(math.pow(znamenatel1, 2)) * math.sqrt(math.pow(znamenatel2, 2)))
+            print(formula1)
+            
             paginator = Paginator(current_rates, 42)
             return render(request, self.template_name, {'contents': paginator.page(int(page))})
 
@@ -200,7 +191,7 @@ class WineView(generic.ListView):
             page = request.GET.get('page')
             if page is None:
                 page = 1
-            paginator = Paginator(Inventory.objects.all(), 42)
+            paginator = Paginator(Inventory.objects.filter(in_stock = True), 42)
             return render(request, self.template_name, {'contents': paginator.page(int(page))})
 
 class DetailView(generic.ListView):
