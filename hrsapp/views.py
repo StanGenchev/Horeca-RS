@@ -162,7 +162,7 @@ class GetRecommendView(generic.ListView):
             #print('\nID_RATES:\n')
             #print(id_rates)
             #print('\nUSER_ID:\n') 
-                    
+            
             user_id_rates = {}
             for rate in u_rates:
                 if rate.product_id.id in id_rates.keys():
@@ -177,20 +177,39 @@ class GetRecommendView(generic.ListView):
                         if sitem in id_rates.keys():
                             print([user, {sitem: item[sitem]}])"""
             #print('\n')
-            chisl = 0
-            znam1 = 0
-            znam2 = 0
+            numerator = 0
+            denominator1 = 0
+            denominator2 = 0
             prod_rate = {}
             for user in sorted(user_id_rates.keys()):
                 for item in user_id_rates[user]:
                     for key in item:
-                        znam1 += id_rates[key]
-                        chisl += id_rates[key] * item[key]
-                        znam2 += item[key]
-                        prod_rate[user] = chisl / ( math.sqrt(math.pow(znam1, 2)) * math.sqrt(math.pow(znam2, 2)) )
-            print(prod_rate)
+                        denominator1 += id_rates[key]
+                        numerator += id_rates[key] * item[key]
+                        denominator2 += item[key]
+                        prod_rate[user] = numerator / (math.sqrt(math.pow(denominator1, 2)) * math.sqrt(math.pow(denominator2, 2)))
+            #print(prod_rate)
             
-            paginator = Paginator(current_rates, 42)
+            recommended_prods_raw = {}
+            recommended_prods = []
+            
+            for item in u_rates:
+                if item.user_id.id in prod_rate.keys() and item.product_id.id not in id_rates.keys():
+                    rate = item.rate * prod_rate[item.user_id.id]
+                    if rate > 1:
+                        if item.product_id.id in recommended_prods_raw.keys():
+                            recommended_prods_raw[item.product_id.id] = [item.product_id, item.product_id.vendor_id, item.product_id.category_id, item.product_id.photo_path, recommended_prods_raw[item.product_id.id][4] + rate, recommended_prods_raw[item.product_id.id][5] + 1]
+                        else:
+                            recommended_prods_raw[item.product_id.id] = [item.product_id, item.product_id.vendor_id, item.product_id.category_id, item.product_id.photo_path, rate, 1]
+            
+            for i in recommended_prods_raw:
+                if recommended_prods_raw[i][5] > 1:
+                    recommended_prods.append([i, recommended_prods_raw[i][0], recommended_prods_raw[i][1], recommended_prods_raw[i][2], recommended_prods_raw[i][3], round(recommended_prods_raw[i][4] / recommended_prods_raw[i][5], 0)])
+            
+            for i in recommended_prods:
+                print(i)
+            
+            paginator = Paginator(recommended_prods, 42)
             return render(request, self.template_name, {'contents': paginator.page(int(page))})
 
 class WineView(generic.ListView):
