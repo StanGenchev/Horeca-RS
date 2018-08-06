@@ -151,34 +151,44 @@ class GetRecommendView(generic.ListView):
             if page is None:
                 page = 1
             
-            prods = Inventory.objects.filter(in_stock = True)
-            u_rates = User_rates.objects.all().prefetch_related('product_id')
+            prods = Inventory.objects.filter(in_stock = True).prefetch_related('product_id')
+            u_rates = User_rates.objects.all().prefetch_related('product_id').prefetch_related('user_id')
             
             id_rates = {}
             for rate in current_rates:
-                id_rates[rate[0]] = rate[4]
-                            
+                if prods.filter(product_id_id = rate[0]).exists():
+                    id_rates[rate[0]] = rate[4]
+            
+            #print('\nID_RATES:\n')
+            #print(id_rates)
+            #print('\nUSER_ID:\n') 
+                    
             user_id_rates = {}
             for rate in u_rates:
-                if rate.product_id.id in id_rates:
-                    if rate.product_id.id in user_id_rates.keys():
-                        user_id_rates[rate.product_id.id] += rate.rate
+                if rate.product_id.id in id_rates.keys():
+                    if rate.user_id.id in user_id_rates.keys():
+                        user_id_rates[rate.user_id.id].append({rate.product_id.id: rate.rate})
                     else:
-                        user_id_rates[rate.product_id.id] = rate.rate            
-            chislitel = 0        
-            for key in id_rates.keys():
-                chislitel += id_rates[key] * user_id_rates[key]
+                        user_id_rates[rate.user_id.id] = [{rate.product_id.id: rate.rate}]
 
-            znamenatel1 = 0
-            for key in id_rates.keys():
-                znamenatel1 += id_rates[key]
-            
-            znamenatel2 = 0
-            for key in user_id_rates.keys():
-                znamenatel2 += user_id_rates[key]
-            
-            formula1 = chislitel / (math.sqrt(math.pow(znamenatel1, 2)) * math.sqrt(math.pow(znamenatel2, 2)))
-            print(formula1)
+            """for user in user_id_rates:
+                for item in user_id_rates[user]:
+                    for sitem in item.keys():
+                        if sitem in id_rates.keys():
+                            print([user, {sitem: item[sitem]}])"""
+            #print('\n')
+            chisl = 0
+            znam1 = 0
+            znam2 = 0
+            prod_rate = {}
+            for user in sorted(user_id_rates.keys()):
+                for item in user_id_rates[user]:
+                    for key in item:
+                        znam1 += id_rates[key]
+                        chisl += id_rates[key] * item[key]
+                        znam2 += item[key]
+                        prod_rate[user] = chisl / ( math.sqrt(math.pow(znam1, 2)) * math.sqrt(math.pow(znam2, 2)) )
+            print(prod_rate)
             
             paginator = Paginator(current_rates, 42)
             return render(request, self.template_name, {'contents': paginator.page(int(page))})
