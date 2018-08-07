@@ -38,6 +38,11 @@
             <p class="item-name hrs-large">There are no available products!</p>
         </div>
         {% else %}
+        <div class="navbar">
+            <div class="nav-btn" style="border-right: 1px solid #dcdcdb; padding-right: 4px;">
+                <img class="nav-btn-img" src="{% static 'images/nav-back.svg' %}" alt="Back" onclick="window.history.back()">
+            </div>
+        </div>
         <div class="items-container">
             {% for item in contents %}
             <div class="wine-item" onclick="location.href='/detail?wine={{ item.product_id.id }}'">

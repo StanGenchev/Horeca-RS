@@ -111,7 +111,7 @@ samp {
 
 html,
 body {
-    font-family: Verdana, sans-serif;
+    font-family: sans-serif;
     font-size: 16px;
 }
 
@@ -133,9 +133,13 @@ a {
     color: inherit;
 }
 .item {
-    min-width: 360px;
-    max-width: 360px;
+    width: 360px;
 }
+
+.item-small {
+    width: 280px;
+}
+
 .item-name {
     font-weight: bold;
     text-align: center;
@@ -211,8 +215,8 @@ a {
     display: -ms-flex;
     display: -o-flex;
     display: flex;
-    margin-left: 10%;
-    margin-right: 10%;
+    padding-left: 6px;
+    padding-right: 6px;
     border-bottom: 1px solid #dcdcdb;
     padding-bottom: 5px;
 }
@@ -286,7 +290,7 @@ a {
 	display: table;
     background-color: transparent;
     overflow: auto;
-    width: 80%;
+    width: 95%;
     margin: 0 auto;
     text-align: center; 
     vertical-align: middle;
@@ -309,18 +313,6 @@ a {
     margin-left: -1px;
 }
 
-.item-details {
-    -ms-flex: 25%;
-    /* IE10 */
-    flex: 25%;
-    max-width: 25%;
-    padding: 32px;
-    width: auto;
-    display: table;
-    margin: auto auto;
-    box-shadow: 0 0 2px 1px rgba(0, 0, 0, 0.3);
-}
-
 .item-img {
     vertical-align: bottom;
     display: table;
@@ -332,14 +324,6 @@ a {
 
 .item-img-recommend {
     height: 128px;
-}
-
-table.detail {
-    width: 60%;
-}
-div.detail {
-    width: 60%;
-    margin-top: 12px;
 }
 
 .item-rates {
@@ -623,7 +607,7 @@ div.detail {
     vertical-align: middle;
     line-height: 52px;
     font-size: 32px;
-    margin-bottom: 16px;
+    margin-bottom: 6px;
 }
 
 .hrs-teal a {
@@ -640,54 +624,9 @@ div.detail {
     box-shadow: 0 0 6px 3px rgba(0, 0, 0, 0.3);
 }
 
-@media screen and (max-width: 1366px) {
-    .column {
-        -ms-flex: 33.3%;
-        flex: 33.3%;
-        max-width: 33.3%;
-    }
-    .items-container {
-        width: 80%;
-    }
-    .navbar {
-        margin-left: 5%;
-        margin-right: 5%;
-    }
-    table.detail {
-        width: 60%;
-    }
-    div.detail {
-        width: 80%;
-    }
-}
-
-@media screen and (max-width: 1024px) {
-    table.detail {
-        width: 60%;
-    }
-    div.detail {
-        width: 90%;
-    }
-}
-
 @media screen and (max-width: 920px) {
     .items-container {
         width: 100%;
-    }
-    .column {
-        -ms-flex: 50%;
-        flex: 50%;
-        max-width: 50%;
-    }
-    .navbar {
-        margin-left: 0%;
-        margin-right: 0%;
-    }
-    table.detail {
-        width: 60%;
-    }
-    div.detail {
-        width: 98%;
     }
 }
 
@@ -697,28 +636,5 @@ div.detail {
     }
     .user-rates, .expert-rates {
         width: 100%
-    }
-}
-
-@media screen and (max-width: 640px) {
-    .column {
-        -ms-flex: 100%;
-        flex: 100%;
-        max-width: 100%;
-        border-right: 0px solid transparent;
-        border-bottom: 1px solid #dcdcdb;
-    }
-    .items-container {
-        width: 100%;
-    }
-    .navbar {
-        margin-left: 0%;
-        margin-right: 0%;
-    }
-    table.detail {
-        width: 95%;
-    }
-    div.detail {
-        width: 100%;
     }
 }

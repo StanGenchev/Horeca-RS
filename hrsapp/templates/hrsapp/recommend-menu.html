@@ -79,10 +79,10 @@
             {% if contents.0 == 1 %}
             {% for category in contents.2 %}
             <div class="wine-item">
-                <table class="item" onclick="location.href='/recommend-menu?category={{ category.id }}'">
+                <table class="item-small" onclick="location.href='/recommend-menu?category={{ category.id }}'">
                     <tr>
                         <td align="center">
-                            <img style="max-width: 132px;" src="{% static 'images/' %}{{ category.name|lower }}-wine.svg" alt="{{ category.name }}">
+                            <img style="width: 132px;" src="{% static 'images/' %}{{ category.name|lower }}-wine.svg" alt="{{ category.name }}">
                         </td>
                     </tr>
                     <tr>
@@ -95,10 +95,10 @@
             {% elif contents.1 == 1 %}
             {% for country in contents.2 %}
             <div class="wine-item">
-                <table class="item" onclick="location.href='/recommend-menu?country={{ country.0 }}'">
+                <table class="item-small" onclick="location.href='/recommend-menu?country={{ country.0 }}'">
                     <tr>
                         <td align="center">
-                            <img style="max-width: 240px;" src="{% static 'images/' %}{{ country.1|lower }}.svg" alt="{{ country.1 }}">
+                            <img style="width: 240px;" src="{% static 'images/' %}{{ country.1|lower }}.svg" alt="{{ country.1 }}">
                         </td>
                     </tr>
                     <tr>
@@ -111,10 +111,10 @@
             {% else %}
             {% for vendor in contents.2 %}
             <div class="wine-item">
-                <table class="item" onclick="location.href='/recommend-menu?vendor={{ vendor.0 }}'">
+                <table class="item-small" onclick="location.href='/recommend-menu?vendor={{ vendor.0 }}'">
                     <tr>
                         <td align="center">
-                            <img style="max-width: 132px;" src="{% static 'images/' %}hrs-logo.svg" alt="{{ vendor.1 }}">
+                            <img style="width: 132px;" src="{% static 'images/' %}hrs-logo.svg" alt="{{ vendor.1 }}">
                         </td>
                     </tr>
                     <tr>
