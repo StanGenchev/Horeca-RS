@@ -64,117 +64,67 @@
                 {% endfor %}
                 {% endif %}
             </div>
+            {% if contents.3|length != 0  %}
             <div class="nav-btn" style="border-left: 1px solid #dcdcdb; padding-left: 4px;">
                 <img class="nav-btn-img" src="{% static 'images/recommended.svg' %}" alt="Recommend me" onclick="location.href='/get-recommended'">
             </div>
+            {% else %}
+            <div class="nav-btn" style="border-left: 1px solid #dcdcdb; padding-left: 4px;">
+                <img class="nav-btn-img" src="{% static 'images/recommended-gray.svg' %}" alt="Recommend me" onclick="window.alert('You have no rated products!');">
+            </div>
+            {% endif %}
         </div>
         <!-- Page Content -->
-        <div class="menu-container" id="categories-main-menu">
-            <div class="row">
-                {% if contents.0 == 1 %}
-                {% if contents.2|length > 3 %}
-                {% for category in contents.2 %}
-                <div class="menu-column menu-column-three-and-up">
-                    <table class="item" onclick="location.href='/recommend-menu?category={{ category.id }}'">
-                        <tr>
-                            <td align="center">
-                                <img src="{% static 'images/' %}{{ category.name|lower }}-wine.svg" alt="{{ category.name }}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="item-name hrs-xlarge">{{ category.name }}
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                {% endfor %}
-                {% else %}
-                {% for category in contents.2 %}
-                <div class="menu-column">
-                    <table class="item" onclick="location.href='/recommend-menu?category={{ category.id }}'">
-                        <tr>
-                            <td align="center">
-                                <img src="{% static 'images/' %}{{ category.name|lower }}-wine.svg" alt="{{ category.name }}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="item-name hrs-xlarge">{{ category.name }}
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                {% endfor %}
-                {% endif %}
-                {% elif contents.1 == 1 %}
-                {% if contents.2|length > 3 %}
-                {% for country in contents.2 %}
-                <div class="menu-column menu-column-three-and-up">
-                    <table class="item" onclick="location.href='/recommend-menu?country={{ country.0 }}'">
-                        <tr>
-                            <td align="center">
-                                <img src="{% static 'images/' %}{{ country.1|lower }}.svg" alt="{{ country.1 }}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="item-name hrs-xlarge">{{ country.1 }}
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                {% endfor %}
-                {% else %}
-                {% for country in contents.2 %}
-                <div class="menu-column">
-                    <table class="item" onclick="location.href='/recommend-menu?country={{ country.0 }}'">
-                        <tr>
-                            <td align="center">
-                                <img src="{% static 'images/' %}{{ country.name|lower }}.svg" alt="{{ country.1 }}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="item-name hrs-xlarge">{{ country.1 }}
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                {% endfor %}
-                {% endif %}
-                {% else %}
-                {% if contents.2|length > 3 %}
-                {% for vendor in contents.2 %}
-                <div class="menu-column menu-column-three-and-up">
-                    <table class="item" onclick="location.href='/recommend-menu?vendor={{ vendor.0 }}'">
-                        <tr>
-                            <td align="center">
-                                <img src="{% static 'images/' %}hrs-logo.svg" alt="{{ vendor.1 }}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="item-name hrs-xlarge">{{ vendor.1 }}
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                {% endfor %}
-                {% else %}
-                {% for vendor in contents.2 %}
-                <div class="menu-column">
-                    <table class="item" onclick="location.href='/recommend-menu?vendor={{ vendor.0 }}'">
-                        <tr>
-                            <td align="center">
-                                <img src="{% static 'images/' %}hrs-logo.svg" alt="{{ vendor.1 }}">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="item-name hrs-xlarge">{{ vendor.1 }}
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                {% endfor %}
-                {% endif %}
-                {% endif %}
+        <div class="items-container">
+            {% if contents.0 == 1 %}
+            {% for category in contents.2 %}
+            <div class="wine-item">
+                <table class="item" onclick="location.href='/recommend-menu?category={{ category.id }}'">
+                    <tr>
+                        <td align="center">
+                            <img style="max-width: 132px;" src="{% static 'images/' %}{{ category.name|lower }}-wine.svg" alt="{{ category.name }}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="item-name hrs-xlarge">{{ category.name }}
+                        </td>
+                    </tr>
+                </table>
             </div>
+            {% endfor %}
+            {% elif contents.1 == 1 %}
+            {% for country in contents.2 %}
+            <div class="wine-item">
+                <table class="item" onclick="location.href='/recommend-menu?country={{ country.0 }}'">
+                    <tr>
+                        <td align="center">
+                            <img style="max-width: 240px;" src="{% static 'images/' %}{{ country.1|lower }}.svg" alt="{{ country.1 }}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="item-name hrs-xlarge">{{ country.1 }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            {% endfor %}
+            {% else %}
+            {% for vendor in contents.2 %}
+            <div class="wine-item">
+                <table class="item" onclick="location.href='/recommend-menu?vendor={{ vendor.0 }}'">
+                    <tr>
+                        <td align="center">
+                            <img style="max-width: 132px;" src="{% static 'images/' %}hrs-logo.svg" alt="{{ vendor.1 }}">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="item-name hrs-xlarge">{{ vendor.1 }}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            {% endfor %}
+            {% endif %}
         </div>
         {% else %}
         <center>

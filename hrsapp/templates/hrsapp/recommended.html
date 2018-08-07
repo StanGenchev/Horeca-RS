@@ -38,43 +38,28 @@
             <p class="item-name hrs-large">There are no available products!</p>
         </div>
         {% else %}
-        <div class="grid-container">
-            <div class="row">
-                {% for item in contents %}
-                <div class="column" onclick="location.href='/detail?wine={{ item.0 }}'">
-                    <table class="item">
-                        <tr>
-                            <td class="item-name hrs-large" colspan="2">
-                                {{ item.1 }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td valign="bottom">
-                                <img class="item-img" src="{% static 'images/' %}{{ item.4 }}" alt="Wine Photo">
-                            </td>
-                            <td class="item-desc hrs-medium" valign="top">
-                                <p>Producer: <b>{{ item.1 }}</b></p>
-                                <p>Category: <b>{{ item.3 }} Wine</b></p>
-                                <p>Rate: <b>{{ item.5 }}</b></p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" align="center" class="rate-bar">
-                            {% for star in '*****' %}
-                                {% if item.5|toint > forloop.counter %}
-                                <button class="rate-button" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
-                                {% elif item.5|toint == forloop.counter %}
-                                <button class="rate-button" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
-                                {% else %}
-                                <button class="rate-button" type="button" style="background-image: url({% static 'images/star.svg' %});"></button>
-                                {% endif %}
-                            {% endfor %}
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                {% endfor %}
+        <div class="items-container">
+            {% for item in contents %}
+            <div class="wine-item" onclick="location.href='/detail?wine={{ item.0 }}'">
+                <table class="item" align="right">
+                    <tr>
+                        <td class="item-name hrs-large" colspan="2">
+                            {{ item.1 }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="bottom">
+                            <img class="item-img item-img-recommend" src="{% static 'images/' %}{{ item.4 }}" alt="Wine Photo">
+                        </td>
+                        <td class="item-desc hrs-large" valign="top">
+                            <p>Producer: <b>{{ item.1 }}</b></p>
+                            <p>Category: <b>{{ item.3 }} Wine</b></p>
+                            <p>Sim: <b>{{ item.5 }}</b></p>
+                        </td>
+                    </tr>
+                </table>
             </div>
+            {% endfor %}
         </div>
         <div class="pagination">
             {% if contents.has_previous %}

@@ -56,9 +56,15 @@
                 {% endfor %}
                 {% endif %}
             </div>
+            {% if contents.2|length != 0  %}
             <div class="nav-btn" style="border-left: 1px solid #dcdcdb; padding-left: 4px;">
                 <img class="nav-btn-img" src="{% static 'images/recommended.svg' %}" alt="Recommend me" onclick="location.href='/get-recommended'">
             </div>
+            {% else %}
+            <div class="nav-btn" style="border-left: 1px solid #dcdcdb; padding-left: 4px;">
+                <img class="nav-btn-img" src="{% static 'images/recommended-gray.svg' %}" alt="Recommend me" onclick="window.alert('You have no rated products!');">
+            </div>
+            {% endif %}
         </div>
         {% if contents.0 == 0  %}
         <div class="no-products">

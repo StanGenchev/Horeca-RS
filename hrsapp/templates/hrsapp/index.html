@@ -29,34 +29,32 @@
             <button class="hrs-btn" style="float: right; background-image: url({% static 'images/user.svg' %});" onclick=""></button>
         </div>
         <!-- Page Content -->
-        <div class="menu-container" id="index-menu">
-            <div class="row">
-                <div class="menu-column">
-                    <table class="item" onclick="location.href='/grid'">
-                        <tr>
-                            <td align="center">
-                                <img src="{% static 'images/grid.svg' %}" alt="WINE LIST">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="item-name hrs-xlarge">Wines in stock
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="menu-column">
-                    <table class="item" onclick="location.href='/recommend-menu'">
-                        <tr>
-                            <td align="center">
-                                <img src="{% static 'images/recommended.svg' %}" alt="RECOMMEND ME WINE">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="item-name hrs-xlarge">Recommend me wine
-                            </td>
-                        </tr>
-                    </table>
-                </div>
+        <div class="items-container">
+            <div class="wine-item">
+                <table class="item" onclick="location.href='/grid'">
+                    <tr>
+                        <td align="center">
+                            <img src="{% static 'images/grid.svg' %}" alt="WINE LIST">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="item-name hrs-xlarge">Wines in stock
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="wine-item">
+                <table class="item" onclick="location.href='/recommend-menu'">
+                    <tr>
+                        <td align="center">
+                            <img src="{% static 'images/recommended.svg' %}" alt="RECOMMEND ME WINE">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="item-name hrs-xlarge">Recommend me wine
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
         <script src="{% static 'js/shared_functions.js' %}"></script>

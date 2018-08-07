@@ -65,60 +65,64 @@
                 {% endfor %}
                 {% endif %}
             </div>
+            {% if contents.1|length != 0  %}
             <div class="nav-btn" style="border-left: 1px solid #dcdcdb; padding-left: 4px;">
                 <img class="nav-btn-img" src="{% static 'images/recommended.svg' %}" alt="Recommend me" onclick="location.href='/get-recommended'">
             </div>
-        </div>
-        <div class="grid-container">
-            <div class="row">
-                {% for item in contents.0 %}
-                <div class="column">
-                    <table class="item">
-                        <tr onclick="location.href='/detail?wine={{ item.id }}'">
-                            <td class="item-name hrs-large" colspan="2">
-                                {{ item.name }}
-                            </td>
-                        </tr>
-                        <tr onclick="location.href='/detail?wine={{ item.id }}'">
-                            <td valign="bottom">
-                                <img class="item-img" src="{% static 'images/' %}{{ item.photo_path }}" alt="Wine Photo">
-                            </td>
-                            <td class="item-desc hrs-medium" valign="top">
-                                <p>Producer: <b>{{ item.vendor_id }}</b></p>
-                                <p>Country: <b>{{ item.vendor_id.region_id.country_id }}</b></p>
-                                <p>Region: <b>{{ item.vendor_id.region_id }}</b></p>
-                                <p>Category: <b>{{ item.category_id }} Wine</b></p>
-                                <p>Appellation: <b>{{ item.appellation_id }}</b></p>
-                                <p>Description:<br>{{ item.description }}</p>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="2" align="center" class="rate-bar">
-                                {% with r=item.id|getrate:contents.1 %}
-                                    {% if r == 0 %}
-                                        <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', 1)" style="background-image: url({% static 'images/star.svg' %});"></button>
-                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', 2)" style="background-image: url({% static 'images/star.svg' %});"></button>
-                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', 3)" style="background-image: url({% static 'images/star.svg' %});"></button>
-                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', 4)" style="background-image: url({% static 'images/star.svg' %});"></button>
-                                <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', 5)" style="background-image: url({% static 'images/star.svg' %});"></button>
-                                    {% else %}
-                                        {% for star in '*****' %}
-                                            {% if forloop.counter < r %}
-                                            <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', {{ forloop.counter }})" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
-                                            {% elif forloop.counter == r %}
-                                            <button class="{{ item.id }} rate-button" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
-                                            {% else %}
-                                            <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', {{ forloop.counter }})" style="background-image: url({% static 'images/star.svg' %});"></button>
-                                            {% endif %}
-                                        {% endfor %}
-                                    {% endif %}
-                                {% endwith %}
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                {% endfor %}
+            {% else %}
+            <div class="nav-btn" style="border-left: 1px solid #dcdcdb; padding-left: 4px;">
+                <img class="nav-btn-img" src="{% static 'images/recommended-gray.svg' %}" alt="Recommend me" onclick="window.alert('You have no rated products!');">
             </div>
+            {% endif %}
+        </div>
+        <div class="items-container">
+            {% for item in contents.0 %}
+            <div class="wine-item">
+                <table class="item">
+                    <tr onclick="location.href='/detail?wine={{ item.id }}'">
+                        <td class="item-name hrs-large" colspan="2">
+                            {{ item.name }}
+                        </td>
+                    </tr>
+                    <tr onclick="location.href='/detail?wine={{ item.id }}'">
+                        <td valign="bottom">
+                            <img class="item-img" src="{% static 'images/' %}{{ item.photo_path }}" alt="Wine Photo">
+                        </td>
+                        <td class="item-desc hrs-medium" valign="top">
+                            <p>Producer: <b>{{ item.vendor_id }}</b></p>
+                            <p>Country: <b>{{ item.vendor_id.region_id.country_id }}</b></p>
+                            <p>Region: <b>{{ item.vendor_id.region_id }}</b></p>
+                            <p>Category: <b>{{ item.category_id }} Wine</b></p>
+                            <p>Appellation: <b>{{ item.appellation_id }}</b></p>
+                            <p>Description:<br>{{ item.description }}</p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" align="center" class="rate-bar">
+                            {% with r=item.id|getrate:contents.1 %}
+                                {% if r == 0 %}
+                                    <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', 1)" style="background-image: url({% static 'images/star.svg' %});"></button>
+                            <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', 2)" style="background-image: url({% static 'images/star.svg' %});"></button>
+                            <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', 3)" style="background-image: url({% static 'images/star.svg' %});"></button>
+                            <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', 4)" style="background-image: url({% static 'images/star.svg' %});"></button>
+                            <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', 5)" style="background-image: url({% static 'images/star.svg' %});"></button>
+                                {% else %}
+                                    {% for star in '*****' %}
+                                        {% if forloop.counter < r %}
+                                        <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', {{ forloop.counter }})" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
+                                        {% elif forloop.counter == r %}
+                                        <button class="{{ item.id }} rate-button" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
+                                        {% else %}
+                                        <button class="{{ item.id }} rate-button" type="button" onclick="set_rating({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', {{ forloop.counter }})" style="background-image: url({% static 'images/star.svg' %});"></button>
+                                        {% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endwith %}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            {% endfor %}
         </div>
         <div class="pagination">
             {% if contents.0.has_previous %}

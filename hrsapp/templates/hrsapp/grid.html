@@ -38,33 +38,31 @@
             <p class="item-name hrs-large">There are no available products!</p>
         </div>
         {% else %}
-        <div class="grid-container">
-            <div class="row">
-                {% for item in contents %}
-                <div class="column" onclick="location.href='/detail?wine={{ item.product_id.id }}'">
-                    <table class="item">
-                        <tr>
-                            <td class="item-name hrs-large" colspan="2">
-                                {{ item.product_id.name }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td valign="bottom">
-                                <img class="item-img" src="{% static 'images/' %}{{ item.product_id.photo_path }}" alt="Wine Photo">
-                            </td>
-                            <td class="item-desc hrs-medium" valign="top">
-                                <p>Producer: <b>{{ item.product_id.vendor_id }}</b></p>
-                                <p>Country: <b>{{ item.product_id.vendor_id.region_id.country_id }}</b></p>
-                                <p>Region: <b>{{ item.product_id.vendor_id.region_id }}</b></p>
-                                <p>Category: <b>{{ item.product_id.category_id }} Wine</b></p>
-                                <p>Appellation: <b>{{ item.product_id.appellation_id }}</b></p>
-                                <p>Description:<br>{{ item.product_id.description }}</p>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                {% endfor %}
+        <div class="items-container">
+            {% for item in contents %}
+            <div class="wine-item" onclick="location.href='/detail?wine={{ item.product_id.id }}'">
+                <table class="item">
+                    <tr>
+                        <td class="item-name hrs-large" colspan="2">
+                            {{ item.product_id.name }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td valign="bottom">
+                            <img class="item-img" src="{% static 'images/' %}{{ item.product_id.photo_path }}" alt="Wine Photo">
+                        </td>
+                        <td class="item-desc hrs-medium" valign="top">
+                            <p>Producer: <b>{{ item.product_id.vendor_id }}</b></p>
+                            <p>Country: <b>{{ item.product_id.vendor_id.region_id.country_id }}</b></p>
+                            <p>Region: <b>{{ item.product_id.vendor_id.region_id }}</b></p>
+                            <p>Category: <b>{{ item.product_id.category_id }} Wine</b></p>
+                            <p>Appellation: <b>{{ item.product_id.appellation_id }}</b></p>
+                            <p>Description:<br>{{ item.product_id.description }}</p>
+                        </td>
+                    </tr>
+                </table>
             </div>
+            {% endfor %}
         </div>
         <div class="pagination">
             {% if contents.has_previous %}

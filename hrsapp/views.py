@@ -101,7 +101,7 @@ class RecommendView(generic.ListView):
                 category_id = request.session['category']
                 country_id = request.session['country']
                 prods_filtered = Products.objects.filter(category_id_id = category_id, vendor_id_id = int(vendor), vendor_id__region_id__country_id_id = country_id)
-                paginator = Paginator(prods_filtered, 42)
+                paginator = Paginator(prods_filtered, 40)
                 contents = (paginator.page(int(page)), current_rates, country_id)
                 return render(request, self.template_list, {'contents': contents})
             elif rated is not None:
@@ -128,7 +128,7 @@ class RecommendView(generic.ListView):
                         current_rates.insert(0, rated)
                         request.session['rated'] = current_rates
                 prods_filtered = Products.objects.filter(category_id_id = category, vendor_id_id = int(vendor))
-                paginator = Paginator(prods_filtered, 42)
+                paginator = Paginator(prods_filtered, 40)
                 contents = (paginator.page(int(page)), current_rates, country)
                 return render(request, self.template_list, {'contents': contents})
             else:
@@ -196,20 +196,17 @@ class GetRecommendView(generic.ListView):
             for item in u_rates:
                 if item.user_id.id in prod_rate.keys() and item.product_id.id not in id_rates.keys():
                     rate = item.rate * prod_rate[item.user_id.id]
-                    if rate > 1:
+                    if rate >= 1:
                         if item.product_id.id in recommended_prods_raw.keys():
                             recommended_prods_raw[item.product_id.id] = [item.product_id, item.product_id.vendor_id, item.product_id.category_id, item.product_id.photo_path, recommended_prods_raw[item.product_id.id][4] + rate, recommended_prods_raw[item.product_id.id][5] + 1]
                         else:
                             recommended_prods_raw[item.product_id.id] = [item.product_id, item.product_id.vendor_id, item.product_id.category_id, item.product_id.photo_path, rate, 1]
             
             for i in recommended_prods_raw:
-                if recommended_prods_raw[i][5] > 1:
-                    recommended_prods.append([i, recommended_prods_raw[i][0], recommended_prods_raw[i][1], recommended_prods_raw[i][2], recommended_prods_raw[i][3], round(recommended_prods_raw[i][4] / recommended_prods_raw[i][5], 0)])
-            
-            for i in recommended_prods:
-                print(i)
-            
-            paginator = Paginator(recommended_prods, 42)
+                recommended_prods.append([i, recommended_prods_raw[i][0], recommended_prods_raw[i][1], recommended_prods_raw[i][2], recommended_prods_raw[i][3], round(recommended_prods_raw[i][4] / recommended_prods_raw[i][5], 1)])
+            recommended_prods = sorted(recommended_prods, key=lambda x: x[5], reverse=True)
+
+            paginator = Paginator(recommended_prods, 40)
             return render(request, self.template_name, {'contents': paginator.page(int(page))})
 
 class WineView(generic.ListView):
@@ -220,8 +217,16 @@ class WineView(generic.ListView):
             page = request.GET.get('page')
             if page is None:
                 page = 1
-            paginator = Paginator(Inventory.objects.filter(in_stock = True), 42)
+            paginator = Paginator(Inventory.objects.filter(in_stock = True), 40)
             return render(request, self.template_name, {'contents': paginator.page(int(page))})
+
+class GetApp(generic.ListView):
+    def get(self, request, *args, **kwargs):
+        test_file = open('/home/stan/horeca/static/other/horeca-rs.apk', 'rb')
+        response = HttpResponse(content=test_file)
+        response['Content-Type'] = 'application/vnd.android.package-archive'
+        response['Content-Disposition'] = 'attachment; filename="horeca-rs.apk"'
+        return response
 
 class DetailView(generic.ListView):
     template_name = 'hrsapp/detail.html'
