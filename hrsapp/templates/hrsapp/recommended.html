@@ -32,6 +32,11 @@
             <button class="hrs-btn" style="float: right; background-image: url({% static 'images/user.svg' %});" onclick=""></button>
         </div>
         <!-- Page Content -->
+        <div class="navbar">
+            <div class="nav-btn" style="border-right: 1px solid #dcdcdb; padding-right: 4px;">
+                <img class="nav-btn-img" src="{% static 'images/nav-back.svg' %}" alt="Back" onclick="window.history.back()">
+            </div>
+        </div>
         {% if contents|length == 0  %}
         <div class="no-products">
             <img src="{% static 'images/hrs-logo.svg' %}" alt="HoReCa">
@@ -61,6 +66,7 @@
             </div>
             {% endfor %}
         </div>
+        {% if contents.0.number|toint > 1 %}
         <div class="pagination">
             {% if contents.has_previous %}
             <a href="?page={{ contents.previous_page_number }}">&laquo;</a>
@@ -76,6 +82,7 @@
             <a href="?page={{ contents.paginator.num_pages }}">&raquo;</a>
             {% endif %}
         </div>
+        {% endif %}
         {% endif %}
         {% else %}
         <center>

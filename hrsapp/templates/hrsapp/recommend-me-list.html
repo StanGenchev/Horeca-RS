@@ -124,6 +124,7 @@
             </div>
             {% endfor %}
         </div>
+        {% if contents.0.number|toint > 1 %}
         <div class="pagination">
             {% if contents.0.has_previous %}
             <a href="?page={{ contents.0.previous_page_number }}">&laquo;</a>
@@ -139,6 +140,7 @@
             <a href="?page={{ contents.0.paginator.num_pages }}">&raquo;</a>
             {% endif %}
         </div>
+        {% endif %}
         {% endif %}
         {% else %}
         <center>

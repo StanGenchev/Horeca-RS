@@ -607,7 +607,7 @@ a {
     vertical-align: middle;
     line-height: 52px;
     font-size: 32px;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
 
 .hrs-teal a {
@@ -636,5 +636,23 @@ a {
     }
     .user-rates, .expert-rates {
         width: 100%
+    }
+}
+
+@media screen and (max-width: 780px) {
+    .wine-item {
+        width: 100%;
+        border-left: 0px;
+        border-right: 0px;
+        border-bottom: 1px solid #dcdcdb;
+        display: table;
+        text-align: center; 
+        vertical-align: middle;
+    }
+    .item {
+        width: 100%;
+    }
+    .item-small {
+        width: 100%;
     }
 }

@@ -222,11 +222,7 @@ class WineView(generic.ListView):
 
 class GetApp(generic.ListView):
     def get(self, request, *args, **kwargs):
-        test_file = open('/home/stan/horeca/static/other/horeca-rs.apk', 'rb')
-        response = HttpResponse(content=test_file)
-        response['Content-Type'] = 'application/vnd.android.package-archive'
-        response['Content-Disposition'] = 'attachment; filename="horeca-rs.apk"'
-        return response
+        return redirect('http://slav-soft.com/horeca-rs.apk')
 
 class DetailView(generic.ListView):
     template_name = 'hrsapp/detail.html'
