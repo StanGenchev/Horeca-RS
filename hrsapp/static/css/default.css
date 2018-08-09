@@ -132,12 +132,14 @@ h6 {
 a {
     color: inherit;
 }
+
 .item {
-    width: 360px;
+    border-collapse: collapse;
+    width: 100%;
 }
 
 .item-small {
-    width: 280px;
+    width: 100%;
 }
 
 .item-name {
@@ -290,9 +292,9 @@ a {
 	display: table;
     background-color: transparent;
     overflow: auto;
-    width: 95%;
+    width: auto;
     margin: 0 auto;
-    text-align: center; 
+    text-align: left; 
     vertical-align: middle;
     padding-top: 10px;
     padding-bottom: 10px;
@@ -305,6 +307,7 @@ a {
     padding-left: 10px;
     padding-right: 10px;
     margin-bottom: 10px;
+    width: 25%;
 }
 
 .items-container .wine-item {
@@ -624,13 +627,31 @@ a {
     box-shadow: 0 0 6px 3px rgba(0, 0, 0, 0.3);
 }
 
-@media screen and (max-width: 920px) {
-    .items-container {
-        width: 100%;
+@media screen and (min-width: 3996px) {
+    .wine-item {
+        width: 16.6%;
     }
 }
 
-@media screen and (max-width: 800px) {
+@media screen and (min-width: 2560px) {
+    .wine-item {
+        width: 20%;
+    }
+}
+
+@media screen and (max-width: 1280px) {
+    .wine-item {
+        width: 33.3%;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .wine-item {
+        width: 50%;
+    }
+}
+
+@media screen and (max-width: 768px) {
     .item-rates {
         display: block;
     }
@@ -639,7 +660,7 @@ a {
     }
 }
 
-@media screen and (max-width: 780px) {
+@media screen and (max-width: 720px) {
     .wine-item {
         width: 100%;
         border-left: 0px;
@@ -648,11 +669,5 @@ a {
         display: table;
         text-align: center; 
         vertical-align: middle;
-    }
-    .item {
-        width: 100%;
-    }
-    .item-small {
-        width: 100%;
     }
 }

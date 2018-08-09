@@ -230,52 +230,41 @@ class DetailView(generic.ListView):
     def get(self, request, *args, **kwargs):
         if request.method == 'GET':
             wine = request.GET.get('wine')
-            rated = request.GET.get("rated")
-            try:
-                current_rates = request.session['rated']
-            except:
-                current_rates = []
             if wine is not None:
                 item = Products.objects.filter(id=int(wine))
                 item = item[0]
-                in_rates = 0
-                for rate in current_rates:
-                    if int(item.id) == int(rate[0]):
-                        in_rates = rate[4]
-                        break
-                contents = (item, in_rates, current_rates)
-                return render(request, self.template_name, {'contents': contents})
-            elif rated is not None:
-                rated = str(rated).split('<hrs>')
-                rated[0] = int(rated[0])
-                rated[4] = int(rated[4])
-                in_rates = 0
-                change_rate = 0
-                for i, rate in enumerate(current_rates):
-                    if rated[0] == rate[0]:
-                        if rated[4] == rate[4]:
-                            in_rates = 1
-                            break
-                        else:
-                            current_rates[i][4] = rated[4]
-                            request.session['rated'] = current_rates
-                            change_rate = 1
-                            break
-                if in_rates == 0:
-                    if change_rate == 0:
-                        current_rates.insert(0, rated)
-                        request.session['rated'] = current_rates
-                try:
-                    item = Products.objects.filter(id=rated[0])
-                    item = item[0]
-                    in_rates = 0
-                    for rate in current_rates:
-                        if int(item.id) == int(rate[0]):
-                            in_rates = rate[4]
-                            break
-                    contents = (item, in_rates, current_rates)
-                except:
-                    contents = (0, 0, current_rates)
+                
+            prods = Products.objects.filter(category_id_id = item.category_id.id)
+            u_rates = User_rates.objects.all().prefetch_related('product_id').prefetch_related('user_id')
+            
+            user_id_rates = {}
+            for rate in u_rates:
+                if rate.product_id.id in id_rates.keys():
+                    if rate.user_id.id in user_id_rates.keys():
+                        user_id_rates[rate.user_id.id].append({rate.product_id.id: rate.rate})
+                    else:
+                        user_id_rates[rate.user_id.id] = [{rate.product_id.id: rate.rate}]
+
+            """for user in user_id_rates:
+                for item in user_id_rates[user]:
+                    for sitem in item.keys():
+                        if sitem in id_rates.keys():
+                            print([user, {sitem: item[sitem]}])"""
+            #print('\n')
+            numerator = 0
+            denominator1 = 0
+            denominator2 = 0
+            prod_rate = {}
+            for user in sorted(user_id_rates.keys()):
+                for item in user_id_rates[user]:
+                    for key in item:
+                        denominator1 += id_rates[key]
+                        numerator += id_rates[key] * item[key]
+                        denominator2 += item[key]
+                        prod_rate[user] = numerator / (math.sqrt(math.pow(denominator1, 2)) * math.sqrt(math.pow(denominator2, 2)))
+            #print(prod_rate)
+                
+                contents = (item, in_rates, 0)
                 return render(request, self.template_name, {'contents': contents})
             else:
                 return render(request, self.template_name, {'contents': 0})

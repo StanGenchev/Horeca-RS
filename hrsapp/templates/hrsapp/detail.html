@@ -44,7 +44,7 @@
         {% else %}
         <div class="items-container">
             <div class="wine-item" style="border: 0px;">
-                <table class="item">
+                <table class="item detail">
                 <tr>
                     <td class="item-name hrs-xlarge" colspan="2">
                         {{ contents.0.name }}
@@ -78,7 +78,8 @@
                 </tr>
             </table>
             </div>
-            <div class="item-rates">
+        </div>
+        <div class="item-rates">
                 <div class="user-rates">
                     <h1 class="hrs-xlarge">User rates</h1>
                     To be filled.
@@ -88,7 +89,6 @@
                     To be filled.
                 </div>
             </div>
-        </div>
         {% endif %}
         <script src="{% static 'js/shared_functions.js' %}"></script>
     </body>
