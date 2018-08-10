@@ -78,7 +78,7 @@ class RecommendView(generic.ListView):
             if category is not None:
                 request.session['category'] = category
                 category_vendor_countries = []
-                items = Products.objects.filter(category_id_id = int(category))
+                items = Products.objects.filter(category_id_id = int(category)).prefetch_related('vendor_id').prefetch_related('category_id')
                 for item in items:
                     idname = [int(item.vendor_id.region_id.country_id.id), item.vendor_id.region_id.country_id.name]
                     if idname not in category_vendor_countries:
@@ -89,7 +89,7 @@ class RecommendView(generic.ListView):
                 request.session['country'] = country
                 category_id = int(request.session['category'])
                 vendors_filterd = []
-                items = Products.objects.filter(category_id_id = category_id, vendor_id__region_id__country_id_id = country)
+                items = Products.objects.filter(category_id_id = category_id, vendor_id__region_id__country_id_id = country).prefetch_related('vendor_id').prefetch_related('category_id')
                 for item in items:
                     idname = [int(item.vendor_id.id), item.vendor_id.name]
                     if idname not in vendors_filterd:
@@ -100,7 +100,7 @@ class RecommendView(generic.ListView):
                 request.session['vendor'] = vendor
                 category_id = request.session['category']
                 country_id = request.session['country']
-                prods_filtered = Products.objects.filter(category_id_id = category_id, vendor_id_id = int(vendor), vendor_id__region_id__country_id_id = country_id)
+                prods_filtered = Products.objects.filter(category_id_id = category_id, vendor_id_id = int(vendor), vendor_id__region_id__country_id_id = country_id).prefetch_related('vendor_id').prefetch_related('category_id')
                 paginator = Paginator(prods_filtered, 40)
                 contents = (paginator.page(int(page)), current_rates, country_id)
                 return render(request, self.template_list, {'contents': contents})
@@ -127,7 +127,7 @@ class RecommendView(generic.ListView):
                     if change_rate == 0:
                         current_rates.insert(0, rated)
                         request.session['rated'] = current_rates
-                prods_filtered = Products.objects.filter(category_id_id = category, vendor_id_id = int(vendor))
+                prods_filtered = Products.objects.filter(category_id_id = category, vendor_id_id = int(vendor)).prefetch_related('vendor_id').prefetch_related('category_id')
                 paginator = Paginator(prods_filtered, 40)
                 contents = (paginator.page(int(page)), current_rates, country)
                 return render(request, self.template_list, {'contents': contents})
@@ -217,7 +217,7 @@ class WineView(generic.ListView):
             page = request.GET.get('page')
             if page is None:
                 page = 1
-            paginator = Paginator(Inventory.objects.filter(in_stock = True), 40)
+            paginator = Paginator(Inventory.objects.filter(in_stock = True).prefetch_related('product_id'), 40)
             return render(request, self.template_name, {'contents': paginator.page(int(page))})
 
 class GetApp(generic.ListView):
@@ -229,42 +229,36 @@ class DetailView(generic.ListView):
 
     def get(self, request, *args, **kwargs):
         if request.method == 'GET':
-            wine = request.GET.get('wine')
-            if wine is not None:
-                item = Products.objects.filter(id=int(wine))
-                item = item[0]
+            wineid = int(request.GET.get('wine'))
+            if wineid is not None:
+                selected_wine = Products.objects.get(id = wineid)
                 
-            prods = Products.objects.filter(category_id_id = item.category_id.id)
-            u_rates = User_rates.objects.all().prefetch_related('product_id').prefetch_related('user_id')
-            
-            user_id_rates = {}
-            for rate in u_rates:
-                if rate.product_id.id in id_rates.keys():
-                    if rate.user_id.id in user_id_rates.keys():
-                        user_id_rates[rate.user_id.id].append({rate.product_id.id: rate.rate})
-                    else:
-                        user_id_rates[rate.user_id.id] = [{rate.product_id.id: rate.rate}]
+                rates = User_rates.objects.prefetch_related('product_id').prefetch_related('user_id').filter(product_id__category_id = selected_wine.category_id)
+                
+                active_product_rates = rates.filter(product_id_id = selected_wine.id)
+                #active_product_users = active_product_rates.values_list('user_id', flat = True)
 
-            """for user in user_id_rates:
-                for item in user_id_rates[user]:
-                    for sitem in item.keys():
-                        if sitem in id_rates.keys():
-                            print([user, {sitem: item[sitem]}])"""
-            #print('\n')
-            numerator = 0
-            denominator1 = 0
-            denominator2 = 0
-            prod_rate = {}
-            for user in sorted(user_id_rates.keys()):
-                for item in user_id_rates[user]:
-                    for key in item:
-                        denominator1 += id_rates[key]
-                        numerator += id_rates[key] * item[key]
-                        denominator2 += item[key]
-                        prod_rate[user] = numerator / (math.sqrt(math.pow(denominator1, 2)) * math.sqrt(math.pow(denominator2, 2)))
-            #print(prod_rate)
+                user_rates_selected_rates = {}
                 
-                contents = (item, in_rates, 0)
+                numerator = 0
+                denominator1 = 0
+                denominator2 = 0
+                for rate in active_product_rates:
+                    for item in rates.filter(user_id = rate.user_id.id):
+                        if item.product_id.id != item.id:
+                            denominator1 += rate.rate
+                            numerator += rate.rate * item.rate
+                            denominator2 += item.rate
+                            user_rates_selected_rates[item.product_id.id] = [item.product_id.name, item.product_id.vendor_id, item.product_id.photo_path, numerator / (math.sqrt(math.pow(denominator1, 2)) * math.sqrt(math.pow(denominator2, 2)))]
+                
+                user_rates_selected = []
+                
+                for item in user_rates_selected_rates:
+                    user_rates_selected.append([item, user_rates_selected_rates[item][0], user_rates_selected_rates[item][1], user_rates_selected_rates[item][2], user_rates_selected_rates[item][3]])
+                
+                user_rates_selected = sorted(user_rates_selected, key=lambda x: x[4], reverse=True)
+                
+                contents = (selected_wine, 3, user_rates_selected, selected_wine.category_id)
                 return render(request, self.template_name, {'contents': contents})
             else:
                 return render(request, self.template_name, {'contents': 0})

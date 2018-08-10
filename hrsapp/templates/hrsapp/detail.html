@@ -82,7 +82,24 @@
         <div class="item-rates">
                 <div class="user-rates">
                     <h1 class="hrs-xlarge">User rates</h1>
-                    To be filled.
+                    {% for item in contents.2 %}
+                    <table class="item">
+                        <tr>
+                            <td class="item-name hrs-xlarge" colspan="2">
+                                {{ item.1 }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td valign="bottom">
+                                <img style="max-height: 64px;" class="item-img" src="{% static 'images/' %}{{ item.3 }}" alt="Wine Photo">
+                            </td>
+                            <td class="item-desc hrs-large" valign="top">
+                                <p>Producer: <b>{{ item.2 }}</b></p>
+                                <p>Category: <b>{{ contents.3 }} Wine</b></p>
+                            </td>
+                        </tr>
+                    </table>
+                    {% endfor %}
                 </div>
                 <div class="expert-rates">
                     <h1 class="hrs-xlarge">Expert rates</h1>

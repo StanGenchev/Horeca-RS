@@ -66,7 +66,7 @@
             </div>
             {% endfor %}
         </div>
-        {% if contents.0.number|toint > 1 %}
+        {% if contents.paginator.num_pages|toint > 1 %}
         <div class="pagination">
             {% if contents.has_previous %}
             <a href="?page={{ contents.previous_page_number }}">&laquo;</a>

@@ -139,6 +139,7 @@ a {
 }
 
 .item-small {
+    border-collapse: collapse;
     width: 100%;
 }
 
@@ -292,12 +293,11 @@ a {
 	display: table;
     background-color: transparent;
     overflow: auto;
-    width: auto;
+    width: 100%;
     margin: 0 auto;
-    text-align: left; 
+    text-align: center; 
     vertical-align: middle;
     padding-top: 10px;
-    padding-bottom: 10px;
 }
 
 .wine-item {
@@ -308,12 +308,8 @@ a {
     padding-right: 10px;
     margin-bottom: 10px;
     width: 25%;
-}
-
-.items-container .wine-item {
     border-left: 1px solid #dcdcdb;
     border-right: 1px solid #dcdcdb;
-    margin-left: -1px;
 }
 
 .item-img {
@@ -352,11 +348,33 @@ a {
 .user-rates {
     display: inline-block;
     width: 50%;
+    text-align: right;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.user-rates h1 {
+    text-align: center;
+    margin: 0px;
+    margin-bottom: 10px;
+    padding: 12px;
+    border-bottom: 1px solid #dcdcdb;
 }
 
 .expert-rates {
     display: inline-block;
     width: 50%;
+    text-align: left;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.expert-rates h1 {
+    text-align: center;
+    margin: 0px;
+    margin-bottom: 10px;
+    padding: 12px;
+    border-bottom: 1px solid #dcdcdb;
 }
 
 .item-rates table {
@@ -394,7 +412,8 @@ a {
 .pagination {
     display: table;
     margin: 0 auto;
-    margin-bottom: 32px;
+    margin-top: 12px;
+    margin-bottom: 12px;
     width: auto;
 }
 
@@ -656,7 +675,17 @@ a {
         display: block;
     }
     .user-rates, .expert-rates {
-        width: 100%
+        width: 100%;
+        padding: 0px;
+    }
+    .user-rates h1 {
+        border-top: 1px solid #dcdcdb;
+        border-bottom: 1px solid #dcdcdb;
+        background-color: #f2f2f2;
+    }
+    .expert-rates h1 {
+        border-top: 1px solid #dcdcdb;
+        background-color: #f2f2f2;
     }
 }
 
