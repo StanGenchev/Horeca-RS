@@ -13,6 +13,7 @@
         <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon/favicon-16x16.png' %}">
         <link rel="manifest" href="{% static 'images/favicon/site.webmanifest' %}">
         <link rel="mask-icon" href="{% static 'images/favicon/safari-pinned-tab.svg' %}" color="#5bbad5">
+        <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
         <meta name="msapplication-TileColor" content="#da532c">
     </head>
     <body>
@@ -44,8 +45,7 @@
             </div>
             <div class="nav scrollratebar">
                 {% if contents.3|length != 0  %}
-                {% for item in contents.3 %}
-                <div class="main-rate-item">
+                {% for item in contents.3 %}<div class="main-rate-item">
                     <img src="{% static 'images/' %}{{ item.3 }}" alt="Wine Photo" onclick="location.href='/detail?wine={{ item.0 }}'">
                     <div class="rate-item-body" onclick="location.href='/detail?wine={{ item.0 }}'">
                         <p>{{ item.1 }}<br>{{ item.2 }}</p>
@@ -60,8 +60,7 @@
                         </div>
                     </div>
                     <div class="rm-btn" style="background-image: url({% static 'images/remove.svg' %});" onclick="remove_rated({{ item.0 }})"></div>
-                </div>
-                {% endfor %}
+                </div>{% endfor %}
                 {% endif %}
             </div>
             {% if contents.3|length != 0  %}
@@ -77,8 +76,7 @@
         <!-- Page Content -->
         <div class="items-container">
             {% if contents.0 == 1 %}
-            {% for category in contents.2 %}
-            <div class="wine-item">
+            {% for category in contents.2 %}<div class="wine-item">
                 <table class="item" onclick="location.href='/recommend-menu?category={{ category.id }}'">
                     <tr>
                         <td align="center">
@@ -90,11 +88,9 @@
                         </td>
                     </tr>
                 </table>
-            </div>
-            {% endfor %}
+            </div>{% endfor %}
             {% elif contents.1 == 1 %}
-            {% for country in contents.2 %}
-            <div class="wine-item">
+            {% for country in contents.2 %}<div class="wine-item">
                 <table class="item" onclick="location.href='/recommend-menu?country={{ country.0 }}'">
                     <tr>
                         <td align="center">
@@ -106,11 +102,9 @@
                         </td>
                     </tr>
                 </table>
-            </div>
-            {% endfor %}
+            </div>{% endfor %}
             {% else %}
-            {% for vendor in contents.2 %}
-            <div class="wine-item">
+            {% for vendor in contents.2 %}<div class="wine-item">
                 <table class="item" onclick="location.href='/recommend-menu?vendor={{ vendor.0 }}'">
                     <tr>
                         <td align="center">
@@ -122,8 +116,7 @@
                         </td>
                     </tr>
                 </table>
-            </div>
-            {% endfor %}
+            </div>{% endfor %}
             {% endif %}
         </div>
         {% else %}
