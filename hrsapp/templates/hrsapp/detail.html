@@ -76,6 +76,7 @@
         </div>
         <div class="item-rates"><div class="user-rates">
                     <h1 class="hrs-xlarge">User rates</h1>
+                    {% if contents.2|length != 0 %}
                     {% for item in contents.2 %}<header>
                         <p>{{ item.1 }}</p>
                     </header>
@@ -88,8 +89,12 @@
                             <p>Category: {{ contents.4 }} Wine</p>
                         </article>
                     </section>{% endfor %}
+                    {% else %}
+                        <center><p>There are no user rates for this product!</p></center>
+                    {% endif %}
                 </div><div class="expert-rates">
                     <h1 class="hrs-xlarge">Expert rates</h1>
+                    {% if contents.3|length != 0 %}
                     {% for item in contents.3 %}<header>
                         <p>{{ item.1 }}</p>
                     </header>
@@ -102,6 +107,9 @@
                             <p>Category: {{ contents.4 }} Wine</p>
                         </article>
                     </section>{% endfor %}
+                    {% else %}
+                        <center><p>There are no expert rates for this product!</p></center>
+                    {% endif %}
                 </div></div>{% endif %}
         <script src="{% static 'js/shared_functions.js' %}"></script>
     </body>

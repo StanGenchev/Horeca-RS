@@ -41,12 +41,12 @@
         </div>
         {% else %}
         <div class="navbar">
-            <div class="nav-btn" style="border-right: 1px solid #dcdcdb; padding-right: 4px;">
+            <div class="nav-btn" style="border-right: 1px solid #dcdcdb;">
                 <img class="nav-btn-img" src="{% static 'images/nav-back.svg' %}" alt="Back" onclick="location.href='/recommend-menu?country={{ contents.2 }}'">
             </div>
             <div class="nav scrollratebar">
                 {% if contents.1|length != 0  %}
-                {% for item in contents.1 %}<div class="main-rate-item">
+                {% for item in contents.1 %}<div class="main-rate-item hrs-medium">
                     <img src="{% static 'images/' %}{{ item.3 }}" alt="Wine Photo" onclick="location.href='/detail?wine={{ item.0 }}'">
                     <div class="rate-item-body" onclick="location.href='/detail?wine={{ item.0 }}'">
                         <p>{{ item.1 }}<br>{{ item.2 }}</p>
@@ -65,11 +65,11 @@
                 {% endif %}
             </div>
             {% if contents.1|length != 0  %}
-            <div class="nav-btn" style="border-left: 1px solid #dcdcdb; padding-left: 4px;">
+            <div class="nav-btn" style="border-left: 1px solid #dcdcdb;">
                 <img class="nav-btn-img" src="{% static 'images/recommended.svg' %}" alt="Recommend me" onclick="location.href='/get-recommended'">
             </div>
             {% else %}
-            <div class="nav-btn" style="border-left: 1px solid #dcdcdb; padding-left: 4px;">
+            <div class="nav-btn" style="border-left: 1px solid #dcdcdb;">
                 <img class="nav-btn-img" src="{% static 'images/recommended-gray.svg' %}" alt="Recommend me" onclick="window.alert('You have no rated products!');">
             </div>
             {% endif %}

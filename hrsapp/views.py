@@ -252,11 +252,11 @@ class DetailView(generic.ListView):
                     active_item_user_rates[0] += rate.rate
                     active_item_user_rates[1] += 1
                     for item in u_rates.filter(user_id = rate.user_id.id):
-                        #if item.product_id.id != item.id:
-                        denominator1 += rate.rate
-                        numerator += rate.rate * item.rate
-                        denominator2 += item.rate
-                        user_rates_selected_rates[item.product_id.id] = [item.product_id.name, item.product_id.vendor_id, item.product_id.photo_path, numerator / (math.sqrt(math.pow(denominator1, 2)) * math.sqrt(math.pow(denominator2, 2)))]
+                        if item.product_id.id != selected_wine.id:
+                            denominator1 += rate.rate
+                            numerator += rate.rate * item.rate
+                            denominator2 += item.rate
+                            user_rates_selected_rates[item.product_id.id] = [item.product_id.name, item.product_id.vendor_id, item.product_id.photo_path, numerator / (math.sqrt(math.pow(denominator1, 2)) * math.sqrt(math.pow(denominator2, 2)))]
 
                 numerator = 0
                 denominator1 = 0
@@ -267,11 +267,11 @@ class DetailView(generic.ListView):
                     active_item_expert_rates[0] += rate.rate
                     active_item_expert_rates[1] += 1
                     for item in e_rates.filter(expert_id = rate.expert_id.id):
-                        #if item.product_id.id != item.id:
-                        denominator1 += rate.rate
-                        numerator += rate.rate * item.rate
-                        denominator2 += item.rate
-                        expert_rates_selected_rates[item.product_id.id] = [item.product_id.name, item.product_id.vendor_id, item.product_id.photo_path, numerator / (math.sqrt(math.pow(denominator1, 2)) * math.sqrt(math.pow(denominator2, 2)))]
+                        if item.product_id.id != selected_wine.id:
+                            denominator1 += rate.rate
+                            numerator += rate.rate * item.rate
+                            denominator2 += item.rate
+                            expert_rates_selected_rates[item.product_id.id] = [item.product_id.name, item.product_id.vendor_id, item.product_id.photo_path, numerator / (math.sqrt(math.pow(denominator1, 2)) * math.sqrt(math.pow(denominator2, 2)))]
                 
                 user_rates_selected = []
                 expert_rates_selected = []

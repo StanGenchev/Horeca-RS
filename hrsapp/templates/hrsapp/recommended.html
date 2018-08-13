@@ -46,23 +46,19 @@
         {% else %}
         <div class="items-container">
             {% for item in contents %}<div class="hrs-item" onclick="location.href='/detail?wine={{ item.0 }}'">
-                <table class="item" align="right">
-                    <tr>
-                        <td class="item-name hrs-large" colspan="2">
-                            {{ item.1 }}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td valign="bottom">
-                            <img class="item-img" style="height: 128px;" src="{% static 'images/' %}{{ item.4 }}" alt="Wine Photo">
-                        </td>
-                        <td class="item-desc hrs-large" valign="top">
-                            <p>Producer: <b>{{ item.1 }}</b></p>
-                            <p>Category: <b>{{ item.3 }} Wine</b></p>
-                            <p>Sim: <b>{{ item.5 }}</b></p>
-                        </td>
-                    </tr>
-                </table>
+                <header>
+                    <p>{{ item.1 }}</p>
+                </header>
+                <section>
+                    <nav>
+                        <img class="item-img" style="height: 128px;" src="{% static 'images/' %}{{ item.4 }}" alt="Wine Photo">
+                    </nav>
+                    <article>
+                        <p>Producer: <b>{{ item.1 }}</b></p>
+                        <p>Category: <b>{{ item.3 }} Wine</b></p>
+                        <p>Sim: <b>{{ item.5 }}</b></p>
+                    </article>
+                </section>
             </div>{% endfor %}
         </div>
         {% if contents.paginator.num_pages|toint > 1 %}
