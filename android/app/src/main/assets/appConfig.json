@@ -244,7 +244,7 @@
     "iosSidebarTextColor": "#333333",
     "androidStatusBarBackgroundColor": "#DE2737",
     "androidHeaderImage": "https://gonativeio.s3.amazonaws.com/uploads/2j7yd90wktp8a_1533221813353.png",
-    "customCSS": ".hrs-teal {\n\tdisplay: none;\n}"
+    "customCSS": ".hrs-teal {\n\tdisplay: none;\n}\n.navbar {\n\tmargin-top: 8px;\n}"
   },
   "forms": {
     "interceptForms": {

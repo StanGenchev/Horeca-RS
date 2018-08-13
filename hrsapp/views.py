@@ -38,6 +38,9 @@ class RequestsHandler(generic.ListView):
                 current_rates = request.session['rated']
             except:
                 current_rates = []
+            if "?rated=" in url:
+                    url = url.split("?rated=")
+                    url = url[0] + "?vendor=" + request.session['vendor']
             if rmrate is not None:
                 in_rates = 0
                 change_rate = 0
