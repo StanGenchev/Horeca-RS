@@ -233,32 +233,61 @@ class DetailView(generic.ListView):
             if wineid is not None:
                 selected_wine = Products.objects.get(id = wineid)
                 
-                rates = User_rates.objects.prefetch_related('product_id').prefetch_related('user_id').filter(product_id__category_id = selected_wine.category_id)
+                u_rates = User_rates.objects.prefetch_related('product_id').prefetch_related('user_id').filter(product_id__category_id = selected_wine.category_id)
+                e_rates = Expert_rates.objects.prefetch_related('product_id').prefetch_related('expert_id').filter(product_id__category_id = selected_wine.category_id)
                 
-                active_product_rates = rates.filter(product_id_id = selected_wine.id)
-                #active_product_users = active_product_rates.values_list('user_id', flat = True)
+                active_product_user_rates = u_rates.filter(product_id_id = selected_wine.id)
+                active_product_expert_rates = e_rates.filter(product_id_id = selected_wine.id)
+                #active_product_users = active_product_user_rates.values_list('user_id', flat = True)
 
                 user_rates_selected_rates = {}
+                expert_rates_selected_rates = {}
                 
                 numerator = 0
                 denominator1 = 0
                 denominator2 = 0
-                for rate in active_product_rates:
-                    for item in rates.filter(user_id = rate.user_id.id):
-                        if item.product_id.id != item.id:
-                            denominator1 += rate.rate
-                            numerator += rate.rate * item.rate
-                            denominator2 += item.rate
-                            user_rates_selected_rates[item.product_id.id] = [item.product_id.name, item.product_id.vendor_id, item.product_id.photo_path, numerator / (math.sqrt(math.pow(denominator1, 2)) * math.sqrt(math.pow(denominator2, 2)))]
+                active_item_user_rates = [0, 0]
+                
+                for rate in active_product_user_rates:
+                    active_item_user_rates[0] += rate.rate
+                    active_item_user_rates[1] += 1
+                    for item in u_rates.filter(user_id = rate.user_id.id):
+                        #if item.product_id.id != item.id:
+                        denominator1 += rate.rate
+                        numerator += rate.rate * item.rate
+                        denominator2 += item.rate
+                        user_rates_selected_rates[item.product_id.id] = [item.product_id.name, item.product_id.vendor_id, item.product_id.photo_path, numerator / (math.sqrt(math.pow(denominator1, 2)) * math.sqrt(math.pow(denominator2, 2)))]
+
+                numerator = 0
+                denominator1 = 0
+                denominator2 = 0
+                active_item_expert_rates = [0, 0]
+                
+                for rate in active_product_expert_rates:
+                    active_item_expert_rates[0] += rate.rate
+                    active_item_expert_rates[1] += 1
+                    for item in e_rates.filter(expert_id = rate.expert_id.id):
+                        #if item.product_id.id != item.id:
+                        denominator1 += rate.rate
+                        numerator += rate.rate * item.rate
+                        denominator2 += item.rate
+                        expert_rates_selected_rates[item.product_id.id] = [item.product_id.name, item.product_id.vendor_id, item.product_id.photo_path, numerator / (math.sqrt(math.pow(denominator1, 2)) * math.sqrt(math.pow(denominator2, 2)))]
                 
                 user_rates_selected = []
+                expert_rates_selected = []
                 
                 for item in user_rates_selected_rates:
                     user_rates_selected.append([item, user_rates_selected_rates[item][0], user_rates_selected_rates[item][1], user_rates_selected_rates[item][2], user_rates_selected_rates[item][3]])
+
+                for item in expert_rates_selected_rates:
+                    expert_rates_selected.append([item, expert_rates_selected_rates[item][0], expert_rates_selected_rates[item][1], expert_rates_selected_rates[item][2], expert_rates_selected_rates[item][3]])
                 
                 user_rates_selected = sorted(user_rates_selected, key=lambda x: x[4], reverse=True)
+                expert_rates_selected = sorted(expert_rates_selected, key=lambda x: x[4], reverse=True)
                 
-                contents = (selected_wine, 3, user_rates_selected, selected_wine.category_id)
+                active_item_avg_rate = math.ceil((active_item_user_rates[0]/active_item_user_rates[1] + active_item_expert_rates[0]/active_item_expert_rates[1])/2)
+                
+                contents = (selected_wine, active_item_avg_rate, user_rates_selected, expert_rates_selected, selected_wine.category_id)
                 return render(request, self.template_name, {'contents': contents})
             else:
                 return render(request, self.template_name, {'contents': 0})

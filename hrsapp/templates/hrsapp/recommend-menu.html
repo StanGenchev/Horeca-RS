@@ -34,7 +34,7 @@
         </div>
         <!-- Page Navigation -->
         <div class="navbar">
-            <div class="nav-btn" style="border-right: 1px solid #dcdcdb; padding-right: 4px;">
+            <div class="nav-btn" style="border-right: 1px solid #dcdcdb;">
                 {% if contents.0 == 1 and contents.1 == 0 %}
                 <img class="nav-btn-img" src="{% static 'images/nav-back.svg' %}" alt="Back" onclick="location.href='/{{ contents.4 }}'">
                 {% elif contents.0 == 0 and contents.1 == 1 %}
@@ -45,7 +45,7 @@
             </div>
             <div class="nav scrollratebar">
                 {% if contents.3|length != 0  %}
-                {% for item in contents.3 %}<div class="main-rate-item">
+                {% for item in contents.3 %}<div class="main-rate-item hrs-medium">
                     <img src="{% static 'images/' %}{{ item.3 }}" alt="Wine Photo" onclick="location.href='/detail?wine={{ item.0 }}'">
                     <div class="rate-item-body" onclick="location.href='/detail?wine={{ item.0 }}'">
                         <p>{{ item.1 }}<br>{{ item.2 }}</p>
@@ -64,7 +64,7 @@
                 {% endif %}
             </div>
             {% if contents.3|length != 0  %}
-            <div class="nav-btn" style="border-left: 1px solid #dcdcdb; padding-left: 4px;">
+            <div class="nav-btn" style="border-left: 1px solid #dcdcdb;">
                 <img class="nav-btn-img" src="{% static 'images/recommended.svg' %}" alt="Recommend me" onclick="location.href='/get-recommended'">
             </div>
             {% else %}
@@ -76,46 +76,31 @@
         <!-- Page Content -->
         <div class="items-container">
             {% if contents.0 == 1 %}
-            {% for category in contents.2 %}<div class="wine-item">
-                <table class="item" onclick="location.href='/recommend-menu?category={{ category.id }}'">
-                    <tr>
-                        <td align="center">
-                            <img style="width: 132px;" src="{% static 'images/' %}{{ category.name|lower }}-wine.svg" alt="{{ category.name }}">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="item-name hrs-xlarge">{{ category.name }}
-                        </td>
-                    </tr>
-                </table>
+            {% for category in contents.2 %}<div class="hrs-item" onclick="location.href='/recommend-menu?category={{ category.id }}'">
+                <header>
+                    <img style="width: 132px;" src="{% static 'images/' %}{{ category.name|lower }}-wine.svg" alt="{{ category.name }}">
+                </header>
+                <footer>
+                    <p class="hrs-xlarge">{{ category.name }}</p>
+                </footer>
             </div>{% endfor %}
             {% elif contents.1 == 1 %}
-            {% for country in contents.2 %}<div class="wine-item">
-                <table class="item" onclick="location.href='/recommend-menu?country={{ country.0 }}'">
-                    <tr>
-                        <td align="center">
-                            <img style="width: 240px;" src="{% static 'images/' %}{{ country.1|lower }}.svg" alt="{{ country.1 }}">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="item-name hrs-xlarge">{{ country.1 }}
-                        </td>
-                    </tr>
-                </table>
+            {% for country in contents.2 %}<div class="hrs-item" onclick="location.href='/recommend-menu?country={{ country.0 }}'">
+                <header>
+                    <img style="width: 240px;" src="{% static 'images/' %}{{ country.1|lower }}.svg" alt="{{ country.1 }}">
+                </header>
+                <footer>
+                    <p class="hrs-xlarge">{{ country.1 }}</p>
+                </footer>
             </div>{% endfor %}
             {% else %}
-            {% for vendor in contents.2 %}<div class="wine-item">
-                <table class="item" onclick="location.href='/recommend-menu?vendor={{ vendor.0 }}'">
-                    <tr>
-                        <td align="center">
-                            <img style="width: 132px;" src="{% static 'images/' %}hrs-logo.svg" alt="{{ vendor.1 }}">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="item-name hrs-xlarge">{{ vendor.1 }}
-                        </td>
-                    </tr>
-                </table>
+            {% for vendor in contents.2 %}<div class="hrs-item" onclick="location.href='/recommend-menu?vendor={{ vendor.0 }}'">
+                <header>
+                    <img style="width: 132px;" src="{% static 'images/' %}hrs-logo.svg" alt="{{ vendor.1 }}">
+                </header>
+                <footer>
+                    <p class="hrs-xlarge">{{ vendor.1 }}</p>
+                </footer>
             </div>{% endfor %}
             {% endif %}
         </div>

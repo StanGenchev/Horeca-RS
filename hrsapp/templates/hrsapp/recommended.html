@@ -45,7 +45,7 @@
         </div>
         {% else %}
         <div class="items-container">
-            {% for item in contents %}<div class="wine-item" onclick="location.href='/detail?wine={{ item.0 }}'">
+            {% for item in contents %}<div class="hrs-item" onclick="location.href='/detail?wine={{ item.0 }}'">
                 <table class="item" align="right">
                     <tr>
                         <td class="item-name hrs-large" colspan="2">
@@ -54,7 +54,7 @@
                     </tr>
                     <tr>
                         <td valign="bottom">
-                            <img class="item-img item-img-recommend" src="{% static 'images/' %}{{ item.4 }}" alt="Wine Photo">
+                            <img class="item-img" style="height: 128px;" src="{% static 'images/' %}{{ item.4 }}" alt="Wine Photo">
                         </td>
                         <td class="item-desc hrs-large" valign="top">
                             <p>Producer: <b>{{ item.1 }}</b></p>

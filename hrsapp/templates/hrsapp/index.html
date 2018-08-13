@@ -31,31 +31,20 @@
         </div>
         <!-- Page Content -->
         <div class="items-container">
-            <div class="wine-item">
-                <table class="item" onclick="location.href='/grid'">
-                    <tr>
-                        <td align="center">
-                            <img style="width: 132px;" src="{% static 'images/grid.svg' %}" alt="WINE LIST">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="item-name hrs-xlarge">Wines in stock
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="wine-item">
-                <table class="item" onclick="location.href='/recommend-menu'">
-                    <tr>
-                        <td align="center">
-                            <img style="width: 132px;" src="{% static 'images/recommended.svg' %}" alt="RECOMMEND ME WINE">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="item-name hrs-xlarge">Recommend me wine
-                        </td>
-                    </tr>
-                </table>
+            <div class="hrs-item" onclick="location.href='/grid'">
+                <header>
+                    <img style="width: 132px;" src="{% static 'images/grid.svg' %}" alt="WINE LIST">
+                </header>
+                <footer>
+                    <p class="hrs-xlarge">Wines in stock</p>
+                </footer>
+            </div><div class="hrs-item" onclick="location.href='/recommend-menu'">
+                <header>
+                    <img style="width: 132px;" src="{% static 'images/recommended.svg' %}" alt="RECOMMEND ME WINE">
+                </header>
+                <footer>
+                    <p class="hrs-xlarge">Recommend me wine</p>
+                </footer>
             </div>
         </div>
         <script src="{% static 'js/shared_functions.js' %}"></script>

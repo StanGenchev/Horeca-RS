@@ -22,22 +22,6 @@ body {
     margin: 0;
 }
 
-audio,
-canvas,
-progress,
-video {
-    display: inline-block;
-}
-
-progress {
-    vertical-align: baseline;
-}
-
-audio:not([controls]) {
-    display: none;
-    height: 0;
-}
-
 [hidden],
 template {
     display: none;
@@ -173,34 +157,6 @@ footer {
     text-align: center;
     color: black;
 }
-
-.item {
-    display: table;
-    border-collapse: collapse;
-    width: 100%;
-    margin: 0 0 0 0;
-    padding: 0 0 0 0;
-}
-
-.item-name {
-    font-weight: bold;
-    text-align: center;
-    height: 32px;
-}
-
-.item-desc {
-    font-weight: normal;
-    color: #2d2d2d;
-    padding-left: 16px;
-    white-space: normal;
-    width: 100%;
-}
-
-.item-desc p {
-    margin: 0px;
-    margin-top: 6px;
-}
-
 .no-products {
     display: table;
     margin: 0 auto;
@@ -219,8 +175,8 @@ footer {
 
 .rm-btn {
     display: inline-block;
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     margin-left: 6px;
     margin-top: 2px;
     vertical-align: top;
@@ -231,13 +187,16 @@ footer {
 
 .nav-btn {
     display: block;
+    vertical-align: middle;
+    height: auto;
+    width: auto;
 }
 
 .nav-btn-img {
     cursor: pointer;
+    min-height: 48px;
     height: 100%;
-    width: 52px;
-    height: 52px;
+    width: 48px;
     border: none;
     vertical-align: middle;
 }
@@ -258,10 +217,10 @@ footer {
     display: -ms-flex;
     display: -o-flex;
     display: flex;
-    padding-left: 6px;
-    padding-right: 6px;
     border-bottom: 1px solid #dcdcdb;
     padding-bottom: 5px;
+    vertical-align: middle;
+    text-align: left;
 }
 
 .nav {
@@ -335,21 +294,23 @@ footer {
     overflow: auto;
     width: 100%;
     margin: 0 auto;
+    margin-left: 1px;
     text-align: center; 
     vertical-align: middle;
     border: none;
     padding-top: 10px;
 }
 
-.wine-item {
+.hrs-item {
     display: inline-block;
     text-align: center;
+    vertical-align: top;
     cursor: pointer;
     padding-left: 10px;
     padding-right: 10px;
     margin-bottom: 10px;
     margin-top: 0px;
-    margin-left: 0px;
+    margin-left: -1px;
     margin-right: 0px;
     width: 25%;
     border-left: 1px solid #dcdcdb;
@@ -364,10 +325,6 @@ footer {
     height: 224px;
     width: auto;
     border-radius: 6px;
-}
-
-.item-img-recommend {
-    height: 128px;
 }
 
 .item-rates {
@@ -425,14 +382,6 @@ footer {
     border-bottom: 1px solid #dcdcdb;
 }
 
-.column a:link {
-    text-decoration: none;
-}
-
-.column a:visited {
-    text-decoration: none;
-}
-
 .empty {
     display: table;
     margin-top: 15%;
@@ -479,16 +428,6 @@ footer {
     top: 0;
 }
 
-.product-image-box {
-    margin-top: 16px;
-    width: 100%;
-    min-height: 192px;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
-    border-radius: 6px;
-}
-
 .rate-button {
     border: none;
     background-color: transparent;
@@ -500,10 +439,10 @@ footer {
 }
 
 .rate-button-small {
-    min-height: 22px;
-    min-width: 22px;
-    max-height: 22px;
-    max-width: 22px;
+    min-height: 20px;
+    min-width: 20px;
+    max-height: 20px;
+    max-width: 20px;
 }
 
 .hrs-btn,
@@ -632,11 +571,11 @@ footer {
 }
 
 .hrs-medium {
-    font-size: 15px!important
+    font-size: 14px!important
 }
 
 .hrs-large {
-    font-size: 17px!important
+    font-size: 18px!important
 }
 
 .hrs-xlarge {
@@ -680,26 +619,20 @@ footer {
     box-shadow: 0 0 6px 3px rgba(0, 0, 0, 0.3);
 }
 
-@media screen and (min-width: 3996px) {
-    .wine-item {
-        width: 16.6%;
-    }
-}
-
 @media screen and (min-width: 2560px) {
-    .wine-item {
+    .hrs-item {
         width: 20%;
     }
 }
 
 @media screen and (max-width: 1280px) {
-    .wine-item {
+    .hrs-item {
         width: 33.3%;
     }
 }
 
 @media screen and (max-width: 1024px) {
-    .wine-item {
+    .hrs-item {
         width: 50%;
     }
 }
@@ -727,7 +660,7 @@ footer {
 }
 
 @media screen and (max-width: 720px) {
-    .wine-item {
+    .hrs-item {
         width: 100%;
         border-left: 0px;
         border-right: 0px;

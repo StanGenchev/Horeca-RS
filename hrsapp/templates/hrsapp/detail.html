@@ -44,7 +44,7 @@
         </div>
         {% else %}
         <div class="items-container">
-            <div class="wine-item" style="border: 0px;">
+            <div class="hrs-item" style="border: 0px;">
                 <header>
                     <p class="hrs-xlarge">{{ contents.0.name }}</p>
                 </header>
@@ -74,8 +74,7 @@
                 </footer>
             </div>
         </div>
-        <div class="item-rates">
-                <div class="user-rates">
+        <div class="item-rates"><div class="user-rates">
                     <h1 class="hrs-xlarge">User rates</h1>
                     {% for item in contents.2 %}<header>
                         <p>{{ item.1 }}</p>
@@ -86,13 +85,12 @@
                         </nav>
                         <article>
                             <p>Producer: {{ item.2 }}</p>
-                            <p>Category: {{ contents.3 }} Wine</p>
+                            <p>Category: {{ contents.4 }} Wine</p>
                         </article>
                     </section>{% endfor %}
-                </div>
-                <div class="expert-rates">
+                </div><div class="expert-rates">
                     <h1 class="hrs-xlarge">Expert rates</h1>
-                    {% for item in contents.2 %}<header>
+                    {% for item in contents.3 %}<header>
                         <p>{{ item.1 }}</p>
                     </header>
                     <section>
@@ -101,12 +99,10 @@
                         </nav>
                         <article>
                             <p>Producer: {{ item.2 }}</p>
-                            <p>Category: {{ contents.3 }} Wine</p>
+                            <p>Category: {{ contents.4 }} Wine</p>
                         </article>
                     </section>{% endfor %}
-                </div>
-            </div>
-        {% endif %}
+                </div></div>{% endif %}
         <script src="{% static 'js/shared_functions.js' %}"></script>
     </body>
 </html>
