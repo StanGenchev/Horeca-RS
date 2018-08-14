@@ -333,10 +333,19 @@ footer {
     overflow: auto;
     width: auto;
     margin: 0 auto;
+    padding: 0px;
     text-align: center; 
     vertical-align: top;
     border: none;
-    padding-top: 10px;
+}
+
+.item-rates h1 {
+    width: 100%;
+    vertical-align: top;
+    padding-bottom: 10px;
+    text-align: center;
+    margin: 0px;
+    border-bottom: 1px solid #dcdcdb;
 }
 
 .user-img {
@@ -357,10 +366,10 @@ footer {
     border-right: 1px solid #dcdcdb;
 }
 
-.user-rates h1 {
+.user-rates h2 {
     text-align: center;
     margin: 0px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     padding: 12px;
     border-bottom: 1px solid #dcdcdb;
 }
@@ -370,14 +379,16 @@ footer {
     width: 50%;
     text-align: left;
     vertical-align: top;
+    margin-left: -1px;
     padding-left: 10px;
     padding-right: 10px;
+    border-left: 1px solid #dcdcdb;
 }
 
-.expert-rates h1 {
+.expert-rates h2 {
     text-align: center;
     margin: 0px;
-    margin-bottom: 10px;
+    margin-bottom: 12px;
     padding: 12px;
     border-bottom: 1px solid #dcdcdb;
 }
@@ -582,6 +593,10 @@ footer {
     font-size: 24px!important
 }
 
+.hrs-mxlarge {
+    font-size: 28px!important
+}
+
 .hrs-xxlarge {
     font-size: 36px!important
 }
@@ -645,17 +660,20 @@ footer {
     .user-rates, .expert-rates {
         width: 100%;
         padding: 0px;
+        border-left: 0px;
+        border-right: 0px;
     }
     
-    .user-rates h1 {
+    .user-rates h2 {
         border-top: 1px solid #dcdcdb;
         border-bottom: 1px solid #dcdcdb;
         background-color: #f2f2f2;
     }
     
-    .expert-rates h1 {
+    .expert-rates h2 {
         border-top: 1px solid #dcdcdb;
         background-color: #f2f2f2;
+        margin-left: 0px;
     }
 }
 
