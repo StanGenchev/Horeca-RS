@@ -151,6 +151,7 @@ class GetRecommendView(generic.ListView):
                 current_rates = request.session['rated']
             except:
                 current_rates = []
+
             if page is None:
                 page = 1
             
@@ -158,15 +159,13 @@ class GetRecommendView(generic.ListView):
             u_rates = User_rates.objects.all().prefetch_related('product_id').prefetch_related('user_id')
             
             id_rates = {}
+
             for rate in current_rates:
                 if prods.filter(product_id_id = rate[0]).exists():
                     id_rates[rate[0]] = rate[4]
             
-            #print('\nID_RATES:\n')
-            #print(id_rates)
-            #print('\nUSER_ID:\n') 
-            
             user_id_rates = {}
+
             for rate in u_rates:
                 if rate.product_id.id in id_rates.keys():
                     if rate.user_id.id in user_id_rates.keys():
@@ -174,12 +173,6 @@ class GetRecommendView(generic.ListView):
                     else:
                         user_id_rates[rate.user_id.id] = [{rate.product_id.id: rate.rate}]
 
-            """for user in user_id_rates:
-                for item in user_id_rates[user]:
-                    for sitem in item.keys():
-                        if sitem in id_rates.keys():
-                            print([user, {sitem: item[sitem]}])"""
-            #print('\n')
             numerator = 0
             denominator1 = 0
             denominator2 = 0
@@ -191,8 +184,7 @@ class GetRecommendView(generic.ListView):
                         numerator += id_rates[key] * item[key]
                         denominator2 += item[key]
                         prod_rate[user] = numerator / (math.sqrt(math.pow(denominator1, 2)) * math.sqrt(math.pow(denominator2, 2)))
-            #print(prod_rate)
-            
+
             recommended_prods_raw = {}
             recommended_prods = []
             
@@ -261,6 +253,17 @@ class DetailView(generic.ListView):
                             denominator2 += item.rate
                             user_rates_selected_rates[item.product_id.id] = [item.product_id.name, item.product_id.vendor_id, item.product_id.photo_path, numerator / (math.sqrt(math.pow(denominator1, 2)) * math.sqrt(math.pow(denominator2, 2)))]
 
+                user_sililar_prods_raw = {}
+
+                for item in u_rates:
+                    if item.user_id.id in user_rates_selected_rates.keys():
+                        rate = item.rate * user_rates_selected_rates[item.user_id.id][3]
+                        if rate >= 1:
+                            if item.product_id.id in user_sililar_prods_raw.keys():
+                                user_sililar_prods_raw[item.product_id.id] = [item.product_id, item.product_id.vendor_id, item.product_id.category_id, item.product_id.photo_path, user_sililar_prods_raw[item.product_id.id][4] + rate, user_sililar_prods_raw[item.product_id.id][5] + 1]
+                            else:
+                                user_sililar_prods_raw[item.product_id.id] = [item.product_id, item.product_id.vendor_id, item.product_id.category_id, item.product_id.photo_path, rate, 1]
+
                 numerator = 0
                 denominator1 = 0
                 denominator2 = 0
@@ -276,21 +279,32 @@ class DetailView(generic.ListView):
                             denominator2 += item.rate
                             expert_rates_selected_rates[item.product_id.id] = [item.product_id.name, item.product_id.vendor_id, item.product_id.photo_path, numerator / (math.sqrt(math.pow(denominator1, 2)) * math.sqrt(math.pow(denominator2, 2)))]
                 
-                user_rates_selected = []
-                expert_rates_selected = []
-                
-                for item in user_rates_selected_rates:
-                    user_rates_selected.append([item, user_rates_selected_rates[item][0], user_rates_selected_rates[item][1], user_rates_selected_rates[item][2], user_rates_selected_rates[item][3]])
+                expert_sililar_prods_raw = {}
 
-                for item in expert_rates_selected_rates:
-                    expert_rates_selected.append([item, expert_rates_selected_rates[item][0], expert_rates_selected_rates[item][1], expert_rates_selected_rates[item][2], expert_rates_selected_rates[item][3]])
+                for item in u_rates:
+                    if item.user_id.id in expert_rates_selected_rates.keys():
+                        rate = item.rate * expert_rates_selected_rates[item.user_id.id][3]
+                        if rate >= 1:
+                            if item.product_id.id in expert_sililar_prods_raw.keys():
+                                expert_sililar_prods_raw[item.product_id.id] = [item.product_id, item.product_id.vendor_id, item.product_id.category_id, item.product_id.photo_path, expert_sililar_prods_raw[item.product_id.id][4] + rate, expert_sililar_prods_raw[item.product_id.id][5] + 1]
+                            else:
+                                expert_sililar_prods_raw[item.product_id.id] = [item.product_id, item.product_id.vendor_id, item.product_id.category_id, item.product_id.photo_path, rate, 1]
+
+                user_sililar_prods = []
+                expert_sililar_prods = []
                 
-                user_rates_selected = sorted(user_rates_selected, key=lambda x: x[4], reverse=True)
-                expert_rates_selected = sorted(expert_rates_selected, key=lambda x: x[4], reverse=True)
+                for item in user_sililar_prods_raw:
+                    user_sililar_prods.append([item, user_sililar_prods_raw[item][0], user_sililar_prods_raw[item][1], user_sililar_prods_raw[item][2], user_sililar_prods_raw[item][3], round(user_sililar_prods_raw[item][4] / user_sililar_prods_raw[item][5], 1)])
+
+                for item in expert_sililar_prods_raw:
+                    expert_sililar_prods.append([item, expert_sililar_prods_raw[item][0], expert_sililar_prods_raw[item][1], expert_sililar_prods_raw[item][2], expert_sililar_prods_raw[item][3], round(expert_sililar_prods_raw[item][4] / expert_sililar_prods_raw[item][5], 1)])
+                
+                user_sililar_prods = sorted(user_sililar_prods, key=lambda x: x[5], reverse=True)
+                expert_sililar_prods = sorted(expert_sililar_prods, key=lambda x: x[5], reverse=True)
                 
                 active_item_avg_rate = math.ceil((active_item_user_rates[0]/active_item_user_rates[1] + active_item_expert_rates[0]/active_item_expert_rates[1])/2)
                 
-                contents = (selected_wine, active_item_avg_rate, user_rates_selected, expert_rates_selected, selected_wine.category_id)
+                contents = (selected_wine, active_item_avg_rate, user_sililar_prods, expert_sililar_prods, selected_wine.category_id)
                 return render(request, self.template_name, {'contents': contents})
             else:
                 return render(request, self.template_name, {'contents': 0})
