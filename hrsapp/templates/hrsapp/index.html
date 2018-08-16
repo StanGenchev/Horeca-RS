@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>HoReCa Recommender System</title>
+        <title>Wine Recommendation System</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#f95463">
         <link rel="stylesheet" href="{% static 'css/default.css' %}">
@@ -25,7 +25,7 @@
         </div>
         <!-- Page Header -->
         <div class="hrs-teal hrs-teal-shadow stick">
-            <a href="/">HORECA</a>
+            <a href="/">Wine HRS</a>
             <button class="hrs-btn" style="float: left; background-image: url({% static 'images/menu.svg' %});" onclick="hrs_open()"></button>
             <button class="hrs-btn" style="float: right; background-image: url({% static 'images/user.svg' %});" onclick=""></button>
         </div>
@@ -36,7 +36,7 @@
                     <img style="width: 132px;" src="{% static 'images/grid.svg' %}" alt="WINE LIST">
                 </header>
                 <footer>
-                    <p class="hrs-xlarge">Wines in stock</p>
+                    <p class="hrs-xlarge">Wine List</p>
                 </footer>
             </div><div class="hrs-item" onclick="location.href='/recommend-menu'">
                 <header>
