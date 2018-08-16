@@ -52,6 +52,7 @@
                     <nav>
                         <img class="item-img" src="{% static 'images/' %}{{ contents.0.photo_path }}" alt="Wine Photo">
                     </nav>
+                    <section>
                     <article>
                         <p>Producer: <b>{{ contents.0.vendor_id }}</b></p>
                         <p>Country: <b>{{ contents.0.vendor_id.region_id.country_id }}</b></p>
@@ -60,17 +61,44 @@
                         <p>Appellation: <b>{{ contents.0.appellation_id }}</b></p>
                         <p>Description:<br>{{ contents.0.description }}</p>
                     </article>
+                    <article>
+                        <p>Body: <b>{{ contents.4.0 }} / 5</b></p>
+                        <p>Alcohol: <b>{{ contents.4.1 }} / 5</b></p>
+                        <p>Tannin: <b>{{ contents.4.2 }} / 5</b></p>
+                        <p>Acidity: <b>{{ contents.4.3 }} / 5</b></p>
+                        <p>Sweetness: <b>{{ contents.4.4 }} / 5</b></p>
+                    </article>
+                    </section>
                 </section>
                 <footer>
+                    <header>
+                        <p class="hrs-large">User Rating:</p>
+                    </header>
+                    <footer>
                     {% for star in '*****' %}
-                        {% if contents.1|toint > forloop.counter %}
+                        {% if contents.1.0|toint > forloop.counter %}
                         <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
-                        {% elif contents.1|toint == forloop.counter %}
+                        {% elif contents.1.0|toint == forloop.counter %}
                         <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
                         {% else %}
                         <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star.svg' %});"></button>
                         {% endif %}
                     {% endfor %}
+                    </footer>
+                    <header>
+                        <p class="hrs-large">Expert Rating:</p>
+                    </header>
+                    <footer>
+                    {% for star in '*****' %}
+                        {% if contents.1.1|toint > forloop.counter %}
+                        <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
+                        {% elif contents.1.1|toint == forloop.counter %}
+                        <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
+                        {% else %}
+                        <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star.svg' %});"></button>
+                        {% endif %}
+                    {% endfor %}
+                    </footer>
                 </footer>
             </div>
         </div>

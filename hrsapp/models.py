@@ -153,7 +153,7 @@ class Expert_product_characteristic(models.Model):
     characteristic_values = models.IntegerField(default = 0)
     
     def __str__(self):
-        return self.characteristic_value_id
+        return self.c_header_id
 
     class Meta:
       db_table = "expert_product_characteristic"

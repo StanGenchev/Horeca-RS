@@ -227,6 +227,31 @@ class DetailView(generic.ListView):
             wineid = int(request.GET.get('wine'))
             if wineid is not None:
                 selected_wine = Products.objects.get(id = wineid)
+                prod_chars = Expert_product_characteristic.objects.filter(product_id_id = wineid)
+                
+                prod_chars_list = [0, 0, 0, 0, 0, 0]
+                
+                for char in prod_chars:
+                    if char.c_header_id.id == 1:
+                        prod_chars_list[0] += char.characteristic_values
+                    elif char.c_header_id.id == 2:
+                        prod_chars_list[1] += char.characteristic_values
+                    elif char.c_header_id.id == 3:
+                        prod_chars_list[2] += char.characteristic_values
+                    elif char.c_header_id.id == 4:
+                        prod_chars_list[3] += char.characteristic_values
+                    else:
+                        prod_chars_list[4] += char.characteristic_values
+                    prod_chars_list[5] += 1
+                
+                prod_chars_list[5] = prod_chars_list[5]/5
+                
+                for char in prod_chars_list:
+                    prod_chars_list[0] = int(prod_chars_list[0]/prod_chars_list[5])
+                    prod_chars_list[1] = int(prod_chars_list[1]/prod_chars_list[5])
+                    prod_chars_list[2] = int(prod_chars_list[2]/prod_chars_list[5])
+                    prod_chars_list[3] = int(prod_chars_list[3]/prod_chars_list[5])
+                    prod_chars_list[4] = int(prod_chars_list[4]/prod_chars_list[5])
                 
                 u_rates = User_rates.objects.prefetch_related('product_id').prefetch_related('user_id').filter(product_id__category_id = selected_wine.category_id)
                 e_rates = Expert_rates.objects.prefetch_related('product_id').prefetch_related('expert_id').filter(product_id__category_id = selected_wine.category_id)
@@ -311,10 +336,14 @@ class DetailView(generic.ListView):
                 
                 user_sililar_prods = sorted(user_sililar_prods, key=lambda x: x[5], reverse=True)
                 expert_sililar_prods = sorted(expert_sililar_prods, key=lambda x: x[5], reverse=True)
+                if len(user_sililar_prods) > 30:
+                    user_sililar_prods = user_sililar_prods[:30]
+                if len(expert_sililar_prods) > 30:
+                    expert_sililar_prods = expert_sililar_prods[:30]
                 
-                active_item_avg_rate = math.ceil((active_item_user_rates[0]/active_item_user_rates[1] + active_item_expert_rates[0]/active_item_expert_rates[1])/2)
+                active_item_avg_rate = [math.ceil(active_item_user_rates[0]/active_item_user_rates[1]), math.ceil(active_item_expert_rates[0]/active_item_expert_rates[1])]
                 
-                contents = (selected_wine, active_item_avg_rate, user_sililar_prods[:30], expert_sililar_prods[:30], selected_wine.category_id)
+                contents = (selected_wine, active_item_avg_rate, user_sililar_prods, expert_sililar_prods, prod_chars_list)
                 return render(request, self.template_name, {'contents': contents})
             else:
                 return render(request, self.template_name, {'contents': 0})

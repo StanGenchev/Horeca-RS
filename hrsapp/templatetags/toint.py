@@ -4,4 +4,4 @@ register = template.Library()
 
 @register.filter(name='toint')
 def toint(item):
-  return int(item)
+    return int(item)
