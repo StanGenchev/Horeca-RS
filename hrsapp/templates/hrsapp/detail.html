@@ -44,15 +44,12 @@
         </div>
         {% else %}
         <div class="items-container">
+            <p class="hrs-xlarge" style="margin-bottom: 6px;"><b>{{ contents.0.name }}</b></p>
             <div class="hrs-item" style="border: 0px;">
-                <header>
-                    <p class="hrs-xlarge">{{ contents.0.name }}</p>
-                </header>
                 <section>
                     <nav>
                         <img class="item-img" src="{% static 'images/' %}{{ contents.0.photo_path }}" alt="Wine Photo">
                     </nav>
-                    <section>
                     <article>
                         <p>Producer: <b>{{ contents.0.vendor_id }}</b></p>
                         <p>Country: <b>{{ contents.0.vendor_id.region_id.country_id }}</b></p>
@@ -61,16 +58,8 @@
                         <p>Appellation: <b>{{ contents.0.appellation_id }}</b></p>
                         <p>Description:<br>{{ contents.0.description }}</p>
                     </article>
-                    <article>
-                        <p>Body: <b>{{ contents.4.0 }} / 5</b></p>
-                        <p>Alcohol: <b>{{ contents.4.1 }} / 5</b></p>
-                        <p>Tannin: <b>{{ contents.4.2 }} / 5</b></p>
-                        <p>Acidity: <b>{{ contents.4.3 }} / 5</b></p>
-                        <p>Sweetness: <b>{{ contents.4.4 }} / 5</b></p>
-                    </article>
-                    </section>
                 </section>
-                <footer>
+                <footer class="mobile-view">
                     <header>
                         <p class="hrs-large">User Rating:</p>
                     </header>
@@ -85,6 +74,21 @@
                         {% endif %}
                     {% endfor %}
                     </footer>
+                </footer>
+            </div>
+            <h2 class="mobile-view-title hrs-xlarge">Characteristics:</h2>
+            <div class="hrs-item" style="border: 0px;">
+                <section style="text-align: center; display: table; margin: 0 auto; width: auto;">
+                    <article>
+                        <p class="desktop-view-title"><b>Characteristics:</b></p>
+                        <p>Body: <b>{{ contents.4.0 }} / 5</b></p>
+                        <p>Alcohol: <b>{{ contents.4.1 }} / 5</b></p>
+                        <p>Tannin: <b>{{ contents.4.2 }} / 5</b></p>
+                        <p>Acidity: <b>{{ contents.4.3 }} / 5</b></p>
+                        <p>Sweetness: <b>{{ contents.4.4 }} / 5</b></p>
+                    </article>
+                </section>
+                <footer class="mobile-view">
                     <header>
                         <p class="hrs-large">Expert Rating:</p>
                     </header>
@@ -101,6 +105,42 @@
                     </footer>
                 </footer>
             </div>
+            <section class="desktop-view">
+                <div class="items-container">
+                    <div class="hrs-item" style="border: 0px;">
+                        <header>
+                            <p class="hrs-large">User Rating:</p>
+                        </header>
+                        <footer>
+                        {% for star in '*****' %}
+                            {% if contents.1.0|toint > forloop.counter %}
+                            <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
+                            {% elif contents.1.0|toint == forloop.counter %}
+                            <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
+                            {% else %}
+                            <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star.svg' %});"></button>
+                            {% endif %}
+                        {% endfor %}
+                        </footer>
+                    </div>
+                    <div class="hrs-item" style="border: 0px;">
+                        <header>
+                            <p class="hrs-large">Expert Rating:</p>
+                        </header>
+                        <footer>
+                        {% for star in '*****' %}
+                            {% if contents.1.1|toint > forloop.counter %}
+                            <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
+                            {% elif contents.1.1|toint == forloop.counter %}
+                            <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
+                            {% else %}
+                            <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star.svg' %});"></button>
+                            {% endif %}
+                        {% endfor %}
+                        </footer>
+                    </div>
+                </div>
+            </section>
         </div>
         <div class="item-rates"><h1 class="hrs-mxlarge">Similar Products</h1>
                     <div class="user-rates">
