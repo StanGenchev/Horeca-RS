@@ -263,6 +263,11 @@ class DetailView(generic.ListView):
                                 user_sililar_prods_raw[item.product_id.id] = [item.product_id, item.product_id.vendor_id, item.product_id.category_id, item.product_id.photo_path, user_sililar_prods_raw[item.product_id.id][4] + rate, user_sililar_prods_raw[item.product_id.id][5] + 1]
                             else:
                                 user_sililar_prods_raw[item.product_id.id] = [item.product_id, item.product_id.vendor_id, item.product_id.category_id, item.product_id.photo_path, rate, 1]
+                        else:
+                            if item.product_id.id in user_sililar_prods_raw.keys():
+                                user_sililar_prods_raw[item.product_id.id] = [item.product_id, item.product_id.vendor_id, item.product_id.category_id, item.product_id.photo_path, user_sililar_prods_raw[item.product_id.id][4] + 1, user_sililar_prods_raw[item.product_id.id][5] + 1]
+                            else:
+                                user_sililar_prods_raw[item.product_id.id] = [item.product_id, item.product_id.vendor_id, item.product_id.category_id, item.product_id.photo_path, 1, 1]
 
                 numerator = 0
                 denominator1 = 0
@@ -289,6 +294,11 @@ class DetailView(generic.ListView):
                                 expert_sililar_prods_raw[item.product_id.id] = [item.product_id, item.product_id.vendor_id, item.product_id.category_id, item.product_id.photo_path, expert_sililar_prods_raw[item.product_id.id][4] + rate, expert_sililar_prods_raw[item.product_id.id][5] + 1]
                             else:
                                 expert_sililar_prods_raw[item.product_id.id] = [item.product_id, item.product_id.vendor_id, item.product_id.category_id, item.product_id.photo_path, rate, 1]
+                        else:
+                            if item.product_id.id in expert_sililar_prods_raw.keys():
+                                expert_sililar_prods_raw[item.product_id.id] = [item.product_id, item.product_id.vendor_id, item.product_id.category_id, item.product_id.photo_path, expert_sililar_prods_raw[item.product_id.id][4] + 1, expert_sililar_prods_raw[item.product_id.id][5] + 1]
+                            else:
+                                expert_sililar_prods_raw[item.product_id.id] = [item.product_id, item.product_id.vendor_id, item.product_id.category_id, item.product_id.photo_path, 1, 1]
 
                 user_sililar_prods = []
                 expert_sililar_prods = []
@@ -304,7 +314,7 @@ class DetailView(generic.ListView):
                 
                 active_item_avg_rate = math.ceil((active_item_user_rates[0]/active_item_user_rates[1] + active_item_expert_rates[0]/active_item_expert_rates[1])/2)
                 
-                contents = (selected_wine, active_item_avg_rate, user_sililar_prods, expert_sililar_prods, selected_wine.category_id)
+                contents = (selected_wine, active_item_avg_rate, user_sililar_prods[:30], expert_sililar_prods[:30], selected_wine.category_id)
                 return render(request, self.template_name, {'contents': contents})
             else:
                 return render(request, self.template_name, {'contents': 0})
