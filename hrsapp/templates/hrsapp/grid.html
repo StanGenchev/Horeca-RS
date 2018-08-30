@@ -4,7 +4,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>HoReCa Recommender System | Products</title>
+        <title>Wine Recommendation System</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="theme-color" content="#f95463">
         <link rel="stylesheet" href="{% static 'css/default.css' %}">
@@ -13,6 +13,7 @@
         <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon/favicon-16x16.png' %}">
         <link rel="manifest" href="{% static 'images/favicon/site.webmanifest' %}">
         <link rel="mask-icon" href="{% static 'images/favicon/safari-pinned-tab.svg' %}" color="#5bbad5">
+        <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
         <meta name="msapplication-TileColor" content="#da532c">
     </head>
     <body>
@@ -27,7 +28,7 @@
         </div>
         <!-- Page Header -->
         <div class="hrs-teal hrs-teal-shadow stick">
-            <a href="/">HORECA</a>
+            <a href="/">Wine HRS</a>
             <button class="hrs-btn" style="float: left; background-image: url({% static 'images/menu.svg' %});" onclick="hrs_open()"></button>
             <button class="hrs-btn" style="float: right; background-image: url({% static 'images/user.svg' %});" onclick=""></button>
         </div>
@@ -38,34 +39,32 @@
             <p class="item-name hrs-large">There are no available products!</p>
         </div>
         {% else %}
-        <div class="grid-container">
-            <div class="row">
-                {% for item in contents %}
-                <div class="column" onclick="location.href='/detail?wine={{ item.product_id.id }}'">
-                    <table class="item">
-                        <tr>
-                            <td class="item-name hrs-large" colspan="2">
-                                {{ item.product_id.name }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td valign="bottom">
-                                <img class="item-img" src="{% static 'images/' %}{{ item.product_id.photo_path }}" alt="Wine Photo">
-                            </td>
-                            <td class="item-desc hrs-medium" valign="top">
-                                <p>Producer: <b>{{ item.product_id.vendor_id }}</b></p>
-                                <p>Country: <b>{{ item.product_id.vendor_id.region_id.country_id }}</b></p>
-                                <p>Region: <b>{{ item.product_id.vendor_id.region_id }}</b></p>
-                                <p>Category: <b>{{ item.product_id.category_id }} Wine</b></p>
-                                <p>Appellation: <b>{{ item.product_id.appellation_id }}</b></p>
-                                <p>Description:<br>{{ item.product_id.description }}</p>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                {% endfor %}
+        <div class="navbar">
+            <div class="nav-btn" style="border-right: 1px solid #dcdcdb; padding-right: 4px;">
+                <img class="nav-btn-img" src="{% static 'images/nav-back.svg' %}" alt="Back" onclick="window.history.back()">
             </div>
         </div>
+        <div class="items-container">
+            {% for item in contents %}<div class="hrs-item" onclick="location.href='/detail?wine={{ item.product_id.id }}'">
+                <header>
+                    <p class="hrs-large">{{ item.product_id.name }}</p>
+                </header>
+                <section>
+                    <nav>
+                        <img class="item-img" src="{% static 'images/' %}{{ item.product_id.photo_path }}" alt="Wine Photo">
+                    </nav>
+                    <article>
+                        <p>Producer: <b>{{ item.product_id.vendor_id }}</b></p>
+                        <p>Country: <b>{{ item.product_id.vendor_id.region_id.country_id }}</b></p>
+                        <p>Region: <b>{{ item.product_id.vendor_id.region_id }}</b></p>
+                        <p>Category: <b>{{ item.product_id.category_id }} Wine</b></p>
+                        <p>Appellation: <b>{{ item.product_id.appellation_id }}</b></p>
+                        <p>Description:<br>{{ item.product_id.description }}</p>
+                    </article>
+                </section>
+            </div>{% endfor %}
+        </div>
+        {% if contents.paginator.num_pages|toint > 1 %}
         <div class="pagination">
             {% if contents.has_previous %}
             <a href="?page={{ contents.previous_page_number }}">&laquo;</a>
@@ -81,6 +80,7 @@
             <a href="?page={{ contents.paginator.num_pages }}">&raquo;</a>
             {% endif %}
         </div>
+        {% endif %}
         {% endif %}
         {% else %}
         <center>

@@ -7,9 +7,6 @@ class Appellation(models.Model):
     def __str__(self):
         return self.name
 
-    def get_name(self):
-        return self.name
-
     class Meta:
       db_table = "appellation"
 
@@ -20,12 +17,6 @@ class Categories(models.Model):
     def __str__(self):
         return self.name
 
-    def get_name(self):
-        return self.name
-
-    def get_description(self):
-        return self.description
-
     class Meta:
       db_table = "categories"
 
@@ -33,9 +24,6 @@ class Countries(models.Model):
     name = models.TextField()
     
     def __str__(self):
-        return self.name
-
-    def get_name(self):
         return self.name
 
     class Meta:
@@ -48,9 +36,6 @@ class Regions(models.Model):
     def __str__(self):
         return self.name
 
-    def get_name(self):
-        return self.name
-
     class Meta:
       db_table = "regions"
 
@@ -61,12 +46,6 @@ class Vendors(models.Model):
     
     def __str__(self):
         return self.name
-
-    def get_name(self):
-        return self.name
-
-    def get_description(self):
-        return self.description
 
     class Meta:
       db_table = "vendors"
@@ -82,15 +61,6 @@ class Products(models.Model):
     def __str__(self):
         return self.name
 
-    def get_name(self):
-        return self.name
-
-    def get_description(self):
-        return self.description
-
-    def get_photo(self):
-        return self.photo_path
-
     class Meta:
       db_table = "products"
 
@@ -102,19 +72,6 @@ class Users(models.Model):
     
     def __str__(self):
         return self.email
-    
-    def full_name(self):
-        """Returns the person's full name."""
-        return '%s %s' % (self.first_name, self.last_name)
-    
-    def get_first_name(self):
-        return self.first_name
-    
-    def get_last_name(self):
-        return self.last_name
-    
-    def get_avatar(self):
-        return self.avatar
     
     class Meta:
       db_table = "users"
@@ -128,12 +85,6 @@ class User_rates(models.Model):
     def __str__(self):
         return self.rate
 
-    def get_rate(self):
-        return self.rate
-
-    def get_comment(self):
-        return self.comment
-
     class Meta:
       db_table = "user_rates"
 
@@ -146,18 +97,6 @@ class Experts(models.Model):
     def __str__(self):
         return self.email
     
-    def full_name(self):
-        return '%s %s' % (self.first_name, self.last_name)
-    
-    def get_first_name(self):
-        return self.first_name
-    
-    def get_last_name(self):
-        return self.last_name
-    
-    def get_avatar(self):
-        return self.avatar
-    
     class Meta:
       db_table = "experts"
 
@@ -169,12 +108,6 @@ class Expert_rates(models.Model):
     
     def __str__(self):
         return self.rate
-
-    def get_rate(self):
-        return self.rate
-
-    def get_comment(self):
-        return self.comment
 
     class Meta:
       db_table = "expert_rates"
@@ -199,12 +132,6 @@ class Characteristics_headers(models.Model):
     def __str__(self):
         return self.name
 
-    def get_name(self):
-        return self.name
-
-    def get_description(self):
-        return self.description
-
     class Meta:
       db_table = "characteristics_headers"
 
@@ -216,12 +143,6 @@ class Characteristics_values(models.Model):
     def __str__(self):
         return self.name
 
-    def get_name(self):
-        return self.name
-
-    def get_value(self):
-        return self.value
-
     class Meta:
       db_table = "characteristics_values"
 
@@ -232,7 +153,7 @@ class Expert_product_characteristic(models.Model):
     characteristic_values = models.IntegerField(default = 0)
     
     def __str__(self):
-        return self.characteristic_value_id
+        return self.c_header_id
 
     class Meta:
       db_table = "expert_product_characteristic"
