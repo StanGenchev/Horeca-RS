@@ -10,7 +10,7 @@ If your server is running Debian/Ubuntu:
 sudo apt install python3-pip python3-dev libpq-dev postgresql postgresql-contrib nginx
 ```
 
-If your server is running CentOS/RedHAt/Fedora:
+If your server is running CentOS/RedHat/Fedora:
 
 ```bash
 sudo yum install python3-pip python3-devel postgresql-libs postgresql postgresql-contrib nginx
