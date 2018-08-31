@@ -1,0 +1,10 @@
+.
+*.py linguist-language=Python
+*.css linguist-language=CSS
+*.css linguist-language=CSS
+*.sh linguist-language=Shell
+*.js linguist-language=Javascript
+*.jar linguist-language=Java
+*.apk linguist-language=Java
+*.m linguist-language=Objective-C
+*.h linguist-language=Objective-C
