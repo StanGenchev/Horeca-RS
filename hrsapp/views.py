@@ -8,6 +8,7 @@ from django.contrib.sessions.models import Session
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.db import connection
+from render_block import render_block_to_string
 
 from .models import Appellation
 from .models import Categories
@@ -56,14 +57,12 @@ class RequestsHandler(generic.ListView):
                 return redirect(url)
 
 class IndexView(generic.ListView):
-    template_name = 'hrsapp/index.html'
-
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name)
+        return render(request, 'hrsapp/partials/home-content.html')
 
 class RecommendView(generic.ListView):
-    template_menu = 'hrsapp/recommend-menu.html'
-    template_list = 'hrsapp/recommend-me-list.html'
+    template_menu = 'hrsapp/partials/recommend-menu.html'
+    template_list = 'hrsapp/partials/recommend-me-list.html'
 
     def get(self, request, *args, **kwargs):
         if request.method == 'GET':
@@ -142,7 +141,7 @@ class RecommendView(generic.ListView):
                 return render(request, self.template_menu, {'contents': contents})
 
 class GetRecommendView(generic.ListView):
-    template_name = 'hrsapp/recommended.html'
+    template_name = 'hrsapp/partials/recommended.html'
 
     def get(self, request, *args, **kwargs):
         if request.method == 'GET':
@@ -205,22 +204,29 @@ class GetRecommendView(generic.ListView):
             return render(request, self.template_name, {'contents': paginator.page(int(page))})
 
 class WineView(generic.ListView):
-    template_name = 'hrsapp/grid.html'
-
     def get(self, request, *args, **kwargs):
         if request.method == 'GET':
-            page = request.GET.get('page')
-            if page is None:
-                page = 1
+            page = request.GET.get('page', 1)
+            minimal = request.GET.get('return', None)
+
             paginator = Paginator(Inventory.objects.filter(in_stock = True).prefetch_related('product_id'), 40)
-            return render(request, self.template_name, {'contents': paginator.page(int(page))})
+            try:
+                content = paginator.page(page)
+            except PageNotAnInteger:
+                content = paginator.page(1)
+            except EmptyPage:
+                content = paginator.page(paginator.num_pages)
+
+            if not minimal:
+                return render(request, 'hrsapp/partials/grid.html', {'contents': content})
+            return HttpResponse(render_block_to_string('hrsapp/partials/grid.html', 'content', {'contents': content}))
 
 class GetApp(generic.ListView):
     def get(self, request, *args, **kwargs):
         return redirect('http://slav-soft.com/horeca-rs.apk')
 
 class DetailView(generic.ListView):
-    template_name = 'hrsapp/detail.html'
+    template_name = 'hrsapp/partials/detail.html'
 
     def get(self, request, *args, **kwargs):
         if request.method == 'GET':
