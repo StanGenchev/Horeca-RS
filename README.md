@@ -16,12 +16,6 @@ If your server is running CentOS/RedHat/Fedora:
 sudo yum install python3-pip python3-devel postgresql-libs postgresql postgresql-contrib nginx
 ```
 
-or
-
-```bash
-sudo dnf install python3-pip python3-devel postgresql-libs postgresql postgresql-contrib nginx
-```
-
 ## Clone the repo
 
 ```bash
@@ -50,7 +44,7 @@ mkdir ~/horeca
 cd ~/horeca
 virtualenv horeca
 source horeca/bin/activate
-pip install django gunicorn psycopg2-binary
+pip install django==2.1.4 django-render-block==0.5 gunicorn=19.7.1 psycopg2-binary==2.7.6.1
 cp -r $HOME/Horeca-RS/* $HOME/horeca
 ```
 

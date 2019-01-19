@@ -3,20 +3,16 @@
 {% block title %}Wine Recommendation System{% endblock %}
 {% block javascript %}{% endblock %}
 {% block content %}
-<div class="itemsWrapper grid centerItems animateContent">
-   <a class="item" href="/grid">
+<div class="gridContainer menuItems animateContent">
+   <a class="gridItem" href="/grid">
       <div class="imgContainer"><img src="{% static 'images/grid.svg' %}"
             alt="Wine List" onerror="this.onerror=null;this.src='';" /></div>
-      <div class="details">
-        <p class="title">Wine List</p>
-      </div>
+      <h1 class="title">Wine List</h1>
    </a>
-   <a class="item" href="/recommend-menu">
+   <a class="gridItem" href="/recommend-menu">
       <div class="imgContainer"><img src="{% static 'images/recommended.svg' %}"
             alt="Recommend me" onerror="this.onerror=null;this.src='';" /></div>
-      <div class="details">
-        <p class="title">Recommend me wine</p>
-      </div>
+      <h1 class="title">Recommend me wine</h1>
    </a>
 </div>
 {% endblock %}

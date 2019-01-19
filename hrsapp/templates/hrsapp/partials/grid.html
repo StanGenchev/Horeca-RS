@@ -14,49 +14,49 @@
 <div class="topBar">
    {% include "hrsapp/partials/svg/arrow-back.html" %}
 </div>
-<div class="itemsWrapper grid animateContent">
-   {% for item in contents %}
-   <a class="item" href="/detail?wine={{ item.product_id.id }}">
-      <h1 class="title">{{ item.product_id.name }}</h1>
-      <div class="detailsContainer">
-        <div class="imgContainer"><img src="{% static 'images/' %}{{ item.product_id.photo_path }}"
-              alt="Wine Picture" onerror="this.onerror=null;this.src='';" /></div>
-        <div class="details">
-           <table>
-              <tr>
-                 <td>Producer:</td>
-                 <td>{{ item.product_id.vendor_id }}</td>
-              </tr>
-              <tr>
-                 <td>Country:</td>
-                 <td>{{ item.product_id.vendor_id.region_id.country_id }}</td>
-              </tr>
-              <tr>
-                 <td>Region:</td>
-                 <td>{{ item.product_id.vendor_id.region_id }}</td>
-              </tr>
-              <tr>
-                 <td>Category:</td>
-                 <td>{{ item.product_id.category_id }} Wine</td>
-              </tr>
-              <tr>
-                 <td>Appellation:</td>
-                 <td>{{ item.product_id.appellation_id }}</td>
-              </tr>
-              <tr>
-                 <td>Description:</td>
-                 <td>{{ item.product_id.description }}</td>
-              </tr>
-           </table>
-        </div>
+<div class="gridContainer animateContent">
+  {% for item in contents %}
+  <a class="gridItem" href="/detail?wine={{ item.product_id.id }}">
+    <h1 class="title">{{ item.product_id.name }}</h1>
+    <div class="detailsContainer">
+      <div class="imgContainer"><img src="{% static 'images/' %}{{ item.product_id.photo_path }}"
+            alt="Wine Picture" onerror="this.onerror=null;this.src='';" /></div>
+      <div class="details">
+         <table>
+            <tr>
+               <td>Producer:</td>
+               <td>{{ item.product_id.vendor_id }}</td>
+            </tr>
+            <tr>
+               <td>Country:</td>
+               <td>{{ item.product_id.vendor_id.region_id.country_id }}</td>
+            </tr>
+            <tr>
+               <td>Region:</td>
+               <td>{{ item.product_id.vendor_id.region_id }}</td>
+            </tr>
+            <tr>
+               <td>Category:</td>
+               <td>{{ item.product_id.category_id }} Wine</td>
+            </tr>
+            <tr>
+               <td>Appellation:</td>
+               <td>{{ item.product_id.appellation_id }}</td>
+            </tr>
+            <tr>
+               <td>Description:</td>
+               <td>{{ item.product_id.description }}</td>
+            </tr>
+         </table>
       </div>
-   </a>
-   {% endfor %}
+    </div>
+  </a>
+  {% endfor %}
 </div>
 {% if contents.has_next %}
 <div class="infinite-more" style="display:none" data-val="?page={{ contents.next_page_number }}&return=minimal"></div>
 <div class="loader">
-  <div class="loaderRing topspace"></div>
+  <div class="loaderRing"></div>
   <p>Loading more...</p>
 </div>
 <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
