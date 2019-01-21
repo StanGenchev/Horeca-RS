@@ -203,13 +203,12 @@ body {
 .mainContentBox {
 	margin: 0;
 	text-align: center;
-	padding: 0;
-	padding-top: 48px;
+	padding: 48px 0;
 	height: auto;
 	background-color: white;
 }
 
-#mainContent {
+.mainContent {
 	height: 100%;
 	margin: 0;
 	padding: 0;
@@ -310,7 +309,8 @@ body {
 .loader {
 	display: none;
 	font-size: 20px;
-	margin: 48px auto;
+	margin: auto;
+	margin-top: 48px;
 	z-index: 0;
 }
 
@@ -342,7 +342,7 @@ body {
 .pagination a {
   color: black;
   float: left;
-  padding: 8px 16px;
+  padding: 8px 12px;
   text-decoration: none;
   border-radius: 3px;
 }

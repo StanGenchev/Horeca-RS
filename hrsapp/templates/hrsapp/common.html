@@ -15,7 +15,7 @@
     <link rel="manifest" href="{% static 'images/favicon/site.webmanifest' %}">
     <link rel="mask-icon" href="{% static 'images/favicon/safari-pinned-tab.svg' %}" color="#5bbad5">
     <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="{% static 'js/common.js' %}"></script>
     {% block javascript %}{% endblock %}
   </head>
@@ -29,7 +29,7 @@
     <section class="mainView">
     {% include "hrsapp/partials/side-panel.html" %}
       <section class="mainContentBox">
-        <article id="mainContent">
+        <article class="mainContent">
           {% block content %}{% endblock %}
         </article>
       </section>

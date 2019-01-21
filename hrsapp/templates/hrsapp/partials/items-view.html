@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% load toint %}
 {% load range %}
-{% block title %}Wine Recommendation System | Wine Grid{% endblock %}
+{% block title %}Wine Recommendation System | Wine List{% endblock %}
 {% block javascript %}{% endblock %}
 {% block content %}
 {% if contents and contents|length == 0  %}
@@ -54,15 +54,6 @@
   </a>
   {% endfor %}
 </div>
-{% if contents.has_next %}
-<div class="infinite-more" style="display:none" data-val="?page={{ contents.next_page_number }}&return=minimal"></div>
-<div class="loader">
-  <div class="loaderRing"></div>
-  <p>Loading more...</p>
-</div>
-<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
-<script src="{% static 'js/infinite.scroll.min.js' %}"></script>
-{% endif %}
 {% if contents.paginator.num_pages|toint > 1 %}
 <div class="pagination">
    {% if contents.has_previous %}
@@ -79,6 +70,15 @@
    <a href="?page={{ contents.paginator.num_pages }}">&raquo;</a>
    {% endif %}
 </div>
+{% endif %}
+{% if contents.has_next %}
+<div class="infinite-more" style="display:none" data-val="?page={{ contents.next_page_number }}&return=minimal"></div>
+<div class="loader">
+  <div class="loaderRing"></div>
+  <p>Loading more...</p>
+</div>
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/infinite.scroll.min.js' %}"></script>
 {% endif %}
 {% endif %}
 {% endblock %}
