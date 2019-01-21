@@ -5,8 +5,9 @@
 {% block title %}Wine Recommendation System | {{ contents.0.name }}{% endblock %}
 {% block javascript %}{% endblock %}
 {% block content %}
-<div class="topBar">
-   {% include "hrsapp/partials/svg/arrow-back.html" %}
+<div class="buttonGroup">
+  <div class="button" onclick="window.history.back()">{% include "hrsapp/partials/svg/arrow-back.html" %}</div>
+  <div class="spacer"></div>
 </div>
 <div class="itemsWrapper grid centerItems animateContent">
    <div class="item">

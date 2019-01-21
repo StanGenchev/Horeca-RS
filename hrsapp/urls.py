@@ -4,12 +4,11 @@ from . import views
 
 app_name = 'hrsapp'
 urlpatterns = [
-    path('', views.IndexView.as_view(), name='index'),
-    path('grid', views.WineView.as_view(), name='grid'),
-    path('start', views.IndexView.as_view(), name='index'),
-    path('detail', views.DetailView.as_view(), name='detail'),
-    path('horeca-rs.apk', views.GetApp.as_view(), name='app'),
-    path('requests', views.RequestsHandler.as_view(), name='requests'),
-    path('recommend-menu', views.RecommendView.as_view(), name='recommend-menu'),
-    path('get-recommended', views.GetRecommendView.as_view(), name='get-recommended')
+    path('', views.home, name='home'),
+    path('wines/', views.wines, name='wines-view'),
+    path('start/', views.home, name='home'),
+    path('wines/wine/<int:wine_id>', views.details, name='wine-details'),
+    path('requests/', views.requests, name='requests'),
+    path('recommend/', views.recommend_navigation, name='recommend-navigation'),
+    path('get-recommended/', views.recommended_view, name='recommended-view')
 ]

@@ -73,53 +73,6 @@ body {
 	background-color: #df574b;
 }
 
-.buttonGroup {
-	display: block;
-	margin: 0;
-	padding: 0;
-	padding-right: 4px;
-	padding-left: 4px;
-	margin-top: 4px;
-	border-bottom: 1px solid #dcdcdc;
-	color: #565656;
-}
-
-.buttonGroup .button {
-	display: -webkit-box;
-	display: -moz-box;
-	display: -ms-flexbox;
-	display: -webkit-flex;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background-color: transparent;
-	text-align: center;
-	color: black;
-	padding: 6px;
-	cursor: pointer;
-	float: right;
-	margin: 6px;
-	border-radius: 4px;
-}
-
-/* Clear floats (clearfix hack) */
-
-.buttonGroup:after {
-	content: "";
-	clear: both;
-	display: table;
-}
-
-.buttonGroup .button:hover {
-	background-color: #dcdcdc;
-}
-
-.buttonGroup svg {
-	fill: #565656;
-	width: 24px;
-	height: 24px;
-}
-
 #menuIcon {
 	width: 24px;
 	height: 100%;
@@ -134,23 +87,6 @@ body {
 	fill: #ffffff;
 }
 
-.arrow-back {
-  margin: 0;
-  margin-left: 12px;
-  margin-right: 12px;
-  padding: 0;
-  width: 32px;
-  height: 32px;
-  border-radius: 6px;
-  cursor: pointer;
-  fill: #565656;
-}
-
-.arrow-back:hover {
-  background-color: #dcdcdc;
-  fill: black;
-}
-
 .mainView {
 	width: 100%;
 	height: 100%;
@@ -162,15 +98,15 @@ body {
 	display: none;
 	position: fixed;
 	border: 0;
-	-webkit-box-shadow: 5px 0 10px -5px gray;
-	-moz-box-shadow: 5px 0 10px -5px gray;
-	box-shadow: 5px 0 10px -5px gray;
+	-webkit-box-shadow: 0 5px 10px gray;
+	-moz-box-shadow: 0 5px 10px gray;
+	box-shadow: 0 5px 10px gray;
 	background-color: #fafafa;
 	width: 256px;
-	height: 100%;
-	padding-top: 58px;
+	height: calc(100% - 48px);
+	margin-top: 48px;
 	font-size: 22px;
-	z-index: 1;
+	z-index: 2;
 }
 
 .sidePanelButton {
@@ -205,21 +141,63 @@ body {
 	fill: #565656;
 }
 
-.topBar {
-  display: -webkit-box;
+.buttonGroup {
+	display: -webkit-box;
 	display: -moz-box;
 	display: -ms-flexbox;
 	display: -webkit-flex;
 	display: flex;
-	flex-wrap: nowrap;
 	-webkit-flex-wrap: nowrap;
 	-ms-flex-wrap: nowrap;
-	align-items: center;
-  margin: 0;
+	-webkit-box-pack: start;
+	-ms-flex-pack: start;
+	justify-content: flex-start;
+	margin: 0;
   padding: 0;
+  padding-left: 10px;
+  padding-right: 10px;
   height: 48px;
   background-color: #fafafa;
   border-bottom: 1px solid #dcdcdc;
+	color: #565656;
+}
+
+.buttonGroup .button {
+	display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	-ms-flex-pack: center;
+	justify-content: center;
+	-webkit-box-align: center;
+	-ms-flex-align: center;
+	align-items: center;
+	background-color: inherit;
+	color: #4d4d4d;
+	cursor: pointer;
+	margin: 4px;
+	padding: 6px;
+	border-radius: 3px;
+	line-height: 0;
+}
+
+.buttonGroup .button:hover {
+	background-color: #dcdcdc;
+}
+
+.buttonGroup .spacer {
+	width: 100%;
+}
+
+.buttonGroup svg {
+	fill: #565656;
+	width: 24px;
+	height: 24px;
+}
+
+.buttonGroup .large svg {
+	width: 36px;
+	height: 36px;
 }
 
 .mainContentBox {
@@ -249,10 +227,11 @@ body {
 }
 
 .gridItem {
-  text-decoration: none;
   cursor: pointer;
   margin: 0;
   padding: 0;
+  color: inherit;
+	text-decoration: inherit;
 }
 
 .gridItem .title {
@@ -266,8 +245,13 @@ body {
   grid-gap: 48px 10px;
 }
 
-.menuItems .imgContainer {
-  text-align: center;
+.menuItems .title {
+  font-weight: normal;
+}
+
+.menuItems svg {
+  width: 96px;
+  height: 96px;
 }
 
 .detailsContainer {

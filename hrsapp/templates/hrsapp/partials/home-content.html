@@ -4,14 +4,12 @@
 {% block javascript %}{% endblock %}
 {% block content %}
 <div class="gridContainer menuItems animateContent">
-   <a class="gridItem" href="/grid">
-      <div class="imgContainer"><img src="{% static 'images/grid.svg' %}"
-            alt="Wine List" onerror="this.onerror=null;this.src='';" /></div>
+   <a class="gridItem" href="/wines/">
+      {% include "hrsapp/partials/svg/wines-svg.html" %}
       <h1 class="title">Wine List</h1>
    </a>
-   <a class="gridItem" href="/recommend-menu">
-      <div class="imgContainer"><img src="{% static 'images/recommended.svg' %}"
-            alt="Recommend me" onerror="this.onerror=null;this.src='';" /></div>
+   <a class="gridItem" href="/recommend/">
+      {% include "hrsapp/partials/svg/recommend-svg.html" %}
       <h1 class="title">Recommend me wine</h1>
    </a>
 </div>

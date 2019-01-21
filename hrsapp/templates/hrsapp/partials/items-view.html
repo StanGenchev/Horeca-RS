@@ -1,0 +1,84 @@
+{% extends "hrsapp/common.html" %}
+{% load staticfiles %}
+{% load toint %}
+{% load range %}
+{% block title %}Wine Recommendation System | Wine Grid{% endblock %}
+{% block javascript %}{% endblock %}
+{% block content %}
+{% if contents and contents|length == 0  %}
+<div class="no-products">
+   <img src="{% static 'images/hrs-logo.svg' %}" alt="HoReCa">
+   <p class="item-name hrs-large">There are no available products!</p>
+</div>
+{% else %}
+<div class="buttonGroup">
+  <div class="button" onclick="window.history.back()">{% include "hrsapp/partials/svg/arrow-back.html" %}</div>
+  <div class="spacer"></div>
+</div>
+<div class="gridContainer animateContent">
+  {% for item in contents %}
+  <a class="gridItem" href="/wines/wine/{{ item.product_id.id }}">
+    <h1 class="title">{{ item.product_id.name }}</h1>
+    <div class="detailsContainer">
+      <div class="imgContainer"><img src="{% static 'images/' %}{{ item.product_id.photo_path }}"
+            alt="Wine Picture" onerror="this.onerror=null;this.src='';" /></div>
+      <div class="details">
+         <table>
+            <tr>
+               <td>Producer:</td>
+               <td>{{ item.product_id.vendor_id }}</td>
+            </tr>
+            <tr>
+               <td>Country:</td>
+               <td>{{ item.product_id.vendor_id.region_id.country_id }}</td>
+            </tr>
+            <tr>
+               <td>Region:</td>
+               <td>{{ item.product_id.vendor_id.region_id }}</td>
+            </tr>
+            <tr>
+               <td>Category:</td>
+               <td>{{ item.product_id.category_id }} Wine</td>
+            </tr>
+            <tr>
+               <td>Appellation:</td>
+               <td>{{ item.product_id.appellation_id }}</td>
+            </tr>
+            <tr>
+               <td>Description:</td>
+               <td>{{ item.product_id.description }}</td>
+            </tr>
+         </table>
+      </div>
+    </div>
+  </a>
+  {% endfor %}
+</div>
+{% if contents.has_next %}
+<div class="infinite-more" style="display:none" data-val="?page={{ contents.next_page_number }}&return=minimal"></div>
+<div class="loader">
+  <div class="loaderRing"></div>
+  <p>Loading more...</p>
+</div>
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/infinite.scroll.min.js' %}"></script>
+{% endif %}
+{% if contents.paginator.num_pages|toint > 1 %}
+<div class="pagination">
+   {% if contents.has_previous %}
+   <a href="?page={{ contents.previous_page_number }}">&laquo;</a>
+   {% endif %}
+   {% for value in contents.paginator.num_pages|range %}
+   {% if contents.number is forloop.counter %}
+   <a class="active" href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
+   {% else %}
+   <a href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
+   {% endif %}
+   {% endfor %}
+   {% if contents.has_next %}
+   <a href="?page={{ contents.paginator.num_pages }}">&raquo;</a>
+   {% endif %}
+</div>
+{% endif %}
+{% endif %}
+{% endblock %}
