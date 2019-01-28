@@ -1,93 +1,71 @@
+{% extends "hrsapp/common.html" %}
 {% load staticfiles %}
-{% load range %}
 {% load toint %}
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Wine Recommendation System</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="theme-color" content="#f95463">
-        <link rel="stylesheet" href="{% static 'css/default.css' %}">
-        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'images/favicon/apple-touch-icon.png' %}">
-        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'images/favicon/favicon-32x32.png' %}">
-        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'images/favicon/favicon-16x16.png' %}">
-        <link rel="manifest" href="{% static 'images/favicon/site.webmanifest' %}">
-        <link rel="mask-icon" href="{% static 'images/favicon/safari-pinned-tab.svg' %}" color="#5bbad5">
-        <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
-        <meta name="msapplication-TileColor" content="#da532c">
-    </head>
-    <body>
-        {% if contents %}
-        <!-- Sidebar -->
-        <div class="hrs-sidebar hrs-bar-block dynamic-size" id="mySidebar">
-            <button onclick="w3_close()" class="hrs-bar-close">Close</button>
-            <a href="/" class="hrs-bar-item hrs-bar-button hrs-large">Home</a>
-            <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">My profile</a>
-            <a href="#" class="hrs-bar-item hrs-bar-button hrs-large">Log out</a>
-            <a class="hrs-bar-item hrs-bar-button hrs-large" onclick="clear_session()">Clear session</a>
-        </div>
-        <!-- Page Header -->
-        <div class="hrs-teal hrs-teal-shadow stick">
-            <a href="/">Wine HRS</a>
-            <button class="hrs-btn" style="float: left; background-image: url({% static 'images/menu.svg' %});" onclick="hrs_open()"></button>
-            <button class="hrs-btn" style="float: right; background-image: url({% static 'images/user.svg' %});" onclick=""></button>
-        </div>
-        <!-- Page Content -->
-        <div class="navbar">
-            <div class="nav-btn" style="border-right: 1px solid #dcdcdb; padding-right: 4px;">
-                <img class="nav-btn-img" src="{% static 'images/nav-back.svg' %}" alt="Back" onclick="window.history.back()">
-            </div>
-        </div>
-        {% if contents|length == 0  %}
-        <div class="no-products">
-            <img src="{% static 'images/hrs-logo.svg' %}" alt="HoReCa">
-            <p class="item-name hrs-large">There are no available products!</p>
-        </div>
-        {% else %}
-        <div class="items-container">
-            {% for item in contents %}<div class="hrs-item" onclick="location.href='/detail?wine={{ item.0 }}'">
-                <header>
-                    <p>{{ item.1 }}</p>
-                </header>
-                <section>
-                    <nav>
-                        <img class="item-img" style="height: 128px;" src="{% static 'images/' %}{{ item.4 }}" alt="Wine Photo">
-                    </nav>
-                    <article>
-                        <p>Producer: <b>{{ item.1 }}</b></p>
-                        <p>Category: <b>{{ item.3 }} Wine</b></p>
-                        <p>Sim: <b>{{ item.5 }}</b></p>
-                    </article>
-                </section>
-            </div>{% endfor %}
-        </div>
-        {% if contents.paginator.num_pages|toint > 1 %}
-        <div class="pagination">
-            {% if contents.has_previous %}
-            <a href="?page={{ contents.previous_page_number }}">&laquo;</a>
-            {% endif %}
-            {% for value in contents.paginator.num_pages|range %}
-            {% if contents.number is forloop.counter %}
-            <a class="active" href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
-            {% else %}
-            <a href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
-            {% endif %}
-            {% endfor %}
-            {% if contents.has_next %}
-            <a href="?page={{ contents.paginator.num_pages }}">&raquo;</a>
-            {% endif %}
-        </div>
-        {% endif %}
-        {% endif %}
-        {% else %}
-        <center>
-            <div class="empty" onclick="window.location.reload()">
-                <img src="{% static 'images/hrs-logo.svg' %}" alt="H.R.S">
-                <p>Page not available!</p>
-                <p>Try again later.</p>
-            </div>
-        </center>
-        {% endif %}
-        <script src="{% static 'js/shared_functions.js' %}"></script>
-    </body>
-</html>
+{% load range %}
+{% block title %}Wine Recommendation System | Wine List{% endblock %}
+{% block javascript %}{% endblock %}
+{% block content %}
+<div class="buttonGroup">
+   <div class="button" onclick="window.history.back()">{% include "hrsapp/svg/arrow-back.html" %}</div>
+   <div class="spacer"></div>
+</div>
+{% if contents|length == 0  %}
+<div class="gridContainer menuItems animateContent">
+   <a class="gridItem" href="/wines/">
+      {% include "hrsapp/svg/not-found-svg.html" %}
+      <div class="title">There are no rated products!<br/>Please rate some products first.</div>
+   </a>
+</div>
+{% else %}
+<div class="gridContainer animateContent">
+   {% for item in contents %}
+   <div class="gridItem">
+      <a class="title" href="/wines/wine/{{ item.0 }}">{{ item.1 }}</a>
+      <a class="detailsContainer" href="/wines/wine/{{ item.0 }}">
+         <img class="imgContainer recommended" src="{% static 'images/' %}{{ item.4 }}"
+            alt="Wine Picture" onerror="this.onerror=null;this.src='';" />
+         <table class="details">
+            <tr>
+               <td>Producer:</td>
+               <td>{{ item.2 }}</td>
+            </tr>
+               <td>Category:</td>
+               <td>{{ item.3 }} Wine</td>
+            </tr>
+            <tr>
+               <td>Sim:</td>
+               <td>{{ item.5 }}</td>
+            </tr>
+         </table>
+      </a>
+   </div>
+   {% endfor %}
+</div>
+{% if contents.paginator.num_pages|toint > 1 %}
+<div class="pagination">
+   {% if contents.has_previous %}
+   <a href="?page={{ contents.previous_page_number }}">&laquo;</a>
+   {% endif %}
+   {% for value in contents.paginator.num_pages|range %}
+   {% if contents.number is forloop.counter %}
+   <a class="active" href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
+   {% else %}
+   <a href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
+   {% endif %}
+   {% endfor %}
+   {% if contents.has_next %}
+   <a href="?page={{ contents.paginator.num_pages }}">&raquo;</a>
+   {% endif %}
+</div>
+{% endif %}
+{% if contents.has_next %}
+<div class="infinite-more" style="display:none" data-val="?page={{ contents.next_page_number }}&return=minimal"></div>
+<div class="loader">
+   <div class="loaderRing"></div>
+   <p>Loading more...</p>
+</div>
+<script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
+<script src="{% static 'js/infinite.scroll.min.js' %}"></script>
+{% endif %}
+{% endif %}
+{% endblock %}

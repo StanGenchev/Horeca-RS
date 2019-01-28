@@ -1,0 +1,99 @@
+{% extends "hrsapp/common.html" %}
+{% load staticfiles %}
+{% load toint %}
+{% load getrate %}
+{% load range %}
+{% block title %}Wine Recommendation System | Pre-recommend List{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/rates.box.css' %}"/>
+{% endblock %}
+{% block javascript %}<script src="{% static 'js/rating.js' %}"></script>{% endblock %}
+{% block content %}
+<div class="buttonGroup">
+   <div class="button" onclick="window.history.back()">{% include "hrsapp/svg/arrow-back.html" %}</div>
+   <div class="spacer" ontouchstart="touchStart(event)" ontouchmove="touchMove(event)">
+      {% include "hrsapp/partials/rated-template.html" %}
+   </div>
+   <div class="button large" onclick="location.href='/recommend/recommended/'">{% include "hrsapp/svg/recommend-svg.html" %}</div>
+</div>
+{% if contents.0|length == 0  %}
+<div class="gridContainer menuItems animateContent">
+   <a class="gridItem" href="/wines/">
+      {% include "hrsapp/svg/not-found-svg.html" %}
+      <div class="title">There are no products found!</div>
+   </a>
+</div>
+{% else %}
+<div class="gridContainer animateContent">
+   {% for item in contents.0 %}
+   <div class="gridItem">
+      <a class="title" href="/wines/wine/{{ item.id }}">{{ item.name }}</a>
+      <a class="detailsContainer" href="/wines/wine/{{ item.id }}">
+         <img class="imgContainer" src="{% static 'images/' %}{{ item.photo_path }}"
+            alt="Wine Picture" onerror="this.onerror=null;this.src='';" />
+         <table class="details">
+            <tr>
+               <td>Producer:</td>
+               <td>{{ item.vendor_id }}</td>
+            </tr>
+            <tr>
+               <td>Country:</td>
+               <td>{{ item.vendor_id.region_id.country_id }}</td>
+            </tr>
+            <tr>
+               <td>Region:</td>
+               <td>{{ item.vendor_id.region_id }}</td>
+            </tr>
+            <tr>
+               <td>Category:</td>
+               <td>{{ item.category_id }} Wine</td>
+            </tr>
+            <tr>
+               <td>Appellation:</td>
+               <td>{{ item.appellation_id }}</td>
+            </tr>
+            <tr>
+               <td colspan="2">Description:</td>
+            </tr>
+            <tr>
+               <td class="descBox" colspan="2">{{ item.description|truncatechars:230 }}</td>
+            </tr>
+         </table>
+      </a>
+      <div class="ratesBox">
+         <div class="stars">
+            {% with r=item.id|getrate:contents.1 %}
+            {% for star in '*****' %}
+            {% if r > forloop.counter %}
+            <div class="{{ item.id }} rateStar activated" onclick="addToRated({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', {{ forloop.counter }})">{% include "hrsapp/svg/star-svg.html" %}</div>
+            {% elif r == forloop.counter %}
+            <div class="{{ item.id }} rateStar activated">{% include "hrsapp/svg/star-svg.html" %}</div>
+            {% else %}
+            <div class="{{ item.id }} rateStar" onclick="addToRated({{ item.id }}, '{{ item.name }}', '{{ item.vendor_id }}', '{{ item.photo_path }}', {{ forloop.counter }})">{% include "hrsapp/svg/star-svg.html" %}</div>
+            {% endif %}
+            {% endfor %}
+            {% endwith %}
+         </div>
+      </div>
+   </div>
+   {% endfor %}
+</div>
+{% if contents.paginator.num_pages|toint > 1 %}
+<div class="pagination">
+   {% if contents.0.has_previous %}
+   <a href="?page={{ contents.0.previous_page_number }}">&laquo;</a>
+   {% endif %}
+   {% for value in contents.0.paginator.num_pages|range %}
+   {% if contents.0.number is forloop.counter %}
+   <a class="active" href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
+   {% else %}
+   <a href="?page={{ forloop.counter }}">{{ forloop.counter }}</a>
+   {% endif %}
+   {% endfor %}
+   {% if contents.0.has_next %}
+   <a href="?page={{ contents.0.paginator.num_pages }}">&raquo;</a>
+   {% endif %}
+</div>
+{% endif %}
+{% endif %}
+{% endblock %}

@@ -3,173 +3,179 @@
 {% load toint %}
 {% load range %}
 {% block title %}Wine Recommendation System | {{ contents.0.name }}{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/single.item.css' %}"/>
+<link rel="stylesheet" href="{% static 'css/rates.box.css' %}"/>
+{% endblock %}
 {% block javascript %}{% endblock %}
 {% block content %}
 <div class="buttonGroup">
-  <div class="button" onclick="window.history.back()">{% include "hrsapp/partials/svg/arrow-back.html" %}</div>
-  <div class="spacer"></div>
+   <div class="button" onclick="window.history.back()">{% include "hrsapp/svg/arrow-back.html" %}</div>
+   <div class="spacer"></div>
 </div>
-<div class="itemsWrapper grid centerItems animateContent">
-   <div class="item">
-      <h1 class="title">{{ contents.0.name }}</h1>
-      <div class="detailsContainer">
-         <div class="imgContainer"><img src="{% static 'images/' %}{{ contents.0.photo_path }}"
-            alt="Wine Picture" onerror="this.onerror=null;this.src='';" /></div>
-         <div class="details">
-            <table>
-               <tr>
-                  <td>Producer:</td>
-                  <td>{{ contents.0.vendor_id }}</td>
-               </tr>
-               <tr>
-                  <td>Country:</td>
-                  <td>{{ contents.0.vendor_id.region_id.country_id }}</td>
-               </tr>
-               <tr>
-                  <td>Region:</td>
-                  <td>{{ contents.0.vendor_id.region_id }}</td>
-               </tr>
-               <tr>
-                  <td>Category:</td>
-                  <td>{{ contents.0.category_id }} Wine</td>
-               </tr>
-               <tr>
-                  <td>Appellation:</td>
-                  <td>{{ contents.0.appellation_id }}</td>
-               </tr>
-               <tr>
-                  <td>Description:</td>
-                  <td>{{ contents.0.description }}</td>
-               </tr>
-            </table>
-         </div>
+<div class="singleItem animateContent">
+   <div class="title">{{ contents.0.name }}</div>
+   <div class="detailsContainer">
+      <img class="imgContainer" src="{% static 'images/' %}{{ contents.0.photo_path }}"
+         alt="Wine Picture" onerror="this.onerror=null;this.src='';" />
+      <table class="details">
+         <tr>
+            <td>Producer:</td>
+            <td>{{ contents.0.vendor_id }}</td>
+            <td class="charsRight" colspan="2">Characteristics:</td>
+         </tr>
+         <tr>
+            <td>Country:</td>
+            <td>{{ contents.0.vendor_id.region_id.country_id }}</td>
+            <td class="charsRight">Body:</td>
+            <td class="charsRight noWrap">{{ contents.4.0 }} / 5</td>
+         </tr>
+         <tr>
+            <td>Region:</td>
+            <td>{{ contents.0.vendor_id.region_id }}</td>
+            <td class="charsRight">Alcohol:</td>
+            <td class="charsRight noWrap">{{ contents.4.1 }} / 5</td>
+         </tr>
+         <tr>
+            <td>Category:</td>
+            <td>{{ contents.0.category_id }} Wine</td>
+            <td class="charsRight">Tannin:</td>
+            <td class="charsRight noWrap">{{ contents.4.2 }} / 5</td>
+         </tr>
+         <tr>
+            <td>Appellation:</td>
+            <td>{{ contents.0.appellation_id }}</td>
+            <td class="charsRight">Acidity:</td>
+            <td class="charsRight noWrap">{{ contents.4.3 }} / 5</td>
+         </tr>
+         <tr>
+            <td>Description:</td>
+            <td></td>
+            <td class="charsRight">Sweetness:</td>
+            <td class="charsRight noWrap">{{ contents.4.4 }} / 5</td>
+         </tr>
+         <tr>
+            <td class="descBox" colspan="4">{{ contents.0.description }}</td>
+         </tr>
+      </table>
+   </div>
+</div>
+<table class="characteristics">
+   <tr>
+      <td class="title" colspan="2">Characteristics:</td>
+   </tr>
+   <td class="right">Body:</td>
+   <td class="noWrap">{{ contents.4.0 }} / 5</td>
+   </tr>
+   <tr>
+      <td class="right">Alcohol:</td>
+      <td class="noWrap">{{ contents.4.1 }} / 5</td>
+   </tr>
+   <tr>
+      <td class="right">Tannin:</td>
+      <td class="noWrap">{{ contents.4.2 }} / 5</td>
+   </tr>
+   <tr>
+      <td class="right">Acidity:</td>
+      <td class="noWrap">{{ contents.4.3 }} / 5</td>
+   </tr>
+   <tr>
+      <td class="right">Sweetness:</td>
+      <td class="noWrap">{{ contents.4.4 }} / 5</td>
+   </tr>
+</table>
+<div class="ratesBox spacing">
+   <div class="rate">
+      User Rating:
+      <div class="stars">
+         {% for star in '*****' %}
+         {% if contents.1.0|toint >= forloop.counter %}
+         <div class="{{ contents.0.id }} rateStar activated">{% include "hrsapp/svg/star-svg.html" %}</div>
+         {% else %}
+         <div class="{{ contents.0.id }} rateStar">{% include "hrsapp/svg/star-svg.html" %}</div>
+         {% endif %}
+         {% endfor %}
       </div>
-      {% for star in '*****' %}
-      {% if contents.1.0|toint > forloop.counter %}
-      <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
-      {% elif contents.1.0|toint == forloop.counter %}
-      <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
-      {% else %}
-      <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star.svg' %});"></button>
-      {% endif %}
-      {% endfor %}
-      <h2 class="mobile-view-title hrs-xlarge">Characteristics:</h2>
-      <div class="hrs-item" style="border: 0px;">
-         <section style="text-align: center; display: table; margin: 0 auto; width: auto;">
-            <article>
-               <p class="desktop-view-title"><b>Characteristics:</b></p>
-               <p>Body: <b>{{ contents.4.0 }} / 5</b></p>
-               <p>Alcohol: <b>{{ contents.4.1 }} / 5</b></p>
-               <p>Tannin: <b>{{ contents.4.2 }} / 5</b></p>
-               <p>Acidity: <b>{{ contents.4.3 }} / 5</b></p>
-               <p>Sweetness: <b>{{ contents.4.4 }} / 5</b></p>
-            </article>
-         </section>
-         <footer class="mobile-view">
-            <header>
-               <p class="hrs-large">Expert Rating:</p>
-            </header>
-            <footer>
-               {% for star in '*****' %}
-               {% if contents.1.1|toint > forloop.counter %}
-               <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
-               {% elif contents.1.1|toint == forloop.counter %}
-               <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
-               {% else %}
-               <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star.svg' %});"></button>
-               {% endif %}
-               {% endfor %}
-            </footer>
-         </footer>
+   </div>
+   <div class="rate">
+      Expert Rating:
+      <div class="stars">
+         {% for star in '*****' %}
+         {% if contents.1.1|toint >= forloop.counter %}
+         <div class="{{ contents.0.id }} rateStar activated">{% include "hrsapp/svg/star-svg.html" %}</div>
+         {% else %}
+         <div class="{{ contents.0.id }} rateStar">{% include "hrsapp/svg/star-svg.html" %}</div>
+         {% endif %}
+         {% endfor %}
       </div>
-      <section class="desktop-view">
-         <div class="items-container">
-            <div class="hrs-item" style="border: 0px;">
-               <header>
-                  <p class="hrs-large">User Rating:</p>
-               </header>
-               <footer>
-                  {% for star in '*****' %}
-                  {% if contents.1.0|toint > forloop.counter %}
-                  <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
-                  {% elif contents.1.0|toint == forloop.counter %}
-                  <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
-                  {% else %}
-                  <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star.svg' %});"></button>
-                  {% endif %}
-                  {% endfor %}
-               </footer>
-            </div>
-            <div class="hrs-item" style="border: 0px;">
-               <header>
-                  <p class="hrs-large">Expert Rating:</p>
-               </header>
-               <footer>
-                  {% for star in '*****' %}
-                  {% if contents.1.1|toint > forloop.counter %}
-                  <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
-                  {% elif contents.1.1|toint == forloop.counter %}
-                  <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star-checked.svg' %});"></button>
-                  {% else %}
-                  <button class="{{ contents.0.id }} rate-button" type="button" style="background-image: url({% static 'images/star.svg' %});"></button>
-                  {% endif %}
-                  {% endfor %}
-               </footer>
+   </div>
+</div>
+<div class="similars">
+   <h3 class="simTitle">Similar Products</h3>
+   <div class="prefsBox">
+      <div class="prefs">
+         <div class="prefTitle">by User preferences</div>
+         {% if contents.2|length != 0 %}
+         {% for item in contents.2 %}
+         <div class="singleItem">
+            <div class="title">{{ item.1 }}</div>
+            <div class="detailsContainer">
+               <img class="imgContainer" src="{% static 'images/' %}{{ item.4 }}"
+                  alt="Wine Picture" onerror="this.onerror=null;this.src='';" />
+               <table class="details">
+                  <tr>
+                     <td>Producer:</td>
+                     <td>{{ item.2 }}</td>
+                  </tr>
+                  <tr>
+                     <td>Category:</td>
+                     <td>{{ item.3 }} Wine</td>
+                  </tr>
+                  <tr>
+                     <td>Sim.:</td>
+                     <td>{{ item.5 }}</td>
+                  </tr>
+               </table>
             </div>
          </div>
-      </section>
-      <div class="item-rates">
-         <h1 class="hrs-mxlarge">Similar Products</h1>
-         <div class="user-rates">
-            <h2 class="hrs-xlarge">by User preferences</h2>
-            {% if contents.2|length != 0 %}
-            {% for item in contents.2 %}
-            <header>
-               <p>{{ item.1 }}</p>
-            </header>
-            <section>
-               <nav>
-                  <img style="max-height: 64px;" class="item-img" src="{% static 'images/' %}{{ item.4 }}" alt="Wine Photo">
-               </nav>
-               <article>
-                  <p>Producer: {{ item.2 }}</p>
-                  <p>Category: {{ item.3 }} Wine</p>
-                  <p>Sim: {{ item.5 }}</p>
-               </article>
-            </section>
-            {% endfor %}
-            {% else %}
-            <center>
-               <p>There are no meaningful similarities with other products.</p>
-            </center>
-            <br>
-            {% endif %}
+         {% endfor %}
+         {% else %}
+         <div class="singleItem">
+            <div class="title">There are no meaningful similarities with other products.</div>
          </div>
-         <div class="expert-rates">
-            <h2 class="hrs-xlarge">by Characteristics</h2>
-            {% if contents.3|length != 0 %}
-            {% for item in contents.3 %}
-            <header>
-               <p>{{ item.1 }}</p>
-            </header>
-            <section>
-               <nav>
-                  <img style="max-height: 64px;" class="item-img" src="{% static 'images/' %}{{ item.4 }}" alt="Wine Photo">
-               </nav>
-               <article>
-                  <p>Producer: {{ item.2 }}</p>
-                  <p>Category: {{ item.3 }} Wine</p>
-                  <p>Sim: {{ item.5 }}</p>
-               </article>
-            </section>
-            {% endfor %}
-            {% else %}
-            <center>
-               <p>There are no meaningful similarities with other products.</p>
-            </center>
-            <br>
-            {% endif %}
+         {% endif %}
+      </div>
+      <div class="prefs">
+         <div class="prefTitle">by Characteristics</div>
+         {% if contents.3|length != 0 %}
+         {% for item in contents.3 %}
+         <div class="singleItem">
+            <div class="title">{{ item.1 }}</div>
+            <div class="detailsContainer">
+               <img class="imgContainer" src="{% static 'images/' %}{{ item.4 }}"
+                  alt="Wine Picture" onerror="this.onerror=null;this.src='';" />
+               <table class="details">
+                  <tr>
+                     <td>Producer:</td>
+                     <td>{{ item.2 }}</td>
+                  </tr>
+                  <tr>
+                     <td>Category:</td>
+                     <td>{{ item.3 }} Wine</td>
+                  </tr>
+                  <tr>
+                     <td>Sim.:</td>
+                     <td>{{ item.5 }}</td>
+                  </tr>
+               </table>
+            </div>
          </div>
+         {% endfor %}
+         {% else %}
+         <div class="singleItem">
+            <div class="title">There are no meaningful similarities with other products.</div>
+         </div>
+         {% endif %}
       </div>
    </div>
 </div>

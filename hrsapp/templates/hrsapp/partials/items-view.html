@@ -5,25 +5,26 @@
 {% block title %}Wine Recommendation System | Wine List{% endblock %}
 {% block javascript %}{% endblock %}
 {% block content %}
+<div class="buttonGroup">
+   <div class="button" onclick="window.history.back()">{% include "hrsapp/svg/arrow-back.html" %}</div>
+   <div class="spacer"></div>
+</div>
 {% if contents and contents|length == 0  %}
-<div class="no-products">
-   <img src="{% static 'images/hrs-logo.svg' %}" alt="HoReCa">
-   <p class="item-name hrs-large">There are no available products!</p>
+<div class="gridContainer menuItems animateContent">
+   <a class="gridItem" href="/wines/">
+      {% include "hrsapp/svg/not-found-svg.html" %}
+      <div class="title">There are no products found!</div>
+   </a>
 </div>
 {% else %}
-<div class="buttonGroup">
-  <div class="button" onclick="window.history.back()">{% include "hrsapp/partials/svg/arrow-back.html" %}</div>
-  <div class="spacer"></div>
-</div>
 <div class="gridContainer animateContent">
-  {% for item in contents %}
-  <a class="gridItem" href="/wines/wine/{{ item.product_id.id }}">
-    <h1 class="title">{{ item.product_id.name }}</h1>
-    <div class="detailsContainer">
-      <div class="imgContainer"><img src="{% static 'images/' %}{{ item.product_id.photo_path }}"
-            alt="Wine Picture" onerror="this.onerror=null;this.src='';" /></div>
-      <div class="details">
-         <table>
+   {% for item in contents %}
+   <div class="gridItem">
+      <a class="title" href="/wines/wine/{{ item.product_id.id }}">{{ item.product_id.name }}</a>
+      <a class="detailsContainer" href="/wines/wine/{{ item.product_id.id }}">
+         <img class="imgContainer" src="{% static 'images/' %}{{ item.product_id.photo_path }}"
+            alt="Wine Picture" onerror="this.onerror=null;this.src='';" />
+         <table class="details">
             <tr>
                <td>Producer:</td>
                <td>{{ item.product_id.vendor_id }}</td>
@@ -45,14 +46,15 @@
                <td>{{ item.product_id.appellation_id }}</td>
             </tr>
             <tr>
-               <td>Description:</td>
-               <td>{{ item.product_id.description }}</td>
+               <td colspan="2">Description:</td>
+            </tr>
+            <tr>
+               <td class="descBox" colspan="2">{{ item.product_id.description|truncatechars:230 }}</td>
             </tr>
          </table>
-      </div>
-    </div>
-  </a>
-  {% endfor %}
+      </a>
+   </div>
+   {% endfor %}
 </div>
 {% if contents.paginator.num_pages|toint > 1 %}
 <div class="pagination">
@@ -74,8 +76,8 @@
 {% if contents.has_next %}
 <div class="infinite-more" style="display:none" data-val="?page={{ contents.next_page_number }}&return=minimal"></div>
 <div class="loader">
-  <div class="loaderRing"></div>
-  <p>Loading more...</p>
+   <div class="loaderRing"></div>
+   <p>Loading more...</p>
 </div>
 <script src="{% static 'js/jquery.waypoints.min.js' %}"></script>
 <script src="{% static 'js/infinite.scroll.min.js' %}"></script>

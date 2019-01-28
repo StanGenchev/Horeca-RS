@@ -17,7 +17,6 @@ body {
 	color: white;
 	background-color: #db4437;
 	-webkit-box-shadow: 0 0 10px grey;
-	-moz-box-shadow: 0 0 10px grey;
 	box-shadow: 0 0 10px grey;
 	position: fixed;
 	top: 0;
@@ -99,7 +98,6 @@ body {
 	position: fixed;
 	border: 0;
 	-webkit-box-shadow: 0 5px 10px gray;
-	-moz-box-shadow: 0 5px 10px gray;
 	box-shadow: 0 5px 10px gray;
 	background-color: #fafafa;
 	width: 256px;
@@ -111,12 +109,14 @@ body {
 
 .sidePanelButton {
 	display: -webkit-box;
-	display: -moz-box;
 	display: -ms-flexbox;
-	display: -webkit-flex;
 	display: flex;
-	align-items: center;
-	justify-content: left;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	-webkit-box-pack: left;
+	    -ms-flex-pack: left;
+	        justify-content: left;
 	background-color: transparent;
 	color: #565656;
 	border: none;
@@ -124,6 +124,8 @@ body {
 	height: 40px;
 	text-decoration: none;
 	cursor: pointer;
+	-webkit-transition: 0.3s;
+	-o-transition: 0.3s;
 	transition: 0.3s;
 	text-align: left;
 	font-size: 18px;
@@ -143,9 +145,7 @@ body {
 
 .buttonGroup {
 	display: -webkit-box;
-	display: -moz-box;
 	display: -ms-flexbox;
-	display: -webkit-flex;
 	display: flex;
 	-webkit-flex-wrap: nowrap;
 	-ms-flex-wrap: nowrap;
@@ -186,7 +186,19 @@ body {
 }
 
 .buttonGroup .spacer {
+  display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	flex-wrap: nowrap;
+	-webkit-flex-wrap: nowrap;
+	-ms-flex-wrap: nowrap;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
 	width: 100%;
+	margin: 0;
+	padding: 0;
+	overflow: hidden;
 }
 
 .buttonGroup svg {
@@ -210,33 +222,47 @@ body {
 
 .mainContent {
 	height: 100%;
+	min-height: 0;
 	margin: 0;
 	padding: 0;
 }
 
+.noWrap {
+  white-space: nowrap;
+}
+
 .gridContainer {
+  display: -ms-grid;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 420px));
-  align-content: center;
-  justify-content: center;
+  -ms-flex-line-pack: center;
+      align-content: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
   grid-gap: 10px 10px;
   background-color: inherit;
   margin: 0;
   padding: 6px;
+  padding-top: 12px;
 }
 
 .gridItem {
   cursor: pointer;
   margin: 0;
   padding: 0;
-  color: inherit;
-	text-decoration: inherit;
+  text-decoration: inherit;
+	color: inherit;
+	min-height: 0;
+	min-width: 0;
 }
 
 .gridItem .title {
 	font-size: 18px;
 	font-weight: bold;
 	text-align: center;
+	text-decoration: inherit;
+	color: inherit;
 }
 
 .gridContainer.menuItems {
@@ -249,61 +275,59 @@ body {
 }
 
 .menuItems svg {
-  width: 96px;
-  height: 96px;
+  width: 128px;
+  height: 128px;
 }
 
 .detailsContainer {
-  flex: 1;
 	display: -webkit-box;
-	display: -moz-box;
 	display: -ms-flexbox;
-	display: -webkit-flex;
 	display: flex;
 	flex-wrap: nowrap;
 	-webkit-flex-wrap: nowrap;
 	-ms-flex-wrap: nowrap;
-	flex-direction: row;
-	-webkit-flex-direction: row;
+	-webkit-box-orient: horizontal;
+	-webkit-box-direction: normal;
+	        flex-direction: row;
 	-moz-flex-direction: row;
 	-ms-flex-direction: row;
 	margin: 0;
 	margin-top: 10px;
 	padding: 0;
+	text-decoration: inherit;
+	color: inherit;
 }
 
 .detailsContainer .imgContainer {
   display: inline-block;
   margin: 0;
-	margin-right: 10px;
-}
-
-.detailsContainer .imgContainer img {
-	display: inline-block;
-	height: 240px;
-  width: auto;
 	padding: 0;
-	margin: 0;
-	margin: 0 auto;
+	padding-right: 6px;
+	height: 240px;
+  width: 80px;
+	-o-object-fit: contain;
+	   object-fit: contain;
 }
 
 .detailsContainer .details {
   display: inline-block;
 	width: auto;
 	margin: 0;
-}
-
-.detailsContainer .details table {
-	font-size: 16px;
+	padding: 0;
 	text-align: left;
 	overflow-wrap: break-word;
 	word-wrap: break-word;
-	margin: auto;
 	margin-top: 0;
+	table-layout: fixed;
+  word-break: break-word;
 }
 
-.detailsContainer .details table td {
+.detailsContainer .details td {
 	vertical-align: top;
+}
+
+.detailsContainer .details .descBox {
+  padding-top: 6px;
 }
 
 .loader {
@@ -368,10 +392,12 @@ body {
 
 @keyframes spin {
 	0% {
-		transform: rotate(0deg);
+		-webkit-transform: rotate(0deg);
+		        transform: rotate(0deg);
 	}
 	100% {
-		transform: rotate(360deg);
+		-webkit-transform: rotate(360deg);
+		        transform: rotate(360deg);
 	}
 }
 

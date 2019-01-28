@@ -27,6 +27,7 @@ from .models import Expert_product_characteristic
 
 import math
 import numpy
+import json
 
 def requests(request):
     if request.method == 'GET':
@@ -59,20 +60,19 @@ def home(request):
 
 def recommend_navigation(request):
     template_menu = 'hrsapp/partials/recommend-nav.html'
-    template_list = 'hrsapp/partials/recommend-me-list.html'
+    template_list = 'hrsapp/partials/recommend-items-view.html'
 
     if request.method == 'GET':
         page = request.GET.get('page')
         category = request.GET.get('category')
         country = request.GET.get('country')
         vendor = request.GET.get('vendor')
-        rated = request.GET.get("rated")
-        try:
-            current_rates = request.session['rated']
-        except:
-            current_rates = []
+        rated = request.COOKIES.get('ratedItems', None)
+        current_rates = []
+
         if page is None:
             page = 1
+
         if category is not None:
             request.session['category'] = category
             category_vendor_countries = []
@@ -94,6 +94,7 @@ def recommend_navigation(request):
                     vendors_filterd.append(idname)
             contents = (0, 0, vendors_filterd, current_rates, category_id)
             return render(request, template_menu, {'contents': contents})
+
         elif vendor is not None:
             request.session['vendor'] = vendor
             category_id = request.session['category']
@@ -102,33 +103,7 @@ def recommend_navigation(request):
             paginator = Paginator(prods_filtered, 40)
             contents = (paginator.page(int(page)), current_rates, country_id)
             return render(request, template_list, {'contents': contents})
-        elif rated is not None:
-            vendor = request.session['vendor']
-            category = request.session['category']
-            country = request.session['country']
-            rated = str(rated).split('<hrs>')
-            rated[0] = int(rated[0])
-            rated[4] = int(rated[4])
-            in_rates = 0
-            change_rate = 0
-            for i, rate in enumerate(current_rates):
-                if rated[0] == rate[0]:
-                    if rated[4] == rate[4]:
-                        in_rates = 1
-                        break
-                    else:
-                        current_rates[i][4] = rated[4]
-                        request.session['rated'] = current_rates
-                        change_rate = 1
-                        break
-            if in_rates == 0:
-                if change_rate == 0:
-                    current_rates.insert(0, rated)
-                    request.session['rated'] = current_rates
-            prods_filtered = Products.objects.filter(category_id_id = category, vendor_id_id = int(vendor)).prefetch_related('vendor_id').prefetch_related('category_id')
-            paginator = Paginator(prods_filtered, 40)
-            contents = (paginator.page(int(page)), current_rates, country)
-            return render(request, template_list, {'contents': contents})
+
         else:
             try:
                 contents = (1, 0, Categories.objects.all(), request.session['rated'], 'start')
@@ -138,12 +113,10 @@ def recommend_navigation(request):
 
 def recommended_view(request):
     template_name = 'hrsapp/partials/recommended.html'
+
     if request.method == 'GET':
-        page = request.GET.get('page')
-        try:
-            current_rates = request.session['rated']
-        except:
-            current_rates = []
+        page = request.GET.get('page', None)
+        current_rates = json.loads(request.COOKIES.get('ratedItems', None))
 
         if page is None:
             page = 1
@@ -153,9 +126,10 @@ def recommended_view(request):
 
         id_rates = {}
 
-        for rate in current_rates:
-            if prods.filter(product_id_id = rate[0]).exists():
-                id_rates[rate[0]] = rate[4]
+        # id, image file, name, vendor, rate for each current_rate
+        for index, values in current_rates.items():
+            if prods.filter(product_id_id = index).exists():
+                id_rates[int(index)] = values[3]
 
         user_id_rates = {}
 

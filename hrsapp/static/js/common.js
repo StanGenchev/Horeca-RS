@@ -24,34 +24,27 @@ function getCookie(name) {
     return cookieValue;
 }
 
+function appendToCookie(cname,cvalue,exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  var expires = "expires=" + d.toGMTString();
+  var oldVals = getCookie("ratedItems");
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
 function clear_session() {
+    document.cookie = "ratedItems=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     current_url = window.location.href.replace(window.location.origin, "");
     if (current_url.includes("grid")) {
-        location.href='/requests?reset=1' + '&url=/grid';
+        location.href='/requests?reset=1' + '&url=/wines';
     }
     else if (current_url.includes("recommend")) {
-        location.href='/requests?reset=1' + '&url=/recommend-menu';
+        location.href='/requests?reset=1' + '&url=/recommend/';
     }
     else if (current_url.includes("detail")) {
         alert("Cannot clear session from detail page!");
     }
     else {
-        location.href='/requests?reset=1' + '&url=/start';
+        location.href='/requests?reset=1' + '&url=/';
     }
-}
-
-function remove_rated(rid) {
-    current_url = window.location.href.replace(window.location.origin, "")
-    location.href='/requests?rmrate=' + rid + '&url=' + current_url;
-}
-
-function set_rating(id, name, vendor, photo, rate) {
-    var elem = document.getElementsByClassName(id);
-    for (i = 0; i < rate; i++) {
-       elem[i].style.backgroundImage = "url({% static 'images/star-checked.svg' %})";
-    }
-    for (i = rate; i < 5; i++) {
-       elem[i].style.backgroundImage = "url({% static 'images/star.svg' %})";
-    }
-    location.href="?rated=" + id + "<hrs>" + name + "<hrs>" + vendor + "<hrs>" + photo + "<hrs>" + rate;
 }

@@ -1,0 +1,100 @@
+.ratesBox {
+  display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
+}
+
+.ratesBox.spacing {
+  margin-top: 12px;
+}
+
+.ratesBox svg {
+  width: 32px;
+	height: 32px;
+}
+
+.ratesBox.small svg {
+  width: 14px;
+	height: 14px;
+}
+
+.ratesBox .rate {
+  margin: 6px;
+  padding: 0;
+  width: 100%;
+  max-width: 300px;
+  font-size: 20px;
+}
+
+.ratesBox .stars {
+  display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	flex-wrap: nowrap;
+	-webkit-flex-wrap: nowrap;
+	-ms-flex-wrap: nowrap;
+	-webkit-box-pack: center;
+	    -ms-flex-pack: center;
+	        justify-content: center;
+	margin: 6px 0;
+}
+
+.ratesBox.small .stars {
+  margin: 0;
+}
+
+.ratesBox .starStyle {
+  fill: transparent;
+}
+
+.rateStar.activated .starStyle {
+  fill: #f1c40f;
+}
+
+.ratedItem {
+  display: -webkit-box;
+	display: -ms-flexbox;
+	display: flex;
+	flex-wrap: nowrap;
+	-webkit-flex-wrap: nowrap;
+	-ms-flex-wrap: nowrap;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	        align-items: center;
+	margin: 0;
+	margin-left: 10px;
+	padding: 0;
+	padding-left: 10px;
+	height: 48px;
+	text-decoration: inherit;
+	color: inherit;
+	text-align: left;
+	white-space: nowrap;
+	border-left: 1px solid #dcdcdc;
+}
+
+.ratedItem img {
+	height: 38px;
+}
+
+.buttonGroup .xCloseRemove {
+  width: 16px;
+  height: 16px;
+  min-width: 16px;
+  margin-left: 6px;
+}
+
+.ratedItem .details {
+  margin: 0;
+  padding: 0;
+  margin-left: 6px;
+  font-size: 14px;
+  table-layout:fixed;
+}
+
+.ratedItem .details td {
+  font-size: 14px;
+}

@@ -3,65 +3,42 @@
 {% load range %}
 {% load toint %}
 {% block title %}Wine Recommendation System | Recommend Navigation{% endblock %}
-{% block javascript %}{% endblock %}
+{% block styles %}
+<link rel="stylesheet" href="{% static 'css/rates.box.css' %}"/>
+{% endblock %}
+{% block javascript %}<script src="{% static 'js/rating.js' %}"></script>{% endblock %}
 {% block content %}
 <div class="buttonGroup">
-   {% if contents.0 == 1 and contents.1 == 0 and contents.0 == 0 and contents.1 == 1 %}
-   <div class="button" onclick="location.href='/{{ contents.4 }}'">{% include "hrsapp/partials/svg/arrow-back.html" %}</div>
-   {% else %}
-   <div class="button" onclick="location.href='/recommend?category={{ contents.4 }}'">{% include "hrsapp/partials/svg/arrow-back.html" %}</div>
-   {% endif %}
-   <div class="spacer">
-      {% if contents.3|length != 0  %}
-      {% for item in contents.3 %}
-      <div class="main-rate-item hrs-medium">
-         <img src="{% static 'images/' %}{{ item.3 }}" alt="Wine Photo" onclick="location.href='/wines/wine/{{ item.0 }}'">
-         <div class="rate-item-body" onclick="location.href='/wines/wine/{{ item.0 }}'">
-            <p>{{ item.1 }}<br>{{ item.2 }}</p>
-            <div class="rate-bar">
-               {% for star in '*****' %}
-               {% if item.4|toint >= forloop.counter %}
-               <img class="rate-button-small" src="{% static 'images/star-checked.svg' %}" alt="*">
-               {% else %}
-               <img class="rate-button-small" src="{% static 'images/star.svg' %}" alt="'">
-               {% endif %}
-               {% endfor %}
-            </div>
-         </div>
-         <div class="rm-btn" style="background-image: url({% static 'images/remove.svg' %});" onclick="remove_rated({{ item.0 }})"></div>
-      </div>
-      {% endfor %}
-      {% endif %}
+   <div class="button" onclick="window.history.back()">{% include "hrsapp/svg/arrow-back.html" %}</div>
+   <div class="spacer" ontouchstart="touchStart(event)" ontouchmove="touchMove(event)">
+      {% include "hrsapp/partials/rated-template.html" %}
    </div>
-   {% if contents.3|length != 0  %}
-   <div class="button large" onclick="location.href='/get-recommended'">{% include "hrsapp/partials/svg/recommend-svg.html" %}</div>
-   {% else %}
-   <div class="button large">{% include "hrsapp/partials/svg/recommend-svg.html" %}</div>
-   {% endif %}
+   <div class="button large" onclick="location.href='/recommend/recommended/'">{% include "hrsapp/svg/recommend-svg.html" %}</div>
 </div>
 <div class="gridContainer menuItems animateContent">
    {% if contents.0 == 1 %}
    {% for category in contents.2 %}
    <a class="gridItem" href="/recommend/?category={{ category.id }}">
-      <div class="imgContainer"><img src="{% static 'images/' %}{{ category.name|lower }}-wine.svg"
-         alt="{{ category.name }}" onerror="this.onerror=null;this.src='';" /></div>
-      <h1 class="title">{{ category.name }}</h1>
+      {% with svg_name=category.name|lower|stringformat:"s"|add:"-wine-svg.html" %}
+      {% include "hrsapp/svg/"|add:svg_name %}
+      {% endwith %}
+      <div class="title">{{ category.name }}</div>
    </a>
    {% endfor %}
    {% elif contents.1 == 1 %}
    {% for country in contents.2 %}
    <a class="gridItem" href="/recommend/?country={{ country.0 }}">
-      <div class="imgContainer"><img src="{% static 'images/' %}{{ country.1|lower }}.svg"
-         alt="{{ country.1 }}" onerror="this.onerror=null;this.src='';" /></div>
-      <h1 class="title">{{ country.1 }}</h1>
+      {% with svg_name=country.1|lower|stringformat:"s"|add:".html" %}
+      {% include "hrsapp/svg/countries/"|add:svg_name %}
+      {% endwith %}
+      <div class="title">{{ country.1 }}</div>
    </a>
    {% endfor %}
    {% else %}
    {% for vendor in contents.2 %}
    <a class="gridItem" href="/recommend/?vendor={{ vendor.0 }}">
-      <div class="imgContainer"><img src="{% static 'images/' %}hrs-logo.svg"
-         alt="{{ vendor.1 }}" onerror="this.onerror=null;this.src='';" /></div>
-      <h1 class="title">{{ vendor.1 }}</h1>
+      {% include "hrsapp/svg/logo.html" %}
+      <div class="title">{{ vendor.1 }}</div>
    </a>
    {% endfor %}
    {% endif %}
